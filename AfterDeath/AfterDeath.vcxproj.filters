@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="헤더 파일">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="헤더 파일\Creature">
+      <UniqueIdentifier>{17a18fd7-630a-4c1d-a3c0-95ca44ba9090}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Item">
+      <UniqueIdentifier>{2fe6ce91-ea3a-4d28-a213-d37958a731fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Item\Equip">
+      <UniqueIdentifier>{4f9c13b2-c8dd-495d-9fd0-323cba3bde7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Item\Equip\Armor">
+      <UniqueIdentifier>{56b8d60b-6fae-46d9-8b4c-a600b1429d8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Item\Equip\Weapon">
+      <UniqueIdentifier>{b36c9abd-a520-4956-8016-871f5aae40cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Item\Consumable">
+      <UniqueIdentifier>{5f08e4f0-c727-46f0-9976-691ca365fd70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Item\QuestItem">
+      <UniqueIdentifier>{8962f288-79a0-465c-beff-68742d9dbfff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Item\Skill">
+      <UniqueIdentifier>{45439c3f-02f7-43c8-941e-85d5652058be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Inventory">
+      <UniqueIdentifier>{57d9fe49-f4f5-44bf-b393-4422e1fdfab1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Map.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Treasure.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Portal.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Creature.h">
+      <Filter>헤더 파일\Creature</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>헤더 파일\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Weapon.h">
+      <Filter>헤더 파일\Item\Equip\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="ShortSword.h">
+      <Filter>헤더 파일\Item\Equip\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="LongSword.h">
+      <Filter>헤더 파일\Item\Equip\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="Armor.h">
+      <Filter>헤더 파일\Item\Equip\Armor</Filter>
+    </ClInclude>
+    <ClInclude Include="Glove.h">
+      <Filter>헤더 파일\Item\Equip\Armor</Filter>
+    </ClInclude>
+    <ClInclude Include="Lower.h">
+      <Filter>헤더 파일\Item\Equip\Armor</Filter>
+    </ClInclude>
+    <ClInclude Include="Shield.h">
+      <Filter>헤더 파일\Item\Equip\Armor</Filter>
+    </ClInclude>
+    <ClInclude Include="Shoes.h">
+      <Filter>헤더 파일\Item\Equip\Armor</Filter>
+    </ClInclude>
+    <ClInclude Include="Upper.h">
+      <Filter>헤더 파일\Item\Equip\Armor</Filter>
+    </ClInclude>
+    <ClInclude Include="Consumable.h">
+      <Filter>헤더 파일\Item\Consumable</Filter>
+    </ClInclude>
+    <ClInclude Include="MpPotion.h">
+      <Filter>헤더 파일\Item\Consumable</Filter>
+    </ClInclude>
+    <ClInclude Include="Equip.h">
+      <Filter>헤더 파일\Item\Equip</Filter>
+    </ClInclude>
+    <ClInclude Include="HpPotion.h">
+      <Filter>헤더 파일\Item\Consumable</Filter>
+    </ClInclude>
+    <ClInclude Include="QuestItem.h">
+      <Filter>헤더 파일\Item\QuestItem</Filter>
+    </ClInclude>
+    <ClInclude Include="ActiveSkill.h">
+      <Filter>헤더 파일\Item\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="PassiveSkill.h">
+      <Filter>헤더 파일\Item\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="Skill.h">
+      <Filter>헤더 파일\Item\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="Inventory.h">
+      <Filter>헤더 파일\Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="Monster.h">
+      <Filter>헤더 파일\Creature</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>헤더 파일\Creature</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Creature.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
