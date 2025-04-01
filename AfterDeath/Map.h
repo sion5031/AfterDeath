@@ -17,6 +17,10 @@ private:
 	bool** Obstacles;
 	map<int, Creature*> CreaturesLocation;
 	map<int, struct MapObjects*> ObjectsLocation;
+	const int MapSize = 15;
+
+	void FillMap(bool** map);
+
 public:
 	Map();
 	~Map();

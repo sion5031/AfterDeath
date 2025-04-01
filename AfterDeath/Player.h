@@ -7,6 +7,7 @@ class Player : public Creature
 {
 private:
 	int DeathCount;
+	Inventory* MyInven;
 
 	void UseItem(int num);
 	void EquipItem(int num);
@@ -14,6 +15,7 @@ private:
 
 public:
 	Player();
+	Player(string name);
 	~Player();
 
 	void DisplayInventory();

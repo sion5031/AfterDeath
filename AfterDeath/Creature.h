@@ -11,9 +11,9 @@ class Item;
 
 class Creature
 {
-private:
+protected:
 	string Name;
-	int Type;
+	int Type; // 0은 Player, 이외는 Monster
 	int MaxHp;
 	int Hp;
 	int MaxMp;
@@ -21,7 +21,7 @@ private:
 	int Attack;
 	int Defense;
 	struct EquipedE* Equipments;
-	vector<Skill*> Skills;
+	vector<Skill*>* Skills;
 
 public:
 	Creature() {}

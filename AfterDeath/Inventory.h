@@ -9,7 +9,7 @@ using namespace std;
 class Inventory
 {
 private:
-	map<int, Item*> Items;
+	map<int, Item*>* Items;
 
 	void ArrangeInventory();
 	void FindItem();

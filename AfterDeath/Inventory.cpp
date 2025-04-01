@@ -10,6 +10,7 @@ void Inventory::FindItem()
 
 Inventory::Inventory()
 {
+	Items = new map<int, Item*>;
 }
 
 Inventory::~Inventory()
