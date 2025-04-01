@@ -16,7 +16,7 @@ protected:
 	bool Equiped;
 
 public:
-	Item(){}
+	Item();
 	//virtual ~Item() = 0; // 반드시 자식이 override 해야함
 	//virtual ~Item(){ cout << "~Item()" << endl; }
 	virtual ~Item(){}

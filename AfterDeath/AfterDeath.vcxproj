@@ -156,8 +156,29 @@
     <ClInclude Include="Weapon.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ActiveSkill.cpp" />
+    <ClCompile Include="Consumable.cpp" />
     <ClCompile Include="Creature.cpp" />
+    <ClCompile Include="Equip.cpp" />
+    <ClCompile Include="Glove.cpp" />
+    <ClCompile Include="HpPotion.cpp" />
+    <ClCompile Include="Inventory.cpp" />
+    <ClCompile Include="Item.cpp" />
+    <ClCompile Include="LongSword.cpp" />
+    <ClCompile Include="Lower.cpp" />
+    <ClCompile Include="Map.cpp" />
+    <ClCompile Include="Monster.cpp" />
+    <ClCompile Include="MpPotion.cpp" />
+    <ClCompile Include="PassiveSkill.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Portal.cpp" />
     <ClCompile Include="Run.cpp" />
+    <ClCompile Include="Shield.cpp" />
+    <ClCompile Include="Shoes.cpp" />
+    <ClCompile Include="ShortSword.cpp" />
+    <ClCompile Include="Skill.cpp" />
+    <ClCompile Include="Treasure.cpp" />
+    <ClCompile Include="Upper.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -6,9 +6,9 @@ class ActiveSkill : public Skill
 private:
 
 public:
-	ActiveSkill() {}
+	ActiveSkill();
 	//virtual ~ActiveSkill(){ cout << "~ActiveSkill()" << endl; }
-	virtual ~ActiveSkill() {}
+	~ActiveSkill();
 
 	void Effect() override;
 };

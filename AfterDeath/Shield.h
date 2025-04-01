@@ -7,8 +7,8 @@ private:
 
 
 public:
-	Shield() {}
+	Shield();
 	//virtual ~Shield(){ cout << "~Shield()" << endl; }
-	virtual ~Shield() {}
+	~Shield();
 
 };

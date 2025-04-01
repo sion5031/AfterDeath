@@ -7,8 +7,8 @@ private:
 
 
 public:
-	LongSword() {}
+	LongSword();
 	//virtual ~LongSword(){ cout << "~LongSword()" << endl; }
-	virtual ~LongSword() {}
+	~LongSword();
 
 };

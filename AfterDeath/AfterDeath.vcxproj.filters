@@ -40,6 +40,30 @@
     <Filter Include="헤더 파일\Skill">
       <UniqueIdentifier>{45439c3f-02f7-43c8-941e-85d5652058be}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Item">
+      <UniqueIdentifier>{2991afb9-fe2f-4aa8-a196-0ad49002bbb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Item\Consumable">
+      <UniqueIdentifier>{8af17132-fbef-416a-a542-916ade8ea8f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Item\Equip">
+      <UniqueIdentifier>{f7ca9e39-c3b9-41ff-aa5c-6d076b7cc013}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Item\Equip\Armor">
+      <UniqueIdentifier>{412fa2f6-da23-47bf-96eb-a8136fa6e91a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Item\Equip\Weapon">
+      <UniqueIdentifier>{f9722df8-6944-4701-be4c-981707ecf347}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Skill">
+      <UniqueIdentifier>{1a9e81ed-b5a9-4c4a-976a-30a547025ffb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Creature">
+      <UniqueIdentifier>{a18ae136-07e4-44d4-9fc0-06dce9cc4ed4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Inventory">
+      <UniqueIdentifier>{0214aad5-7679-468d-9c84-9a6007140480}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Map.h">
@@ -125,11 +149,74 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Creature.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="Run.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Portal.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Treasure.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>소스 파일\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Consumable.cpp">
+      <Filter>소스 파일\Item\Consumable</Filter>
+    </ClCompile>
+    <ClCompile Include="HpPotion.cpp">
+      <Filter>소스 파일\Item\Consumable</Filter>
+    </ClCompile>
+    <ClCompile Include="MpPotion.cpp">
+      <Filter>소스 파일\Item\Consumable</Filter>
+    </ClCompile>
+    <ClCompile Include="ShortSword.cpp">
+      <Filter>소스 파일\Item\Equip\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="LongSword.cpp">
+      <Filter>소스 파일\Item\Equip\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="Equip.cpp">
+      <Filter>소스 파일\Item\Equip\Armor</Filter>
+    </ClCompile>
+    <ClCompile Include="Glove.cpp">
+      <Filter>소스 파일\Item\Equip\Armor</Filter>
+    </ClCompile>
+    <ClCompile Include="Lower.cpp">
+      <Filter>소스 파일\Item\Equip\Armor</Filter>
+    </ClCompile>
+    <ClCompile Include="Shield.cpp">
+      <Filter>소스 파일\Item\Equip\Armor</Filter>
+    </ClCompile>
+    <ClCompile Include="Shoes.cpp">
+      <Filter>소스 파일\Item\Equip\Armor</Filter>
+    </ClCompile>
+    <ClCompile Include="Upper.cpp">
+      <Filter>소스 파일\Item\Equip\Armor</Filter>
+    </ClCompile>
+    <ClCompile Include="ActiveSkill.cpp">
+      <Filter>소스 파일\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="PassiveSkill.cpp">
+      <Filter>소스 파일\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="Skill.cpp">
+      <Filter>소스 파일\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="Creature.cpp">
+      <Filter>소스 파일\Creature</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>소스 파일\Creature</Filter>
+    </ClCompile>
+    <ClCompile Include="Monster.cpp">
+      <Filter>소스 파일\Creature</Filter>
+    </ClCompile>
+    <ClCompile Include="Inventory.cpp">
+      <Filter>소스 파일\Inventory</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

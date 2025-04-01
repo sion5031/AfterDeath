@@ -20,8 +20,6 @@ void Creature::CalcMp(int mp)
 {
 }
 
-
-
 void Creature::SetName(string Name)
 {
 	this->Name = Name;

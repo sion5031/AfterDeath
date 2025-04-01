@@ -8,8 +8,8 @@ private:
 	Map* NextMap;
 
 public:
-	Portal() {}
-	~Portal() {}
+	Portal();
+	~Portal();
 
 	void SetPortalInfo(Map* nextMap);
 	Map* GetPortalInfo();

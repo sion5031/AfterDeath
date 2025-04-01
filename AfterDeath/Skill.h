@@ -12,7 +12,7 @@ private:
 	int EffectValue;
 
 public:
-	Skill(){}
+	Skill();
 	//virtual ~Skill(){ cout << "~Skill()" << endl; }
 	virtual ~Skill() {}
 

@@ -7,8 +7,8 @@ private:
 
 
 public:
-	ShortSword() {}
+	ShortSword();
 	//virtual ~ShortSword(){ cout << "~ShortSword()" << endl; }
-	virtual ~ShortSword() {}
+	~ShortSword();
 
 };

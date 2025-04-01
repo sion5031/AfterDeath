@@ -1,6 +1,9 @@
 #pragma once
 #include <vector>
 
+using namespace std;
+
+class Item;
 class Skill;
 
 class Treasure
@@ -10,10 +13,10 @@ private:
 	Skill* NewSkill;
 
 public:
-	Treasure() {}
-	~Treasure() {}
+	Treasure();
+	~Treasure();
 
-	void SetItems(vector<Item> treasure);
+	void SetItems(vector<Item*> treasure);
 	void SetNewSkill(Skill* skill);
 
 	vector<Item*> GetItems();

@@ -7,8 +7,8 @@ private:
 
 
 public:
-	MpPotion() {}
+	MpPotion();
 	//virtual ~MpPotion(){ cout << "~MpPotion()" << endl; }
-	virtual ~MpPotion() {}
+	~MpPotion();
 
 };

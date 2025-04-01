@@ -7,8 +7,8 @@ private:
 
 
 public:
-	Upper() {}
+	Upper();
 	//virtual ~Upper(){ cout << "~Upper()" << endl; }
-	virtual ~Upper() {}
+	~Upper();
 
 };
