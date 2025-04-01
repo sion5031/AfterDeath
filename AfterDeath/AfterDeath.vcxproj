@@ -134,6 +134,8 @@
     <ClInclude Include="Equip.h" />
     <ClInclude Include="Glove.h" />
     <ClInclude Include="HpPotion.h" />
+    <ClInclude Include="IConsumable.h" />
+    <ClInclude Include="IEquipable.h" />
     <ClInclude Include="Inventory.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="LongSword.h" />
@@ -155,6 +157,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Creature.cpp" />
+    <ClCompile Include="Run.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

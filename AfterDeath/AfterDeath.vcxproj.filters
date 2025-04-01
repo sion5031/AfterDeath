@@ -34,11 +34,11 @@
     <Filter Include="헤더 파일\Item\QuestItem">
       <UniqueIdentifier>{8962f288-79a0-465c-beff-68742d9dbfff}</UniqueIdentifier>
     </Filter>
-    <Filter Include="헤더 파일\Item\Skill">
-      <UniqueIdentifier>{45439c3f-02f7-43c8-941e-85d5652058be}</UniqueIdentifier>
-    </Filter>
     <Filter Include="헤더 파일\Inventory">
       <UniqueIdentifier>{57d9fe49-f4f5-44bf-b393-4422e1fdfab1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Skill">
+      <UniqueIdentifier>{45439c3f-02f7-43c8-941e-85d5652058be}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -100,13 +100,13 @@
       <Filter>헤더 파일\Item\QuestItem</Filter>
     </ClInclude>
     <ClInclude Include="ActiveSkill.h">
-      <Filter>헤더 파일\Item\Skill</Filter>
+      <Filter>헤더 파일\Skill</Filter>
     </ClInclude>
     <ClInclude Include="PassiveSkill.h">
-      <Filter>헤더 파일\Item\Skill</Filter>
+      <Filter>헤더 파일\Skill</Filter>
     </ClInclude>
     <ClInclude Include="Skill.h">
-      <Filter>헤더 파일\Item\Skill</Filter>
+      <Filter>헤더 파일\Skill</Filter>
     </ClInclude>
     <ClInclude Include="Inventory.h">
       <Filter>헤더 파일\Inventory</Filter>
@@ -117,9 +117,18 @@
     <ClInclude Include="Player.h">
       <Filter>헤더 파일\Creature</Filter>
     </ClInclude>
+    <ClInclude Include="IEquipable.h">
+      <Filter>헤더 파일\Item\Equip</Filter>
+    </ClInclude>
+    <ClInclude Include="IConsumable.h">
+      <Filter>헤더 파일\Item\Consumable</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Creature.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Run.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

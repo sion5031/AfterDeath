@@ -1,47 +1,53 @@
 #pragma once
 #include <iostream>
+#include <vector>
 
-//#include "Inventory.h"
+#include "Skill.h"
 
 using namespace std;
 
-class Inventory;
 class Item;
 
 
 class Creature
 {
 private:
-	string CName;
-	int CType;
+	string Name;
+	int Type;
 	int MaxHp;
 	int Hp;
 	int MaxMp;
 	int Mp;
-	int Atk;
-	int Def;
-	unique_ptr<Inventory> myInven;
-	Equiped* equiped;
+	int Attack;
+	int Defense;
+	struct EquipedE* Equipments;
+	vector<Skill*> Skills;
 
 public:
-	Creature();
-	~Creature();
+	Creature() {}
+	//virtual ~Creature(){ cout << "~Creature()" << endl; }
+	virtual ~Creature(){}
 
-	void Attack(Creature);
-	virtual void UseSkill();
-	virtual void Die();
+	//void Move(Map* currentMap, int* location);
+	void Fight(Creature* player, Creature* monster);
+	void NormalAttack(Creature*);
+	void HitBy(int damage);
+	virtual void UseSkill() = 0;
+	virtual void Die() = 0;
+	void CalcHp(int hp);
+	void CalcMp(int mp);
 
 
 
 
-	void SetCName(string CName);
-	void SetCType(int CType);
-	void SetMaxHp(int MaxHp);
-	void SetHp(int Hp);
-	void SetMaxMp(int MaxMp);
-	void SetMp(int Mp);
-	void SetAtk(int Atk);
-	void SetDef(int Def);
+	void SetName(string name);
+	void SetType(int type);
+	void SetMaxHp(int maxHp);
+	void SetHp(int hp);
+	void SetMaxMp(int maxMp);
+	void SetMp(int mp);
+	void SetAtk(int attack);
+	void SetDef(int defense);
 	//void SetMyInven(shared_ptr<Inventory>);
 
 	string GetCName();
@@ -50,13 +56,13 @@ public:
 	int GetHp();
 	int GetMaxMp();
 	int GetMp();
-	int GetAtk();
-	int GetDef();
+	int GetAttack();
+	int GetDefense();
 
 };
 
 
-struct Equiped
+struct EquipedE
 {
 	shared_ptr<Item> myWeapon;
 	shared_ptr<Item> myUpper;

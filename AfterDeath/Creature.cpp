@@ -1,23 +1,35 @@
 #include "Creature.h"
 
-Creature::Creature()
+void Creature::Fight(Creature* player, Creature* monster)
 {
 }
 
-Creature::~Creature()
+void Creature::NormalAttack(Creature*)
+{
+}
+
+void Creature::HitBy(int damage)
+{
+}
+
+void Creature::CalcHp(int hp)
+{
+}
+
+void Creature::CalcMp(int mp)
 {
 }
 
 
 
-void Creature::SetCName(string CName)
+void Creature::SetName(string Name)
 {
-	this->CName = CName;
+	this->Name = Name;
 }
 
-void Creature::SetCType(int CType)
+void Creature::SetType(int Type)
 {
-	this->CType = CType;
+	this->Type = Type;
 }
 
 void Creature::SetMaxHp(int MaxHp)
@@ -42,22 +54,22 @@ void Creature::SetMp(int Mp)
 
 void Creature::SetAtk(int Atk)
 {
-	this->Atk = Atk;
+	this->Attack = Atk;
 }
 
 void Creature::SetDef(int Def)
 {
-	this->Def = Def;
+	this->Defense = Def;
 }
 
 string Creature::GetCName()
 {
-	return CName;
+	return Name;
 }
 
 int Creature::GetCType()
 {
-	return CType;
+	return Type;
 }
 
 int Creature::GetMaxHp()
@@ -80,12 +92,12 @@ int Creature::GetMp()
 	return Mp;
 }
 
-int Creature::GetAtk()
+int Creature::GetAttack()
 {
-	return Atk;
+	return Attack;
 }
 
-int Creature::GetDef()
+int Creature::GetDefense()
 {
-	return Def;
+	return Defense;
 }
