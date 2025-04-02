@@ -72,7 +72,7 @@ void Player::PlusDeathCount(int num)
 {
 }
 
-void Player::UseSkill()
+void Player::UseSkill(Creature* creature)
 {
 }
 

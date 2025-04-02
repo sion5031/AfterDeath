@@ -24,7 +24,7 @@ class Map
 
 private:
 	string Name;
-	int MaxMonster;
+	int MaxMonster; //¾²³ª??
 	int MaxTreasure;
 	bool** Obstacles;
 	map<int, Creature*>* CreaturesLocation;
@@ -35,21 +35,30 @@ private:
 
 public:
 	Map();
+	Map(Creature* player);
 	~Map();
 
 	void MovePlayer();
 	void MoveMonster();
 	void UsePortal(int location);
+
+	void AddCreature(int location, Creature* creature);
+
 	//void MoveMap(?);
 	//void Pause(?);
+	
 	void _printMap();
+	void PrintMap();
 	int GetPlayerLocation();
 	vector<int> GetMonsterLocation();
 	int GetObjectLocation();
 	vector<int> LocationToCoordinate(int location);
 	int CoordinateToLocation(vector<int> coordinate);
+	int IntCoordinateToLocation(int x, int y);
 	void MoveEvent(int playerLocation, vector<int> nextCoordinate);
+	void MoveMonsterEvent(int playerLocation, vector<int> nextCoordinate);
 	bool bIsObstacle(int x, int y);
 	bool bIsObject(int location);
 	bool bIsEnemy(int location);
+	bool bIsPlayer(int location);
 };

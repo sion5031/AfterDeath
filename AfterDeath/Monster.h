@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Creature.h"
-#include "Inventory.h"
 
 class Monster : public Creature
 {
@@ -11,7 +10,7 @@ public:
 	Monster();
 	~Monster();
 
-	void UseSkill() override;
+	void UseSkill(Creature* creature) override;
 	void Die() override;
 
 };

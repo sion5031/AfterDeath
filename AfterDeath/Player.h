@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Creature.h"
-#include "Inventory.h"
 #include "IPlayable.h"
+#include "Inventory.h"
 
 class Player : public Creature, public IPlayable
 {
@@ -25,7 +25,7 @@ public:
 	void AddSkill(Skill* skill) override;
 	void PlusDeathCount(int num) override;
 
-	void UseSkill() override;
+	void UseSkill(Creature* creature) override;
 	void Die() override;
 
 	void SetDeathCount(int deathCount);

@@ -1,12 +1,19 @@
 #pragma once
 #include <iostream>
 #include <vector>
+#include <Windows.h>
+#include <fstream>
+#include <string>
+#include <conio.h>
+//#include <codecvt>
+//#include <locale>
 
+#include "Item.h"
 #include "Skill.h"
 
 using namespace std;
 
-class Item;
+//class Item;
 
 
 class Creature
@@ -23,21 +30,24 @@ protected:
 	struct EquipedE* Equipments;
 	vector<Skill*>* Skills;
 
+	const int ScreenSize = 30; //space ±‚¡ÿ 2ƒ≠¿Ã 1size
+
 public:
 	Creature() {}
 	//virtual ~Creature(){ cout << "~Creature()" << endl; }
 	virtual ~Creature(){}
 
 	//void Move(Map* currentMap, int* location);
-	void Fight(Creature* player, Creature* monster);
-	void NormalAttack(Creature*);
-	virtual void UseSkill() = 0;
+	void Fight(Creature* attaker, Creature* defender, int turn);
+	void NormalAttack(Creature* creature);
+	virtual void UseSkill(Creature* creature) = 0;
 	virtual void Die() = 0;
 	void CalcHp(int hp);
 	void CalcMp(int mp);
 
+	void PrintBattle(Creature* player, Creature* monster);
 
-
+	void ReadFile(string fileName);
 
 	void SetName(string name);
 	void SetType(int type);

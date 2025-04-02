@@ -18,7 +18,7 @@ Monster::~Monster()
 {
 }
 
-void Monster::UseSkill()
+void Monster::UseSkill(Creature* creature)
 {
 }
 
