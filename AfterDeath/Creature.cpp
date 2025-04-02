@@ -2,22 +2,21 @@
 
 void Creature::Fight(Creature* player, Creature* monster)
 {
+
 }
 
 void Creature::NormalAttack(Creature*)
 {
 }
 
-void Creature::HitBy(int damage)
-{
-}
-
 void Creature::CalcHp(int hp)
 {
+	Hp += hp;
 }
 
 void Creature::CalcMp(int mp)
 {
+	Mp += mp;
 }
 
 void Creature::SetName(string Name)
@@ -60,12 +59,12 @@ void Creature::SetDef(int Def)
 	this->Defense = Def;
 }
 
-string Creature::GetCName()
+string Creature::GetName()
 {
 	return Name;
 }
 
-int Creature::GetCType()
+int Creature::GetType()
 {
 	return Type;
 }

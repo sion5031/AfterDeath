@@ -2,8 +2,9 @@
 
 #include "Creature.h"
 #include "Inventory.h"
+#include "IPlayable.h"
 
-class Player : public Creature
+class Player : public Creature, public IPlayable
 {
 private:
 	int DeathCount;
@@ -18,10 +19,12 @@ public:
 	Player(string name);
 	~Player();
 
-	void DisplayInventory();
-	void AddInventory(Item*);
-	void SelectInventoryItem(int num);
-	void PlusDeathCount(int num);
+	void DisplayInventory() override;
+	void AddInventory(Item* item) override;
+	void SelectInventoryItem(int num) override;
+	void AddSkill(Skill* skill) override;
+	void PlusDeathCount(int num) override;
+
 	void UseSkill() override;
 	void Die() override;
 

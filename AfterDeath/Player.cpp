@@ -28,6 +28,7 @@ Player::Player()
 	DeathCount = 0;
 	MyInven = new Inventory();
 
+	cout << "캐릭터를 생성했습니다." << endl;
 }
 
 Player::Player(string name)
@@ -60,6 +61,10 @@ void Player::AddInventory(Item*)
 }
 
 void Player::SelectInventoryItem(int num)
+{
+}
+
+void Player::AddSkill(Skill* skill)
 {
 }
 

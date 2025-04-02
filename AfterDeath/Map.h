@@ -1,33 +1,15 @@
 #pragma once
 #include <iostream>
 #include <map>
+#include <Windows.h>
+#include <conio.h>
 
 #include "Creature.h"
 #include "Treasure.h"
 #include "Portal.h"
+#include "IPlayable.h"
 
 using namespace std;
-
-class Map
-{
-private:
-	string Name;
-	int MaxMonster;
-	int MaxTreasure;
-	bool** Obstacles;
-	map<int, Creature*> CreaturesLocation;
-	map<int, struct MapObjects*> ObjectsLocation;
-	const int MapSize = 15;
-
-	void FillMap(bool** map);
-
-public:
-	Map();
-	~Map();
-
-	void MoveCreature();
-
-};
 
 struct MapObjects
 {
@@ -35,4 +17,39 @@ struct MapObjects
 	Treasure* Treasure = nullptr;
 	Item* Item = nullptr;
 	Portal* Portal = nullptr;
+};
+
+class Map
+{
+
+private:
+	string Name;
+	int MaxMonster;
+	int MaxTreasure;
+	bool** Obstacles;
+	map<int, Creature*>* CreaturesLocation;
+	map<int, MapObjects*>* ObjectsLocation;
+	const int MapSize = 15;
+
+	void FillMap();
+
+public:
+	Map();
+	~Map();
+
+	void MovePlayer();
+	void MoveMonster();
+	void UsePortal(int location);
+	//void MoveMap(?);
+	//void Pause(?);
+	void _printMap();
+	int GetPlayerLocation();
+	vector<int> GetMonsterLocation();
+	int GetObjectLocation();
+	vector<int> LocationToCoordinate(int location);
+	int CoordinateToLocation(vector<int> coordinate);
+	void MoveEvent(int playerLocation, vector<int> nextCoordinate);
+	bool bIsObstacle(int x, int y);
+	bool bIsObject(int location);
+	bool bIsEnemy(int location);
 };

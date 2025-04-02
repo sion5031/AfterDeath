@@ -12,11 +12,10 @@ unique_ptr<Map> CurrentMap;
 int main()
 {
 	Creature* Hero = new Player();
+	
+	CurrentMap = make_unique<Map>();
 
-
-	cout << "캐릭터를 생성했습니다." << endl;
-
-
+	CurrentMap->_printMap();
 
 
 

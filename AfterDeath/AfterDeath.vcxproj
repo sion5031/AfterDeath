@@ -136,6 +136,7 @@
     <ClInclude Include="HpPotion.h" />
     <ClInclude Include="IConsumable.h" />
     <ClInclude Include="IEquipable.h" />
+    <ClInclude Include="IPlayable.h" />
     <ClInclude Include="Inventory.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="LongSword.h" />

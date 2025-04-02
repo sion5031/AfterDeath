@@ -147,6 +147,9 @@
     <ClInclude Include="IConsumable.h">
       <Filter>헤더 파일\Item\Consumable</Filter>
     </ClInclude>
+    <ClInclude Include="IPlayable.h">
+      <Filter>헤더 파일\Creature</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Run.cpp">

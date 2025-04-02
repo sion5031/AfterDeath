@@ -31,7 +31,6 @@ public:
 	//void Move(Map* currentMap, int* location);
 	void Fight(Creature* player, Creature* monster);
 	void NormalAttack(Creature*);
-	void HitBy(int damage);
 	virtual void UseSkill() = 0;
 	virtual void Die() = 0;
 	void CalcHp(int hp);
@@ -50,8 +49,8 @@ public:
 	void SetDef(int defense);
 	//void SetMyInven(shared_ptr<Inventory>);
 
-	string GetCName();
-	int GetCType();
+	string GetName();
+	int GetType();
 	int GetMaxHp();
 	int GetHp();
 	int GetMaxMp();
