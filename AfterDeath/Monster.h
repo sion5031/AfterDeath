@@ -10,7 +10,7 @@ public:
 	Monster();
 	~Monster();
 
-	void UseSkill(Creature* creature) override;
+	void UseSkill(shared_ptr<Creature> creature) override;
 	void Die() override;
 
 };

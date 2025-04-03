@@ -18,7 +18,7 @@ Monster::~Monster()
 {
 }
 
-void Monster::UseSkill(Creature* creature)
+void Monster::UseSkill(shared_ptr<Creature> creature)
 {
 }
 

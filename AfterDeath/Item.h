@@ -1,12 +1,14 @@
 #pragma once
 #include <iostream>
 
+#include "Creature.h"
+
 using namespace std;
 
 class Item
 {
 private:
-	string name;
+	string Name;
 	int SN;
 
 protected:

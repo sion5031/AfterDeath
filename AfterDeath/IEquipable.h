@@ -1,4 +1,7 @@
 #pragma once
+//#include "Creature.h"
+
+class Creature;
 
 class IEquipable
 {

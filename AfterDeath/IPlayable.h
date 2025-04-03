@@ -1,5 +1,8 @@
 #pragma once
 
+class Item;
+class Skill;
+
 class IPlayable
 {
 public:

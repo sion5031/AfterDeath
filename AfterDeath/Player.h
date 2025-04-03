@@ -10,14 +10,15 @@ private:
 	int DeathCount;
 	Inventory* MyInven;
 
-	void UseItem(int num);
-	void EquipItem(int num);
-	void ShowTotalStatus();
 
 public:
 	Player();
 	Player(string name);
 	~Player();
+
+	void UseItem(int num, shared_ptr<Creature> player);
+	void EquipItem(int num);
+	void ShowTotalStatus();
 
 	void DisplayInventory() override;
 	void AddInventory(Item* item) override;
@@ -25,7 +26,7 @@ public:
 	void AddSkill(Skill* skill) override;
 	void PlusDeathCount(int num) override;
 
-	void UseSkill(Creature* creature) override;
+	void UseSkill(shared_ptr<Creature> creature) override;
 	void Die() override;
 
 	void SetDeathCount(int deathCount);

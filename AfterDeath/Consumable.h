@@ -10,5 +10,5 @@ private:
 public:
 	virtual ~Consumable(){}
 
-	void UseItem() override;
+	virtual void UseItem(shared_ptr<Creature> player) = 0;
 };

@@ -8,15 +8,18 @@
 //#include <codecvt>
 //#include <locale>
 
-#include "Item.h"
+//#include "Item.h"
 #include "Skill.h"
+#include "IPlayable.h"
 
 using namespace std;
 
-//class Item;
+class Item;
+//class Skill;
 
 
-class Creature
+
+class Creature : enable_shared_from_this<Creature>
 {
 protected:
 	string Name;
@@ -33,19 +36,22 @@ protected:
 	const int ScreenSize = 30; //space ±‚¡ÿ 2ƒ≠¿Ã 1size
 
 public:
-	Creature() {}
+	shared_ptr<Creature> GetShared() {
+		return shared_from_this();
+	}
+	Creature();
 	//virtual ~Creature(){ cout << "~Creature()" << endl; }
 	virtual ~Creature(){}
 
 	//void Move(Map* currentMap, int* location);
-	void Fight(Creature* attaker, Creature* defender, int turn);
-	void NormalAttack(Creature* creature);
-	virtual void UseSkill(Creature* creature) = 0;
+	void Fight(shared_ptr<Creature> attaker, shared_ptr<Creature> defender, int turn);
+	void NormalAttack(shared_ptr<Creature> creature);
+	virtual void UseSkill(shared_ptr<Creature> creature) = 0;
 	virtual void Die() = 0;
 	void CalcHp(int hp);
 	void CalcMp(int mp);
 
-	void PrintBattle(Creature* player, Creature* monster);
+	void PrintBattle(shared_ptr<Creature> player, shared_ptr<Creature> monster);
 
 	void ReadFile(string fileName);
 

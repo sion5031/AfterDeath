@@ -3,16 +3,21 @@
 #include <map>
 
 #include "Item.h"
+//#include "Creature.h"
+#include "IEquipable.h"
+#include "IConsumable.h"
 
 using namespace std;
+
+class Creature;
 
 class Inventory
 {
 private:
 	map<int, Item*>* Items;
 
+	Item* FindItem(int num);
 	void ArrangeInventory();
-	void FindItem();
 
 public:
 	Inventory();
@@ -20,8 +25,8 @@ public:
 
 	void AddItem(Item* item);
 	void RemoveItem(int num);
-	void TryUse(int num);
+	void TryUse(int num, shared_ptr<Creature> player);
 	void TryEquip(int num);
 	void DisplayInventory();
-
+	bool bCheckPresence(int num);
 };

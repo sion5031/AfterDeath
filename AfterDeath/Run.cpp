@@ -1,4 +1,4 @@
-#include <windows.h>
+﻿#include <windows.h>
 
 #include "Creature.h"
 #include "Player.h"
@@ -8,16 +8,25 @@
 
 unique_ptr<Map> CurrentMap;
 
-
 int main()
 {
-	Creature* Hero = new Player();
+	//===============//함수 추출
+
+	CONSOLE_CURSOR_INFO cursorInfo = { 0, };
+	cursorInfo.bVisible = 0;
+	cursorInfo.dwSize = 1;
+	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo);
+
+
+	//===============
+
+	shared_ptr<Creature> Hero = make_shared<Player>();
 
 	srand(time(NULL));
 	
 	//==
-	Creature* Monster1 = new Monster();
-	Creature* Monster2 = new Monster();
+	shared_ptr<Creature> Monster1 = make_shared<Monster>();
+	shared_ptr<Creature> Monster2 = make_shared<Monster>();
 
 	CurrentMap = make_unique<Map>();
 	CurrentMap->AddCreature(26, Hero);

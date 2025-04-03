@@ -10,5 +10,5 @@ public:
 	//virtual ~PassiveSkill(){ cout << "~PassiveSkill()" << endl; }
 	~PassiveSkill();
 
-	void Effect() override;
+	vector<int> Effect() override;
 };

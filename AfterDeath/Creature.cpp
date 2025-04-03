@@ -1,8 +1,12 @@
 #include "Creature.h"
 
-void Creature::Fight(Creature* player, Creature* monster, int turn)
+Creature::Creature()
 {
-	system("cls");
+}
+
+void Creature::Fight(shared_ptr<Creature> player, shared_ptr<Creature> monster, int turn)
+{
+	//system("cls");
 
 	int countTurn = turn;
 	char t;
@@ -16,22 +20,64 @@ void Creature::Fight(Creature* player, Creature* monster, int turn)
 	while (true)
 	{
 		if (countTurn % 2 == 0)
-		{
+		{// t값 예외처리!!
 			cout << "1. 공격\n\n2. 스킬\n\n3. 가방\n\n4. 포기\n" << endl;
 			t = _getche();
-			if (t == 1)
+			if (t == '1')
 			{
 				player->NormalAttack(monster);
+				if (monster->GetHp() <= 0)
+				{
+					break;
+				}
 			}
-			else if (t == 2)
+			else if (t == '2')
 			{
-
+				for (int i = 0;i < player->Skills->size();i++) // 동작?
+				{
+					if (player->Skills->at(i)->GetType() == 0)
+					{
+						cout << i + 1 << ".\t" << player->Skills->at(i) << endl << endl;
+					}
+				}
+				cout << "스킬 선택" << endl;
+				t = _getche();
+				int skillNum = t - '0';
+				int count = 1;
+				for (int i = 0;i < player->Skills->size();i++)
+				{
+					if (player->Skills->at(i)->GetType() == 0)
+					{
+						if (skillNum == count)
+						{
+							if (player->Skills->at(i)->Effect().at(0) == 0)
+							{
+								//player->UseSkill
+							}
+						}
+					}
+				}
 			}
-			else if (t == 3)
+			else if (t == '3')
 			{
+				shared_ptr<IPlayable> addableCreature = dynamic_pointer_cast<IPlayable>(player);
+				if (addableCreature)
+				{
+					addableCreature->DisplayInventory();					
+				}
+				t = _getche();
+				if (t == '1')
+				{
+					int selectItem;
+					cout << endl << "아이템을 선택해주세요: ";
+					t = _getche();
+					selectItem = t - '0';
 
+					addableCreature->SelectInventoryItem(selectItem);
+				}
+				
 			}
-			else if (t == 4)
+			else if (t == '4')
 			{
 
 			}
@@ -46,7 +92,7 @@ void Creature::Fight(Creature* player, Creature* monster, int turn)
 
 }
 
-void Creature::NormalAttack(Creature* creature)
+void Creature::NormalAttack(shared_ptr<Creature> creature) //방어력 계산 필요
 {
 	//creature->CalcHp()
 	//Equipments->myGlove->
@@ -68,7 +114,7 @@ void Creature::CalcMp(int mp)
 	Mp += mp;
 }
 
-void Creature::PrintBattle(Creature* player, Creature* monster)
+void Creature::PrintBattle(shared_ptr<Creature> player, shared_ptr<Creature> monster)
 {
 	for (int i = 0;i < ScreenSize;i++) cout << "= ";
 	for (int i = 0;i < ScreenSize;i++) cout << "  ";

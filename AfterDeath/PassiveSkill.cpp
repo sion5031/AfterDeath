@@ -8,6 +8,11 @@ PassiveSkill::~PassiveSkill()
 {
 }
 
-void PassiveSkill::Effect()
+vector<int> PassiveSkill::Effect()
 {
+	vector<int> effect;
+	effect.push_back(10);
+	effect.push_back(GetEffectValue());
+
+	return effect;
 }

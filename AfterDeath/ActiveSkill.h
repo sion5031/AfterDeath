@@ -10,5 +10,5 @@ public:
 	//virtual ~ActiveSkill(){ cout << "~ActiveSkill()" << endl; }
 	~ActiveSkill();
 
-	void Effect() override;
+	vector<int> Effect() override;
 };

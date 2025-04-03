@@ -11,4 +11,5 @@ public:
 	//virtual ~HpPotion(){ cout << "~HpPotion()" << endl; }
 	~HpPotion();
 
+	void UseItem(shared_ptr<Creature> player) override;
 };

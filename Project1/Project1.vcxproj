@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{f2910f19-6c59-4479-a02a-430ab036044b}</ProjectGuid>
-    <RootNamespace>AfterDeath</RootNamespace>
+    <ProjectGuid>{ec42981b-5588-4f36-92e3-6f70c15ea48b}</ProjectGuid>
+    <RootNamespace>Project1</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -43,7 +43,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -104,9 +104,6 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -130,59 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="ActiveSkill.h" />
-    <ClInclude Include="Armor.h" />
-    <ClInclude Include="Consumable.h" />
-    <ClInclude Include="Creature.h" />
-    <ClInclude Include="Equip.h" />
-    <ClInclude Include="Glove.h" />
-    <ClInclude Include="HpPotion.h" />
-    <ClInclude Include="IConsumable.h" />
-    <ClInclude Include="IEquipable.h" />
-    <ClInclude Include="IPlayable.h" />
-    <ClInclude Include="Inventory.h" />
-    <ClInclude Include="Item.h" />
-    <ClInclude Include="LongSword.h" />
-    <ClInclude Include="Lower.h" />
-    <ClInclude Include="Map.h" />
-    <ClInclude Include="Monster.h" />
-    <ClInclude Include="MpPotion.h" />
-    <ClInclude Include="PassiveSkill.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="Portal.h" />
-    <ClInclude Include="QuestItem.h" />
-    <ClInclude Include="Shield.h" />
-    <ClInclude Include="Shoes.h" />
-    <ClInclude Include="ShortSword.h" />
-    <ClInclude Include="Skill.h" />
-    <ClInclude Include="Treasure.h" />
-    <ClInclude Include="Upper.h" />
-    <ClInclude Include="Weapon.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="ActiveSkill.cpp" />
-    <ClCompile Include="Consumable.cpp" />
-    <ClCompile Include="Creature.cpp" />
-    <ClCompile Include="Equip.cpp" />
-    <ClCompile Include="Glove.cpp" />
-    <ClCompile Include="HpPotion.cpp" />
-    <ClCompile Include="Inventory.cpp" />
-    <ClCompile Include="Item.cpp" />
-    <ClCompile Include="LongSword.cpp" />
-    <ClCompile Include="Lower.cpp" />
-    <ClCompile Include="Map.cpp" />
-    <ClCompile Include="Monster.cpp" />
-    <ClCompile Include="MpPotion.cpp" />
-    <ClCompile Include="PassiveSkill.cpp" />
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="Portal.cpp" />
-    <ClCompile Include="Run.cpp" />
-    <ClCompile Include="Shield.cpp" />
-    <ClCompile Include="Shoes.cpp" />
-    <ClCompile Include="ShortSword.cpp" />
-    <ClCompile Include="Skill.cpp" />
-    <ClCompile Include="Treasure.cpp" />
-    <ClCompile Include="Upper.cpp" />
+    <ClCompile Include="소스.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

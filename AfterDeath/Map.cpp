@@ -38,14 +38,14 @@ Map::Map()
 	}
 	FillMap();
 
-	CreaturesLocation = new map<int, Creature*>;
+	CreaturesLocation = new map<int, weak_ptr<Creature>>;
 	ObjectsLocation = new map<int, MapObjects*>;
 
 
 	cout << "맵을 생성했습니다." << endl;
 }
 
-Map::Map(Creature* player)
+Map::Map(shared_ptr<Creature> player)
 {
 	Name = "Start Map";
 	MaxMonster = 3;
@@ -59,7 +59,7 @@ Map::Map(Creature* player)
 	}
 	FillMap();
 
-	CreaturesLocation = new map<int, Creature*>;
+	CreaturesLocation = new map<int, weak_ptr<Creature>>;
 	ObjectsLocation = new map<int, MapObjects*>;
 
 	//===================
@@ -165,7 +165,7 @@ void Map::UsePortal(int location)
 {
 }
 
-void Map::AddCreature(int location, Creature* creature)
+void Map::AddCreature(int location, shared_ptr<Creature> creature)
 {
 	vector<int> coordinate = LocationToCoordinate(location);
 	if (!bIsObstacle(coordinate[0], coordinate[1]) && !bIsObject(location) && !bIsEnemy(location) && !bIsPlayer(location))
@@ -203,6 +203,16 @@ void Map::PrintMap()
 		}
 		cout << endl;
 	}
+}
+
+shared_ptr<Creature> Map::GetCreature(int location)
+{
+	auto it = CreaturesLocation->find(location);
+	if (it != CreaturesLocation->end()) {
+		shared_ptr<Creature> creature = it->second.lock();  // weak_ptr → shared_ptr 변환
+		return creature; //살아 있으면 shared_ptr 반환 (nullptr이 아님)
+	}
+	return nullptr;
 }
 
 int Map::GetPlayerLocation()
@@ -261,15 +271,16 @@ void Map::MoveEvent(int playerLocation, vector<int> nextCoordinate)
 	int x = nextCoordinate[0];
 	int y = nextCoordinate[1];
 	int nextLocation = CoordinateToLocation(nextCoordinate);
-	Creature* player = CreaturesLocation->at(playerLocation);
+	shared_ptr<Creature> player = GetCreature(playerLocation);
 
 	if (bIsObstacle(x, y)) // 하위 항목들을 맵에서 겹칠 수 있게 하려면 if문으로 바꾸고 순서 조정
 	{
 		// Do nothing
 	}
 	else if (bIsObject(nextLocation))
-	{		
-		IPlayable* addableCreature = dynamic_cast<IPlayable*>(player);
+	{
+		
+		shared_ptr<IPlayable> addableCreature = dynamic_pointer_cast<IPlayable>(player);
 		if (addableCreature)
 		{
 			for (auto i : ObjectsLocation->at(nextLocation)->Treasure->GetItems())
@@ -281,7 +292,9 @@ void Map::MoveEvent(int playerLocation, vector<int> nextCoordinate)
 	}
 	else if (bIsEnemy(nextLocation))
 	{
-		player->Fight(player, CreaturesLocation->at(nextLocation), 0);
+		player->Fight(player, GetCreature(nextLocation), 0);
+		//아마도 출력
+
 	}
 	else
 	{
@@ -296,7 +309,7 @@ void Map::MoveMonsterEvent(int monsterLocation, vector<int> nextCoordinate) // M
 	int x = nextCoordinate[0];
 	int y = nextCoordinate[1];
 	int nextLocation = CoordinateToLocation(nextCoordinate);
-	Creature* monster = CreaturesLocation->at(monsterLocation);
+	shared_ptr<Creature> monster = GetCreature(monsterLocation);
 
 	if (bIsObstacle(x, y)) // 하위 항목들을 맵에서 겹칠 수 있게 하려면 if문으로 바꾸고 순서 조정
 	{
@@ -308,7 +321,8 @@ void Map::MoveMonsterEvent(int monsterLocation, vector<int> nextCoordinate) // M
 	}
 	else if (bIsPlayer(nextLocation))
 	{
-		monster->Fight(CreaturesLocation->at(nextLocation), monster, 1);
+		cout << "습격받음!" << endl;
+		monster->Fight(GetCreature(nextLocation), monster, 1);
 	}
 	else
 	{
@@ -341,7 +355,7 @@ bool Map::bIsObject(int location)
 
 bool Map::bIsEnemy(int location)
 {
-	if (CreaturesLocation->find(location) != CreaturesLocation->end()&&CreaturesLocation->at(location)->GetType()!=0)
+	if (CreaturesLocation->find(location) != CreaturesLocation->end()&& GetCreature(location)->GetType()!=0)
 	{
 		return true;
 	}
@@ -350,9 +364,27 @@ bool Map::bIsEnemy(int location)
 
 bool Map::bIsPlayer(int location)
 {
-	if (CreaturesLocation->find(location) != CreaturesLocation->end() && CreaturesLocation->at(location)->GetType() == 0)
+	if (CreaturesLocation->find(location) != CreaturesLocation->end() && GetCreature(location)->GetType() == 0)
 	{
 		return true;
 	}
 	return false;
+}
+
+void Map::DeathChecker(shared_ptr<Creature> creature)
+{
+
+}
+
+void Map::DeleteChecker()
+{
+	for (auto it = CreaturesLocation->begin(); it != CreaturesLocation->end(); ) {
+		if (it->second.expired()) {  // Creature가 소멸되었는지 확인
+			std::cout << "Removing creature ID: " << it->first << std::endl;
+			it = CreaturesLocation->erase(it);  // 소멸된 객체 제거
+		}
+		else {
+			++it;
+		}
+	}
 }

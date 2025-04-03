@@ -182,9 +182,6 @@
     <ClCompile Include="LongSword.cpp">
       <Filter>소스 파일\Item\Equip\Weapon</Filter>
     </ClCompile>
-    <ClCompile Include="Equip.cpp">
-      <Filter>소스 파일\Item\Equip\Armor</Filter>
-    </ClCompile>
     <ClCompile Include="Glove.cpp">
       <Filter>소스 파일\Item\Equip\Armor</Filter>
     </ClCompile>
@@ -220,6 +217,9 @@
     </ClCompile>
     <ClCompile Include="Inventory.cpp">
       <Filter>소스 파일\Inventory</Filter>
+    </ClCompile>
+    <ClCompile Include="Equip.cpp">
+      <Filter>소스 파일\Item\Equip</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

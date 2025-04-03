@@ -27,7 +27,7 @@ private:
 	int MaxMonster; //¾²³ª??
 	int MaxTreasure;
 	bool** Obstacles;
-	map<int, Creature*>* CreaturesLocation;
+	map<int, weak_ptr<Creature>>* CreaturesLocation;
 	map<int, MapObjects*>* ObjectsLocation;
 	const int MapSize = 15;
 
@@ -35,20 +35,21 @@ private:
 
 public:
 	Map();
-	Map(Creature* player);
+	Map(shared_ptr<Creature> player);
 	~Map();
 
 	void MovePlayer();
 	void MoveMonster();
 	void UsePortal(int location);
 
-	void AddCreature(int location, Creature* creature);
+	void AddCreature(int location, shared_ptr<Creature> creature);
 
 	//void MoveMap(?);
 	//void Pause(?);
 	
 	void _printMap();
 	void PrintMap();
+	shared_ptr<Creature> GetCreature(int location);
 	int GetPlayerLocation();
 	vector<int> GetMonsterLocation();
 	int GetObjectLocation();
@@ -61,4 +62,7 @@ public:
 	bool bIsObject(int location);
 	bool bIsEnemy(int location);
 	bool bIsPlayer(int location);
+
+	void DeathChecker(shared_ptr<Creature> creature);
+	void DeleteChecker();
 };
