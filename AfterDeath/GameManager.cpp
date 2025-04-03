@@ -46,6 +46,48 @@ shared_ptr<Map> GameManager::GetCurrentMap()
 	return CurrentMap;
 }
 
+void GameManager::DeathChecker()
+{
+	for (int i = 0;i < Monsters->size();i++)
+	{
+		for (int j = 0;j < Monsters->at(i)->size();j++)
+		{
+			if (Monsters->at(i)->at(j)->GetHp() <= 0)
+			{
+				Monsters->at(i)->at(j).reset();
+				Monsters->at(i)->erase(Monsters->at(i)->begin() + j);//위와 같은말?
+				//CurrentMap->DeathChecker();
+				CurrentMap->DeleteChecker();
+			}
+		}
+	}
+
+	//int MapSize = CurrentMap->GetMapSize();
+	//for (int i = 0;i < MapSize * MapSize;i++)
+	//{
+	//	if (CurrentMap->GetCreature(i)!=nullptr)
+	//	{
+	//		if (CurrentMap->GetCreature(i)->GetHp() <= 0 && CurrentMap->GetCreature(i)->GetType() == 0)
+	//		{
+	//			if (CurrentMap->GetCreature(i)->GetType() == 0)
+	//			{
+	//				//GetCreature(i).reset();
+	//				break;
+	//			}
+	//			else if (CurrentMap->GetCreature(i)->GetType() > 0)
+	//			{
+	//				CurrentMap->GetCreature(i).reset();
+	//				break;
+	//			}
+	//			else
+	//			{
+	//				cout << "Creature Type Error" << endl;
+	//			}
+	//		}
+	//	}
+	//}
+}
+
 void GameManager::MakeMap1(shared_ptr<Map>)
 {
 	//맵 장애물 만들고

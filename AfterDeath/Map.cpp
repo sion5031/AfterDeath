@@ -381,6 +381,11 @@ bool Map::bIsPlayer(int location)
 	return false;
 }
 
+const int Map::GetMapSize()
+{
+	return MapSize;
+}
+
 //void Map::DeathChecker(shared_ptr<Creature> player, shared_ptr<Creature> monster)
 //{
 //	if (monster->GetHp() <= 0)

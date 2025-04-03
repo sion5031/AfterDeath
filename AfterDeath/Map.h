@@ -65,6 +65,8 @@ public:
 	bool bIsEnemy(int location);
 	bool bIsPlayer(int location);
 
+	const int GetMapSize();
+
 	void DeathChecker();
 	void DeleteChecker();
 

@@ -58,11 +58,13 @@ int main()
 	while (true)
 	{
 		GM->GetCurrentMap()->MovePlayer();
-		GM->GetCurrentMap()->DeathChecker();
-		GM->GetCurrentMap()->DeleteChecker();
+
+		GM->DeathChecker(); // 필요한가...?
+
 		GM->GetCurrentMap()->MoveMonster();
-		GM->GetCurrentMap()->DeathChecker();
-		GM->GetCurrentMap()->DeleteChecker();
+		GM->DeathChecker();
+		//GM->GetCurrentMap()->DeathChecker();
+		//GM->GetCurrentMap()->DeleteChecker();
 		system("cls");
 		GM->GetCurrentMap()->PrintMap();
 	}

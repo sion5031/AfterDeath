@@ -25,6 +25,8 @@ public:
 	shared_ptr<Map> GetMap(string name);
 	shared_ptr<Map> GetCurrentMap();
 
+	void DeathChecker();
+
 	void MakeMap1(shared_ptr<Map>);
 	void MakeMap2(shared_ptr<Map>);
 };
