@@ -1,5 +1,6 @@
 ﻿#include <windows.h>
 
+#include "GameManager.h"
 #include "Creature.h"
 #include "Player.h"
 #include "Monster.h"
@@ -10,21 +11,21 @@ unique_ptr<Map> CurrentMap;
 
 int main()
 {
-	//===============//함수 추출
-
 	CONSOLE_CURSOR_INFO cursorInfo = { 0, };
 	cursorInfo.bVisible = 0;
 	cursorInfo.dwSize = 1;
 	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo);
 
-
-	//===============
-
-	shared_ptr<Creature> Hero = make_shared<Player>();
-
 	srand(time(NULL));
-	
+	//=============위는 건들지 말기
+
+
+
+
+	GameManager* GM = new GameManager();
+	/*
 	//==
+	shared_ptr<Creature> Hero = make_shared<Player>();		
 	shared_ptr<Creature> Monster1 = make_shared<Monster>();
 	shared_ptr<Creature> Monster2 = make_shared<Monster>();
 
@@ -33,8 +34,7 @@ int main()
 	CurrentMap->AddCreature(36, Monster1);
 	CurrentMap->AddCreature(190, Monster2);
 	
-	//CurrentMap = make_unique<Map>(Hero);
-	//==
+	
 
 	CurrentMap->PrintMap();
 
@@ -43,9 +43,28 @@ int main()
 	while (true)
 	{
 		CurrentMap->MovePlayer();
+		CurrentMap->DeathChecker();
+		//Monster1.reset();
+		CurrentMap->DeleteChecker();
 		CurrentMap->MoveMonster();
+		CurrentMap->DeathChecker();
+		CurrentMap->DeleteChecker();
 		system("cls");
 		CurrentMap->PrintMap();
+	}
+	*/
+	GM->GetCurrentMap()->PrintMap();
+
+	while (true)
+	{
+		GM->GetCurrentMap()->MovePlayer();
+		GM->GetCurrentMap()->DeathChecker();
+		GM->GetCurrentMap()->DeleteChecker();
+		GM->GetCurrentMap()->MoveMonster();
+		GM->GetCurrentMap()->DeathChecker();
+		GM->GetCurrentMap()->DeleteChecker();
+		system("cls");
+		GM->GetCurrentMap()->PrintMap();
 	}
 
 

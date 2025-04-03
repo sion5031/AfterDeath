@@ -14,6 +14,8 @@ private:
 protected:
 	int AtkPoint;
 	int DefPoint;
+	int HpPoint;
+	int MpPoint;
 	int EffectPoint;
 	bool Equiped;
 
@@ -30,6 +32,8 @@ public:
 	void SetSN(int SN);
 	void SetAtkPoint(int atkPoint);
 	void SetDefPoint(int defPoint);
+	void SetHpPoint(int hpPoint);
+	void SetMpPoint(int mpPoint);
 	void SetEffectPoint(int effectPoint);
 	void SetEquiped(bool equiped);
 
@@ -37,6 +41,8 @@ public:
 	int GetSN();
 	int GetAtkPoint();
 	int GetDefPoint();
+	int GetHpPoint();
+	int GetMpPoint();
 	int GetEffectPoint();
 	bool GetEquiped();
 };

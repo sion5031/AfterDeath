@@ -8,13 +8,13 @@
 //#include <codecvt>
 //#include <locale>
 
-//#include "Item.h"
+#include "Item.h"
 #include "Skill.h"
 #include "IPlayable.h"
 
 using namespace std;
 
-class Item;
+//class Item;
 //class Skill;
 
 
@@ -44,8 +44,8 @@ public:
 	virtual ~Creature(){}
 
 	//void Move(Map* currentMap, int* location);
-	void Fight(shared_ptr<Creature> attaker, shared_ptr<Creature> defender, int turn);
-	void NormalAttack(shared_ptr<Creature> creature);
+	void Fight(shared_ptr<Creature> player, shared_ptr<Creature> monster, int turn);
+	void NormalAttack(shared_ptr<Creature> attacker, shared_ptr<Creature> defender);
 	virtual void UseSkill(shared_ptr<Creature> creature) = 0;
 	virtual void Die() = 0;
 	void CalcHp(int hp);
@@ -54,6 +54,11 @@ public:
 	void PrintBattle(shared_ptr<Creature> player, shared_ptr<Creature> monster);
 
 	void ReadFile(string fileName);
+
+	virtual int GetTotalAtk() = 0;
+	virtual int GetTotalDef() = 0;
+	virtual int GetTotalMaxHp() = 0;
+	virtual int GetTotalMaxMp() = 0;
 
 	void SetName(string name);
 	void SetType(int type);
@@ -76,13 +81,3 @@ public:
 
 };
 
-
-struct EquipedE
-{
-	shared_ptr<Item> myWeapon;
-	shared_ptr<Item> myUpper;
-	shared_ptr<Item> myLower;
-	shared_ptr<Item> myGlove;
-	shared_ptr<Item> myShoes;
-	shared_ptr<Item> myShield;
-};

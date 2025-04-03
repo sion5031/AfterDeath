@@ -41,6 +41,13 @@ Map::Map()
 	CreaturesLocation = new map<int, weak_ptr<Creature>>;
 	ObjectsLocation = new map<int, MapObjects*>;
 
+	//=======
+	//shared_ptr<Creature> Monster1 = make_shared<Monster>();
+	//this->AddCreature(36, Monster1);
+
+	//=======
+
+
 
 	cout << "맵을 생성했습니다." << endl;
 }
@@ -292,7 +299,10 @@ void Map::MoveEvent(int playerLocation, vector<int> nextCoordinate)
 	}
 	else if (bIsEnemy(nextLocation))
 	{
+		shared_ptr<Creature> tem = GetCreature(nextLocation);
 		player->Fight(player, GetCreature(nextLocation), 0);
+		//DeathChecker(player, tem);
+		//DeleteChecker();
 		//아마도 출력
 
 	}
@@ -371,13 +381,57 @@ bool Map::bIsPlayer(int location)
 	return false;
 }
 
-void Map::DeathChecker(shared_ptr<Creature> creature)
-{
+//void Map::DeathChecker(shared_ptr<Creature> player, shared_ptr<Creature> monster)
+//{
+//	if (monster->GetHp() <= 0)
+//	{
+//		monster.reset();
+//	}
+//	else if (player->GetHp() <= 0)
+//	{
+//		//=======================
+//		
+//	}
+//}
 
+void Map::DeathChecker()
+{
+	for (int i = 0;i < MapSize * MapSize;i++)
+	{
+		if (CreaturesLocation->find(i) != CreaturesLocation->end())
+		{
+			if (GetCreature(i)->GetHp() <= 0 && GetCreature(i)->GetType() == 0)
+			{
+				if (GetCreature(i)->GetType() == 0)
+				{
+					//GetCreature(i).reset();
+					break;
+				}
+				else if (GetCreature(i)->GetType() > 0)
+				{
+					GetCreature(i).reset();
+					break;
+				}
+				else
+				{
+					cout << "Creature Type Error" << endl;
+				}
+			}
+		}
+	}
 }
 
 void Map::DeleteChecker()
 {
+	//for (auto it = CreaturesLocation->begin(); it != CreaturesLocation->end(); ) {
+	//	if (it->second.expired()) {  // Creature가 소멸되었는지 확인
+	//		std::cout << "Removing creature ID: " << it->first << std::endl;
+	//		it = CreaturesLocation->erase(it);  // 소멸된 객체 제거
+	//	}
+	//	else {
+	//		++it;
+	//	}
+	//}
 	for (auto it = CreaturesLocation->begin(); it != CreaturesLocation->end(); ) {
 		if (it->second.expired()) {  // Creature가 소멸되었는지 확인
 			std::cout << "Removing creature ID: " << it->first << std::endl;
@@ -387,4 +441,14 @@ void Map::DeleteChecker()
 			++it;
 		}
 	}
+}
+
+void Map::SetName(string name)
+{
+	Name = name;
+}
+
+string Map::GetName()
+{
+	return Name;
 }

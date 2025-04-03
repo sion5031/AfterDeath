@@ -2,6 +2,10 @@
 
 Item::Item()
 {
+	AtkPoint = 0;
+	DefPoint = 0;
+	EffectPoint = 0;
+	Equiped = false;
 }
 
 void Item::SetEquipedTrue()
@@ -34,6 +38,16 @@ void Item::SetDefPoint(int defPoint)
 	DefPoint = defPoint;
 }
 
+void Item::SetHpPoint(int hpPoint)
+{
+	HpPoint = hpPoint;
+}
+
+void Item::SetMpPoint(int mpPoint)
+{
+	MpPoint = mpPoint;
+}
+
 void Item::SetEffectPoint(int effectPoint)
 {
 	EffectPoint = effectPoint;
@@ -62,6 +76,16 @@ int Item::GetAtkPoint()
 int Item::GetDefPoint()
 {
 	return DefPoint;
+}
+
+int Item::GetHpPoint()
+{
+	return HpPoint;
+}
+
+int Item::GetMpPoint()
+{
+	return MpPoint;
 }
 
 int Item::GetEffectPoint()

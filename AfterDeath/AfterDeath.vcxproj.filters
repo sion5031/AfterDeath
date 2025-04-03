@@ -150,6 +150,9 @@
     <ClInclude Include="IPlayable.h">
       <Filter>헤더 파일\Creature</Filter>
     </ClInclude>
+    <ClInclude Include="GameManager.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Run.cpp">
@@ -220,6 +223,9 @@
     </ClCompile>
     <ClCompile Include="Equip.cpp">
       <Filter>소스 파일\Item\Equip</Filter>
+    </ClCompile>
+    <ClCompile Include="GameManager.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -24,11 +24,16 @@ public:
 	void AddInventory(Item* item) override;
 	void SelectInventoryItem(int num) override;
 	void AddSkill(Skill* skill) override;
-	void PlusDeathCount(int num) override;
+	void PlusDeathCount() override;
 
 	void UseSkill(shared_ptr<Creature> creature) override;
 	void Die() override;
 
 	void SetDeathCount(int deathCount);
 	int GetDeathCount();
+
+	int GetTotalAtk();
+	int GetTotalDef();
+	int GetTotalMaxHp();
+	int GetTotalMaxMp();
 };

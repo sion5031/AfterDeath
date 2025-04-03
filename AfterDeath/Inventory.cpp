@@ -67,8 +67,16 @@ void Inventory::TryEquip(int num)
 
 void Inventory::DisplayInventory()
 {
-	for (int i = 0;i < this->Items->size();i++) {
-		cout << '#' << i+1 << '\t' << this->Items->at(i)->GetName() << endl;
+	int nonCount = 0;
+	for (int i = 0;i < this->Items->size() + nonCount;i++) {
+		if (bCheckPresence(i))
+		{
+			cout << '#' << i + 1 << '\t' << this->Items->at(i)->GetName() << endl;
+		}
+		else
+		{
+			nonCount++;
+		}
 	}
 }
 
@@ -79,4 +87,92 @@ bool Inventory::bCheckPresence(int num)
 		return false;
 	}
 	return true;
+}
+
+int Inventory::GetTotalEquipmentAtk()
+{
+	int nonCount = 0;
+	int sum = 0;
+	for (int i = 0;i < Items->size() + nonCount;i++)
+	{
+		if (bCheckPresence(i))
+		{
+			IEquipable* equipable = dynamic_cast<IEquipable*>(FindItem(i));
+			if (equipable)
+			{
+				sum += equipable->GetEquipAtkPoint();
+			}
+		}
+		else
+		{
+			nonCount++;
+		}
+	}
+	return sum;
+}
+
+int Inventory::GetTotalEquipmentDef()
+{
+	int nonCount = 0;
+	int sum = 0;
+	for (int i = 0;i < Items->size() + nonCount;i++)
+	{
+		if (bCheckPresence(i))
+		{
+			IEquipable* equipable = dynamic_cast<IEquipable*>(FindItem(i));
+			if (equipable)
+			{
+				sum += equipable->GetEquipDefPoint();
+			}
+		}
+		else
+		{
+			nonCount++;
+		}
+	}
+	return sum;
+}
+
+int Inventory::GetTotalEquipmentMaxHp()
+{
+	int nonCount = 0;
+	int sum = 0;
+	for (int i = 0;i < Items->size() + nonCount;i++)
+	{
+		if (bCheckPresence(i))
+		{
+			IEquipable* equipable = dynamic_cast<IEquipable*>(FindItem(i));
+			if (equipable)
+			{
+				sum += equipable->GetEquipHpPoint();
+			}
+		}
+		else
+		{
+			nonCount++;
+		}
+	}
+	return sum;
+}
+
+int Inventory::GetTotalEquipmentMaxMp()
+{
+	int nonCount = 0;
+	int sum = 0;
+	for (int i = 0;i < Items->size() + nonCount;i++)
+	{
+		if (bCheckPresence(i))
+		{
+			IEquipable* equipable = dynamic_cast<IEquipable*>(FindItem(i));
+			if (equipable)
+			{
+				sum += equipable->GetEquipMpPoint();
+			}
+		}
+		else
+		{
+			nonCount++;
+		}
+	}
+	return sum;
 }

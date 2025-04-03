@@ -13,5 +13,10 @@ public:
 	//virtual ~Equip(){ cout << "~Equip()" << endl; }
 	virtual ~Equip(){}
 
-	virtual void EquipItem();
+	void EquipItem();
+
+	int GetEquipAtkPoint();
+	int GetEquipDefPoint();
+	int GetEquipHpPoint();
+	int GetEquipMpPoint();
 };

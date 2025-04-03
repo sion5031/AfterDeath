@@ -29,4 +29,9 @@ public:
 	void TryEquip(int num);
 	void DisplayInventory();
 	bool bCheckPresence(int num);
+
+	int GetTotalEquipmentAtk();
+	int GetTotalEquipmentDef();
+	int GetTotalEquipmentMaxHp();
+	int GetTotalEquipmentMaxMp();
 };

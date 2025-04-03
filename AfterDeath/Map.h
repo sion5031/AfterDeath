@@ -5,6 +5,8 @@
 #include <conio.h>
 
 #include "Creature.h"
+#include "Player.h"
+#include "Monster.h"
 #include "Treasure.h"
 #include "Portal.h"
 #include "IPlayable.h"
@@ -63,6 +65,9 @@ public:
 	bool bIsEnemy(int location);
 	bool bIsPlayer(int location);
 
-	void DeathChecker(shared_ptr<Creature> creature);
+	void DeathChecker();
 	void DeleteChecker();
+
+	void SetName(string name);
+	string GetName();
 };

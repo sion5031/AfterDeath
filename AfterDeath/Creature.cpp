@@ -25,7 +25,7 @@ void Creature::Fight(shared_ptr<Creature> player, shared_ptr<Creature> monster, 
 			t = _getche();
 			if (t == '1')
 			{
-				player->NormalAttack(monster);
+				player->NormalAttack(player, monster);
 				if (monster->GetHp() <= 0)
 				{
 					break;
@@ -92,20 +92,40 @@ void Creature::Fight(shared_ptr<Creature> player, shared_ptr<Creature> monster, 
 
 }
 
-void Creature::NormalAttack(shared_ptr<Creature> creature) //방어력 계산 필요
+void Creature::NormalAttack(shared_ptr<Creature> attacker, shared_ptr<Creature> defender) //방어력 계산 필요
 {
-	//creature->CalcHp()
-	//Equipments->myGlove->
+	cout << "atk: " << attacker->GetTotalAtk() << ", def: " << defender->GetTotalDef() << endl;
+	int before = defender->Hp;
+	defender->CalcHp(-attacker->GetTotalAtk());
+	int after = defender->Hp;
+	cout << defender->GetName() << "가 " << before - after << " 만큼의 피해를 입었습니다." << endl;
+	Sleep(1500);
 }
 
 void Creature::CalcHp(int hp)
 {
-	if (Hp <= hp)
+	if (hp < 0)// 데미지 계산
+	{
+		if (GetTotalDef() >= -hp)
+		{
+			hp /= 10;
+		}
+		else
+		{
+			hp += GetTotalDef();//논리상 오류. 1/10보다 작은 경우 발생
+		}
+	}
+	
+	//데미지 적용
+	if (Hp + hp <= 0)
 	{
 		Hp = 0;
 		Die();
 	}
-	Hp += hp;
+	else
+	{
+		Hp += hp;
+	}
 	
 }
 

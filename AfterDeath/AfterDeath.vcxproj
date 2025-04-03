@@ -135,6 +135,7 @@
     <ClInclude Include="Consumable.h" />
     <ClInclude Include="Creature.h" />
     <ClInclude Include="Equip.h" />
+    <ClInclude Include="GameManager.h" />
     <ClInclude Include="Glove.h" />
     <ClInclude Include="HpPotion.h" />
     <ClInclude Include="IConsumable.h" />
@@ -164,6 +165,7 @@
     <ClCompile Include="Consumable.cpp" />
     <ClCompile Include="Creature.cpp" />
     <ClCompile Include="Equip.cpp" />
+    <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Glove.cpp" />
     <ClCompile Include="HpPotion.cpp" />
     <ClCompile Include="Inventory.cpp" />

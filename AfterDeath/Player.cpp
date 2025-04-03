@@ -24,7 +24,6 @@ Player::Player()
 	Mp = MaxMp;
 	Attack = 10;
 	Defense = 5;
-	Equipments = new struct EquipedE;
 	Skills = new vector<Skill*>;
 	
 	DeathCount = 0;
@@ -36,18 +35,19 @@ Player::Player()
 Player::Player(string name)
 {
 	Name = name;
-	Type = 1;
+	Type = 0;
 	MaxHp = 100;
 	Hp = MaxHp;
 	MaxMp = 50;
 	Mp = MaxMp;
 	Attack = 10;
 	Defense = 5;
-	Equipments = new struct EquipedE;
 	Skills = new vector<Skill*>;
 
 	DeathCount = 0;
 	MyInven = new Inventory();
+
+	cout << "캐릭터를 생성했습니다." << endl;
 }
 
 Player::~Player()
@@ -99,10 +99,12 @@ void Player::SelectInventoryItem(int num)
 
 void Player::AddSkill(Skill* skill)
 {
+	Skills->push_back(skill);
 }
 
-void Player::PlusDeathCount(int num)
+void Player::PlusDeathCount()
 {
+	DeathCount++;
 }
 
 void Player::UseSkill(shared_ptr<Creature> creature)
@@ -115,9 +117,30 @@ void Player::Die()
 
 void Player::SetDeathCount(int deathCount)
 {
+	DeathCount = deathCount;
 }
 
 int Player::GetDeathCount()
 {
-	return 0;
+	return DeathCount;
+}
+
+int Player::GetTotalAtk()
+{
+	return MyInven->GetTotalEquipmentAtk() + Attack;
+}
+
+int Player::GetTotalDef()
+{
+	return MyInven->GetTotalEquipmentDef() + Defense;
+}
+
+int Player::GetTotalMaxHp()
+{
+	return MyInven->GetTotalEquipmentMaxHp() + MaxHp;
+}
+
+int Player::GetTotalMaxMp()
+{
+	return MyInven->GetTotalEquipmentMaxMp() + MaxMp;
 }
