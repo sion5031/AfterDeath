@@ -346,10 +346,13 @@ void Map::MoveEvent(int playerLocation, vector<int> nextCoordinate)
 			}
 			if (ObjectsLocation->at(nextLocation)->Portal != nullptr)
 			{
-				//aa
+				//이동!!!!!!!!!!!!!!!!!!!!!
 			}
-			//delete ObjectsLocation->at(nextLocation);
-			//ObjectsLocation->erase(nextLocation);
+			else
+			{
+				delete ObjectsLocation->at(nextLocation);
+				ObjectsLocation->erase(nextLocation);
+			}
 		}
 	}
 	else if (bIsEnemy(nextLocation))
@@ -405,6 +408,10 @@ void Map::MoveMonsterEvent(int monsterLocation, vector<int> nextCoordinate) // M
 	{
 		cout << "습격받음!" << endl;
 		monster->Fight(GetCreature(nextLocation), monster, 1);
+	}
+	else if (bIsEnemy(nextLocation))
+	{
+		// 몬스터끼리 만날 경우
 	}
 	else
 	{
