@@ -15,4 +15,9 @@ HpPotion::~HpPotion()
 void HpPotion::UseItem(shared_ptr<Creature> player)
 {
 	player->CalcHp(this->EffectPoint);
+	Number--; // consumable에서 하고싶어...
+	if (Number <= 0)
+	{
+		Number = 0;
+	}
 }

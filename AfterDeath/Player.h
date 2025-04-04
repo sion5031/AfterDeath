@@ -16,15 +16,16 @@ public:
 	Player(string name);
 	~Player();
 
-	void UseItem(int num, shared_ptr<Creature> player);
+	//void UseItem(int num);
 	void EquipItem(int num);
 	void ShowTotalStatus();
 
 	void DisplayInventory() override;
 	void AddInventory(Item* item) override;
-	void SelectInventoryItem(int num) override;
+	Item* SelectInventoryItem(int num) override;
 	vector<Item*>* GetAllInventoryItems() override;
 	void InitInventory() override;
+	void ArrangeInventory() override;
 	void AddSkill(Skill* skill) override;
 	void PlusDeathCount() override;
 

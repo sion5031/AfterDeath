@@ -15,4 +15,9 @@ MpPotion::~MpPotion()
 void MpPotion::UseItem(shared_ptr<Creature> player)
 {
 	player->CalcMp(this->EffectPoint);
+	Number--;
+	if (Number <= 0)
+	{
+		Number = 0;
+	}
 }

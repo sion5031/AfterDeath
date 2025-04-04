@@ -144,6 +144,38 @@ void Map::MovePlayer()
 		temCoordinate.push_back(coordinate[1] + 1);
 		MoveEvent(location, temCoordinate);
 	}
+	else if (t == 'i')
+	{
+		Item* getItem;
+		shared_ptr<Creature> player = GetCreature(location);
+		
+		shared_ptr<Player> playableCreature = dynamic_pointer_cast<Player>(player);
+		if (playableCreature)
+		{
+			char itemChar;
+			int itemNum;
+			playableCreature->DisplayInventory();
+			cout << "아이템을 선택하거나 나갑니다." << endl;
+			itemChar = _getche();
+			itemNum = itemChar - '0' - 1;
+
+			getItem = playableCreature->SelectInventoryItem(itemNum);
+			if (getItem != nullptr)
+			{
+				IConsumable* consumable = dynamic_cast<IConsumable*>(getItem);
+				consumable->UseItem(player);
+				playableCreature->ArrangeInventory();
+			}
+		}
+	}
+	else if (t == 'j')
+	{
+		
+	}
+	else
+	{
+		//??
+	}
 }
 
 void Map::MoveMonster()
@@ -246,8 +278,10 @@ void Map::PrintMap()
 			else if (bIsPlayer(IntCoordinateToLocation(i, j)))cout << "O ";
 			else cout << "  ";
 		}
+		// 상태창 출력????????????????
 		cout << endl;
 	}
+	cout << "Hp: " << GetCreature(GetPlayerLocation())->GetHp() << endl;
 }
 
 shared_ptr<Creature> Map::GetCreature(int location)

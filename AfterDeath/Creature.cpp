@@ -135,7 +135,7 @@ void Creature::NormalAttack(shared_ptr<Creature> attacker, shared_ptr<Creature> 
 	defender->CalcHp(-attacker->GetTotalStatus()->TotalAtk);
 	int after = defender->Hp;
 	cout << defender->GetName() << "가 " << before - after << " 만큼의 피해를 입었습니다." << endl;
-	Sleep(2000);
+	Sleep(1000);
 }
 
 void Creature::CalcHp(int hp)

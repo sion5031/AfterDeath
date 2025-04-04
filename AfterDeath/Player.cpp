@@ -9,10 +9,10 @@
 #include "HpPotion.h"
 #include "MpPotion.h"
 
-void Player::UseItem(int num, shared_ptr<Creature> player)
-{
-	MyInven->TryUse(num, player);
-}
+//void Player::UseItem(int num)
+//{
+//	MyInven->TryUse(num);
+//}
 
 void Player::EquipItem(int num) // 패턴 이용해서 편하게 가능??
 {
@@ -108,6 +108,7 @@ Player::Player()
 	MyInven = new Inventory();
 
 	cout << "캐릭터를 생성했습니다." << endl;
+	Sleep(2000);
 }
 
 Player::Player(string name)
@@ -144,11 +145,12 @@ void Player::DisplayInventory()
 	this->MyInven->DisplayInventory();
 }
 
-void Player::AddInventory(Item*)
+void Player::AddInventory(Item* item)
 {
+	MyInven->AddItem(item);
 }
 
-void Player::SelectInventoryItem(int num)
+Item* Player::SelectInventoryItem(int num)
 {
 	if (MyInven->bCheckPresence(num))
 	{
@@ -161,11 +163,11 @@ void Player::SelectInventoryItem(int num)
 
 		if (usage == '1')
 		{
-			this->MyInven->TryUse(num, GetShared()); // 이게 맞나????
+			return this->MyInven->TryUse(num); // 이게 맞나???? // 여기서 use!?
 		}
 		else if (usage == '2')
 		{
-			this->MyInven->TryEquip(num);
+			EquipItem(num);
 		}
 		else if (usage == '3')
 		{
@@ -180,6 +182,7 @@ void Player::SelectInventoryItem(int num)
 	{
 		cout << "잘못된 선택입니다." << endl << "행동을 스킵합니다." << endl;
 	}
+	return nullptr;
 }
 
 vector<Item*>* Player::GetAllInventoryItems()
@@ -190,6 +193,11 @@ vector<Item*>* Player::GetAllInventoryItems()
 void Player::InitInventory()
 {
 	MyInven->InitInventory();
+}
+
+void Player::ArrangeInventory()
+{
+	MyInven->ArrangeInventory();
 }
 
 void Player::AddSkill(Skill* skill)

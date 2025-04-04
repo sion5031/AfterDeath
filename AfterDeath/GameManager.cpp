@@ -64,12 +64,14 @@ bool GameManager::DeathPlayerChecker()
 			addableCreature->PlusDeathCount();
 			
 
-			//¶³±¸±â			
+			//¶³±¸±â1
 			vector<Item*>* dropItems = new vector<Item*>;
 			dropItems = addableCreature->GetAllInventoryItems();
 
 			//inven ÃÊ±âÈ­
+			addableCreature->InitInventory();
 
+			//¶³±¸±â2
 			if (dropItems != nullptr)
 			{
 				int playerLocation = CurrentMap->GetPlayerLocation();

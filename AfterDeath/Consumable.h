@@ -16,7 +16,7 @@ public:
 
 	virtual void UseItem(shared_ptr<Creature> player) = 0;
 
-	void SetNumber(int num);
-	int GetNumber();
-	void PlusNumber(int num);
+	void SetNumber(int num) override;
+	int GetNumber() override;
+	void PlusNumber(int num) override;
 };
