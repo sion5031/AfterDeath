@@ -7,7 +7,7 @@ private:
 
 
 public:
-	MpPotion();
+	MpPotion(int num);
 	//virtual ~MpPotion(){ cout << "~MpPotion()" << endl; }
 	~MpPotion();
 

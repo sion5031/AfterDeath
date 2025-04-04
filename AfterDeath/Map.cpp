@@ -26,9 +26,11 @@ void Map::FillMap()
 
 Map::Map()
 {
+	Num = 0; // 만드는 곳에서!!! 되도록이면 GM에서
 	Name = "Start Map";
 	MaxMonster = 3;
 	MaxTreasure = 2;
+	StartLocation = 16;
 
 	Obstacles = new bool*[MapSize];
 	for (int i = 0; i < MapSize;i++)
@@ -47,6 +49,29 @@ Map::Map()
 
 	//=======
 
+
+
+	cout << "맵을 생성했습니다." << endl;
+}
+
+Map::Map(int num)
+{
+	Num = num; // 만드는 곳에서!!! 되도록이면 GM에서
+	Name = "Start Map";
+	MaxMonster = 3;
+	MaxTreasure = 2;
+	StartLocation = 16;
+
+	Obstacles = new bool* [MapSize];
+	for (int i = 0; i < MapSize;i++)
+	{
+		Obstacles[i] = new bool[MapSize];
+		std::fill(Obstacles[i], Obstacles[i] + MapSize, true);
+	}
+	FillMap();
+
+	CreaturesLocation = new map<int, weak_ptr<Creature>>;
+	ObjectsLocation = new map<int, MapObjects*>;
 
 
 	cout << "맵을 생성했습니다." << endl;
@@ -185,6 +210,19 @@ void Map::AddCreature(int location, shared_ptr<Creature> creature)
 	}
 }
 
+void Map::AddObject(int location, MapObjects* mapObjects)
+{
+	vector<int> coordinate = LocationToCoordinate(location);
+	if (!bIsObstacle(coordinate[0], coordinate[1]) && !bIsObject(location) && !bIsEnemy(location) && !bIsPlayer(location))
+	{
+		ObjectsLocation->insert({ location, mapObjects });
+	}
+	else
+	{
+		cout << "자리 있음!!!" << endl;
+	}
+}
+
 void Map::_printMap()
 {
 	for (int i = 0;i < MapSize;i++)
@@ -290,17 +328,51 @@ void Map::MoveEvent(int playerLocation, vector<int> nextCoordinate)
 		shared_ptr<IPlayable> addableCreature = dynamic_pointer_cast<IPlayable>(player);
 		if (addableCreature)
 		{
-			for (auto i : ObjectsLocation->at(nextLocation)->Treasure->GetItems())
+			if (ObjectsLocation->at(nextLocation)->Treasure != nullptr)
 			{
-				addableCreature->AddInventory(i);
+				for (auto i : *(ObjectsLocation->at(nextLocation)->Treasure->GetItems()))
+				{
+					addableCreature->AddInventory(i);
+				}
+				if (ObjectsLocation->at(nextLocation)->Treasure->GetNewSkill() != nullptr)
+				{
+					addableCreature->AddSkill(ObjectsLocation->at(nextLocation)->Treasure->GetNewSkill());
+					ObjectsLocation->at(nextLocation)->Treasure->SetNewSkill(nullptr);
+				}
 			}
-			addableCreature->AddSkill(ObjectsLocation->at(nextLocation)->Treasure->GetNewSkill()); //없을 때 예외처리. 일단은 무조건 있게
+			if (ObjectsLocation->at(nextLocation)->Item != nullptr)
+			{
+				addableCreature->AddInventory(ObjectsLocation->at(nextLocation)->Item);
+			}
+			if (ObjectsLocation->at(nextLocation)->Portal != nullptr)
+			{
+				//aa
+			}
+			//delete ObjectsLocation->at(nextLocation);
+			//ObjectsLocation->erase(nextLocation);
 		}
 	}
 	else if (bIsEnemy(nextLocation))
 	{
 		shared_ptr<Creature> tem = GetCreature(nextLocation);
 		player->Fight(player, GetCreature(nextLocation), 0);
+		if (player->GetHp() <= 0)
+		{
+			// 그냥 흐르게?
+		}
+		if (GetCreature(nextLocation)->GetHp() <= 0)
+		{
+			EquipedE* dropItem = new EquipedE;
+			dropItem = GetCreature(nextLocation)->GetEquipments();
+
+			int ran = rand() % 6;
+			if (dropItem->GetItem(ran) != nullptr)
+			{
+				MapObjects* dropObject = new MapObjects;
+				dropObject->Item = dropItem->GetItem(ran);
+				ObjectsLocation->insert({ nextLocation, dropObject });
+			}
+		}
 		//DeathChecker(player, tem);
 		//DeleteChecker();
 		//아마도 출력
@@ -437,8 +509,10 @@ void Map::DeleteChecker()
 	//		++it;
 	//	}
 	//}
-	for (auto it = CreaturesLocation->begin(); it != CreaturesLocation->end(); ) {
-		if (it->second.expired()) {  // Creature가 소멸되었는지 확인
+	for (auto it = CreaturesLocation->begin(); it != CreaturesLocation->end(); ) //플레이어 소멸 가능성
+	{
+		if (it->second.expired())
+		{  // Creature가 소멸되었는지 확인
 			std::cout << "Removing creature ID: " << it->first << std::endl;
 			it = CreaturesLocation->erase(it);  // 소멸된 객체 제거
 		}
@@ -446,6 +520,21 @@ void Map::DeleteChecker()
 			++it;
 		}
 	}
+}
+
+void Map::DeletePlayer()
+{
+	CreaturesLocation->erase(GetPlayerLocation());
+}
+
+void Map::SetNum(int num)
+{
+	Num = num;
+}
+
+int Map::GetNum()
+{
+	return Num;
 }
 
 void Map::SetName(string name)
@@ -456,4 +545,14 @@ void Map::SetName(string name)
 string Map::GetName()
 {
 	return Name;
+}
+
+void Map::SetStartLocation(int location)
+{
+	StartLocation = location;
+}
+
+int Map::GetStartLocation()
+{
+	return StartLocation;
 }

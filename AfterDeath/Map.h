@@ -15,7 +15,6 @@ using namespace std;
 
 struct MapObjects
 {
-	bool Presence = false;
 	Treasure* Treasure = nullptr;
 	Item* Item = nullptr;
 	Portal* Portal = nullptr;
@@ -25,9 +24,11 @@ class Map
 {
 
 private:
+	int Num;
 	string Name;
 	int MaxMonster; //쓰나??
 	int MaxTreasure;
+	int StartLocation;
 	bool** Obstacles;
 	map<int, weak_ptr<Creature>>* CreaturesLocation;
 	map<int, MapObjects*>* ObjectsLocation;
@@ -37,7 +38,8 @@ private:
 
 public:
 	Map();
-	Map(shared_ptr<Creature> player);
+	Map(int num);
+	Map(shared_ptr<Creature> player); // 쓰나?
 	~Map();
 
 	void MovePlayer();
@@ -45,6 +47,7 @@ public:
 	void UsePortal(int location);
 
 	void AddCreature(int location, shared_ptr<Creature> creature);
+	void AddObject(int location, MapObjects* mapObjects);
 
 	//void MoveMap(?);
 	//void Pause(?);
@@ -69,7 +72,12 @@ public:
 
 	void DeathChecker();
 	void DeleteChecker();
+	void DeletePlayer();
 
+	void SetNum(int num);
+	int GetNum();
 	void SetName(string name);
 	string GetName();
+	void SetStartLocation(int location);
+	int GetStartLocation();
 };

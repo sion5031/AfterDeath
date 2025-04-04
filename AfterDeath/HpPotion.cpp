@@ -1,7 +1,8 @@
 #include "HpPotion.h"
 
-HpPotion::HpPotion()
+HpPotion::HpPotion(int num)
 {
+	Number = num;
 	this->SetName("Hp Æ÷¼Ç");
 	this->SetSN(20);
 	this->EffectPoint = 10;

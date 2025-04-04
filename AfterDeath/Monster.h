@@ -5,20 +5,20 @@
 class Monster : public Creature
 {
 private:
-	vector<Item*>* Equipments;
+	vector<Item*>* Items;
 
 public:
 	Monster();
 	~Monster();
 
-	void SetEquipments(vector<Item*>* equipments);
+	void SetItems(vector<Item*>* equipments);
 
 	void UseSkill(shared_ptr<Creature> creature) override;
 	void Die() override;
 
-	int GetTotalAtk();
-	int GetTotalDef();
-	int GetTotalMaxHp();
-	int GetTotalMaxMp();
+	//int GetTotalAtk();
+	//int GetTotalDef();
+	//int GetTotalMaxHp();
+	//int GetTotalMaxMp();
 
 };

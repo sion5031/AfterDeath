@@ -58,11 +58,18 @@ int main()
 	while (true)
 	{
 		GM->GetCurrentMap()->MovePlayer();
-
-		GM->DeathChecker(); // 필요한가...?
+		if (GM->DeathPlayerChecker())
+		{
+			continue; // 원래라면 게임 처음으로...또는 죽었을 때 가는 곳
+		}
+		GM->DeathMonsterChecker();
 
 		GM->GetCurrentMap()->MoveMonster();
-		GM->DeathChecker();
+		if (GM->DeathPlayerChecker())
+		{
+			continue; // 원래라면 게임 처음으로...또는 죽었을 때 가는 곳
+		}
+		GM->DeathMonsterChecker();
 		//GM->GetCurrentMap()->DeathChecker();
 		//GM->GetCurrentMap()->DeleteChecker();
 		system("cls");

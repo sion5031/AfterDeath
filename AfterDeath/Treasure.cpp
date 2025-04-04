@@ -2,26 +2,31 @@
 
 Treasure::Treasure()
 {
+	Items = new vector<Item*>;
+	Items = nullptr;
+	NewSkill = nullptr;
 }
 
 Treasure::~Treasure()
 {
 }
 
-void Treasure::SetItems(vector<Item*> treasure)
+void Treasure::SetItems(vector<Item*>* treasure)
 {
+	this->Items = treasure;
 }
 
 void Treasure::SetNewSkill(Skill* skill)
 {
+	this->NewSkill = skill;
 }
 
-vector<Item*> Treasure::GetItems()
+vector<Item*>* Treasure::GetItems()
 {
-	return vector<Item*>();
+	return Items;
 }
 
 Skill* Treasure::GetNewSkill()
 {
-	return nullptr;
+	return NewSkill;
 }

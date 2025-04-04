@@ -26,12 +26,16 @@ public:
 	void AddItem(Item* item);
 	void RemoveItem(int num);
 	void TryUse(int num, shared_ptr<Creature> player);
-	void TryEquip(int num);
+	Item* TryEquip(int num);
 	void DisplayInventory();
+	vector<Item*>* GetAllInventoryItems();
+	void InitInventory();
 	bool bCheckPresence(int num);
 
-	int GetTotalEquipmentAtk();
-	int GetTotalEquipmentDef();
-	int GetTotalEquipmentMaxHp();
-	int GetTotalEquipmentMaxMp();
+	int GetSN(int num);
+
+	//int GetTotalEquipmentAtk();
+	//int GetTotalEquipmentDef();
+	//int GetTotalEquipmentMaxHp();
+	//int GetTotalEquipmentMaxMp();
 };

@@ -23,6 +23,8 @@ public:
 	void DisplayInventory() override;
 	void AddInventory(Item* item) override;
 	void SelectInventoryItem(int num) override;
+	vector<Item*>* GetAllInventoryItems() override;
+	void InitInventory() override;
 	void AddSkill(Skill* skill) override;
 	void PlusDeathCount() override;
 
@@ -32,8 +34,8 @@ public:
 	void SetDeathCount(int deathCount);
 	int GetDeathCount();
 
-	int GetTotalAtk();
-	int GetTotalDef();
-	int GetTotalMaxHp();
-	int GetTotalMaxMp();
+	//int GetTotalAtk();
+	//int GetTotalDef();
+	//int GetTotalMaxHp();
+	//int GetTotalMaxMp();
 };

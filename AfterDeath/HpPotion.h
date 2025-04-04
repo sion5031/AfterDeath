@@ -7,7 +7,7 @@ private:
 
 
 public:
-	HpPotion();
+	HpPotion(int num);
 	//virtual ~HpPotion(){ cout << "~HpPotion()" << endl; }
 	~HpPotion();
 

@@ -17,7 +17,53 @@ using namespace std;
 //class Item;
 //class Skill;
 
+//struct EquipedE
+//{
+//	shared_ptr<Item> myWeapon;
+//	shared_ptr<Item> myUpper;
+//	shared_ptr<Item> myLower;
+//	shared_ptr<Item> myGlove;
+//	shared_ptr<Item> myShoes;
+//	shared_ptr<Item> myShield;
+//};
 
+struct EquipedE
+{
+	Item* myWeapon = nullptr;
+	Item* myUpper = nullptr;
+	Item* myLower = nullptr;
+	Item* myGlove = nullptr;
+	Item* myShoes = nullptr;
+	Item* myShield = nullptr;
+
+	Item* GetItem(int num)
+	{
+		if (myWeapon != nullptr && num == 0) return myWeapon;
+		else if (myUpper != nullptr && num == 1) return myUpper;
+		else if (myLower != nullptr && num == 2) return myLower;
+		else if (myGlove != nullptr && num == 3) return myGlove;
+		else if (myShoes != nullptr && num == 4) return myShoes;
+		else if (myShield != nullptr && num == 5) return myShield;
+		else return nullptr;
+	}
+	void InitEquipedE()
+	{
+		myWeapon = nullptr;
+		myUpper = nullptr;
+		myLower = nullptr;
+		myGlove = nullptr;
+		myShoes = nullptr;
+		myShield = nullptr;
+	}
+};
+
+struct Status
+{
+	int TotalAtk = 0;
+	int TotalDef = 0;
+	int TotalMaxHp = 0;
+	int TotalMaxMp = 0;
+};
 
 class Creature : enable_shared_from_this<Creature>
 {
@@ -43,6 +89,7 @@ public:
 	//virtual ~Creature(){ cout << "~Creature()" << endl; }
 	virtual ~Creature(){}
 
+	void InitCreature();
 	//void Move(Map* currentMap, int* location);
 	void Fight(shared_ptr<Creature> player, shared_ptr<Creature> monster, int turn);
 	void NormalAttack(shared_ptr<Creature> attacker, shared_ptr<Creature> defender);
@@ -55,10 +102,7 @@ public:
 
 	void ReadFile(string fileName);
 
-	virtual int GetTotalAtk() = 0;
-	virtual int GetTotalDef() = 0;
-	virtual int GetTotalMaxHp() = 0;
-	virtual int GetTotalMaxMp() = 0;
+	struct Status* GetTotalStatus();
 
 	void SetName(string name);
 	void SetType(int type);
@@ -72,12 +116,13 @@ public:
 
 	string GetName();
 	int GetType();
-	int GetMaxHp();
+	//int GetMaxHp();
 	int GetHp();
-	int GetMaxMp();
+	//int GetMaxMp();
 	int GetMp();
 	int GetAttack();
 	int GetDefense();
 
+	EquipedE* GetEquipments();
 };
 

@@ -3,10 +3,10 @@
 GameManager::GameManager()
 {
 	string name;
-	Maps = new vector<shared_ptr<Map>>;
+	Maps = new map<int, shared_ptr<Map>>;
 	for (int i = 0;i < NumMap;i++)
 	{
-		Maps->push_back(make_shared<Map>());
+		Maps->insert({ i, make_shared<Map>(i) });
 	}
 	cin >> name;
 	Hero = make_shared<Player>(name);
@@ -46,7 +46,59 @@ shared_ptr<Map> GameManager::GetCurrentMap()
 	return CurrentMap;
 }
 
-void GameManager::DeathChecker()
+bool GameManager::DeathPlayerChecker()
+{
+	if (Hero->GetHp() <= 0)
+	{
+		// 모든 맵 초기화???? //Player 초기화!!!!
+
+
+		Hero->InitCreature();		//hp, mp, Equipments
+
+
+		shared_ptr<IPlayable> addableCreature = dynamic_pointer_cast<IPlayable>(Hero);
+		if (addableCreature)
+		{
+
+			//deathcount 증가
+			addableCreature->PlusDeathCount();
+			
+
+			//떨구기			
+			vector<Item*>* dropItems = new vector<Item*>;
+			dropItems = addableCreature->GetAllInventoryItems();
+
+			//inven 초기화
+
+			if (dropItems != nullptr)
+			{
+				int playerLocation = CurrentMap->GetPlayerLocation();
+
+				MapObjects* dropObject = new MapObjects;
+				dropObject->Treasure = new Treasure();
+				dropObject->Treasure->SetItems(dropItems);
+
+				CurrentMap->DeletePlayer(); // Object 놓으려면 player가 없어져야함
+
+				CurrentMap->AddObject(playerLocation, dropObject);
+			}
+		}
+		
+		
+		
+
+		//CurrentMap->DeletePlayer();
+
+		CurrentMap = Maps->at(0); // 첫 맵으로 전환
+		
+		CurrentMap->AddCreature(CurrentMap->GetStartLocation(), Hero);
+
+		return true;
+	}
+	return false;
+}
+
+void GameManager::DeathMonsterChecker()
 {
 	for (int i = 0;i < Monsters->size();i++)
 	{
@@ -54,8 +106,15 @@ void GameManager::DeathChecker()
 		{
 			if (Monsters->at(i)->at(j)->GetHp() <= 0)
 			{
+				//EquipedE* dropItem = new EquipedE;
+				//dropItem = Monsters->at(i)->at(j)->GetEquipments();
+				//MapObjects* dropObjects = new MapObjects;
+				//dropObjects->Item = dropItem->myGlove;
+				//CurrentMap->AddObject(, dropObjects); // Map에서 구현함
+
 				Monsters->at(i)->at(j).reset();
 				Monsters->at(i)->erase(Monsters->at(i)->begin() + j);//위와 같은말?
+				
 				//CurrentMap->DeathChecker();
 				CurrentMap->DeleteChecker();
 			}

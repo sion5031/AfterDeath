@@ -2,6 +2,14 @@
 
 Creature::Creature()
 {
+	Equipments = new EquipedE;
+}
+
+void Creature::InitCreature()
+{
+	Hp = MaxHp;
+	Mp = MaxMp;
+	Equipments->InitEquipedE();
 }
 
 void Creature::Fight(shared_ptr<Creature> player, shared_ptr<Creature> monster, int turn)
@@ -14,6 +22,7 @@ void Creature::Fight(shared_ptr<Creature> player, shared_ptr<Creature> monster, 
 	//==========
 
 	// 출력 부(캐릭터, 상태, 
+	system("cls");
 
 	//==========
 
@@ -21,11 +30,13 @@ void Creature::Fight(shared_ptr<Creature> player, shared_ptr<Creature> monster, 
 	{
 		if (countTurn % 2 == 0)
 		{// t값 예외처리!!
+			system("cls");
+			cout << countTurn << " 턴" << endl << endl; // 위에서 출력하고 지우지 않게 하기
 			cout << "1. 공격\n\n2. 스킬\n\n3. 가방\n\n4. 포기\n" << endl;
 			t = _getche();
 			if (t == '1')
 			{
-				player->NormalAttack(player, monster);
+				player->NormalAttack(player, monster); // 의미 없는 주체...
 				if (monster->GetHp() <= 0)
 				{
 					break;
@@ -52,9 +63,13 @@ void Creature::Fight(shared_ptr<Creature> player, shared_ptr<Creature> monster, 
 						{
 							if (player->Skills->at(i)->Effect().at(0) == 0)
 							{
-								//player->UseSkill
+								player->UseSkill(monster);
 							}
 						}
+					}
+					else
+					{
+
 					}
 				}
 			}
@@ -82,8 +97,29 @@ void Creature::Fight(shared_ptr<Creature> player, shared_ptr<Creature> monster, 
 
 			}
 		}
-		else
+		else // 몬스터 턴 ================
 		{
+			system("cls");
+			cout << countTurn << " 턴" << endl << endl; // 위에서 출력
+
+			int num = rand() % 2; // 공격, 스킬 사용 빈도 몬스터에서 받아오기?
+
+			if (num < 2)
+			{
+				monster->NormalAttack(monster, player);
+				if (player->GetHp() <= 0)
+				{
+					break;
+				}
+			}
+			else if (num == 2)
+			{
+				monster->UseSkill(player);
+			}
+			else
+			{
+				//예외?
+			}
 
 		}
 		countTurn++;
@@ -94,25 +130,25 @@ void Creature::Fight(shared_ptr<Creature> player, shared_ptr<Creature> monster, 
 
 void Creature::NormalAttack(shared_ptr<Creature> attacker, shared_ptr<Creature> defender) //방어력 계산 필요
 {
-	cout << "atk: " << attacker->GetTotalAtk() << ", def: " << defender->GetTotalDef() << endl;
+	cout << "atk: " << attacker->GetTotalStatus()->TotalAtk << ", def: " << defender->GetTotalStatus()->TotalDef << endl;
 	int before = defender->Hp;
-	defender->CalcHp(-attacker->GetTotalAtk());
+	defender->CalcHp(-attacker->GetTotalStatus()->TotalAtk);
 	int after = defender->Hp;
 	cout << defender->GetName() << "가 " << before - after << " 만큼의 피해를 입었습니다." << endl;
-	Sleep(1500);
+	Sleep(2000);
 }
 
 void Creature::CalcHp(int hp)
 {
 	if (hp < 0)// 데미지 계산
 	{
-		if (GetTotalDef() >= -hp)
+		if (GetTotalStatus()->TotalDef >= -hp)
 		{
 			hp /= 10;
 		}
 		else
 		{
-			hp += GetTotalDef();//논리상 오류. 1/10보다 작은 경우 발생
+			hp += GetTotalStatus()->TotalDef;//논리상 오류. 1/10보다 작은 경우 발생
 		}
 	}
 	
@@ -171,6 +207,66 @@ void Creature::ReadFile(string fileName)
 		std::cout << "파일을 찾을 수 없습니다!" << std::endl;
 	}
 	in.close();
+}
+
+Status* Creature::GetTotalStatus()
+{
+	Status* totalStatus = new Status;
+
+	int atkSum = Attack;
+	int defSum = Defense;
+	int maxHpSum = MaxHp;
+	int maxMpSum = MaxMp;
+
+	if (Equipments->myWeapon != nullptr)
+	{
+		atkSum += Equipments->myWeapon->GetAtkPoint();
+		defSum += Equipments->myWeapon->GetDefPoint();
+		maxHpSum += Equipments->myWeapon->GetHpPoint();
+		maxMpSum += Equipments->myWeapon->GetMpPoint();
+	}
+	if (Equipments->myUpper != nullptr)
+	{
+		atkSum += Equipments->myUpper->GetAtkPoint();
+		defSum += Equipments->myUpper->GetDefPoint();
+		maxHpSum += Equipments->myUpper->GetHpPoint();
+		maxMpSum += Equipments->myUpper->GetMpPoint();
+	}
+	if (Equipments->myLower != nullptr)
+	{
+		atkSum += Equipments->myLower->GetAtkPoint();
+		defSum += Equipments->myLower->GetDefPoint();
+		maxHpSum += Equipments->myLower->GetHpPoint();
+		maxMpSum += Equipments->myLower->GetMpPoint();
+	}
+	if (Equipments->myGlove != nullptr)
+	{
+		atkSum += Equipments->myGlove->GetAtkPoint();
+		defSum += Equipments->myGlove->GetDefPoint();
+		maxHpSum += Equipments->myGlove->GetHpPoint();
+		maxMpSum += Equipments->myGlove->GetMpPoint();
+	}
+	if (Equipments->myShoes != nullptr)
+	{
+		atkSum += Equipments->myShoes->GetAtkPoint();
+		defSum += Equipments->myShoes->GetDefPoint();
+		maxHpSum += Equipments->myShoes->GetHpPoint();
+		maxMpSum += Equipments->myShoes->GetMpPoint();
+	}
+	if (Equipments->myShield != nullptr)
+	{
+		atkSum += Equipments->myShield->GetAtkPoint();
+		defSum += Equipments->myShield->GetDefPoint();
+		maxHpSum += Equipments->myShield->GetHpPoint();
+		maxMpSum += Equipments->myShield->GetMpPoint();
+	}
+	
+	totalStatus->TotalAtk = atkSum;
+	totalStatus->TotalDef = defSum;
+	totalStatus->TotalMaxHp = maxHpSum;
+	totalStatus->TotalMaxMp = maxMpSum;
+
+	return totalStatus;
 }
 
 //void Creature::ReadFile(string fileName)
@@ -248,20 +344,20 @@ int Creature::GetType()
 	return Type;
 }
 
-int Creature::GetMaxHp()
-{
-	return MaxHp;
-}
+//int Creature::GetMaxHp()
+//{
+//	return MaxHp;
+//}
 
 int Creature::GetHp()
 {
 	return Hp;
 }
 
-int Creature::GetMaxMp()
-{
-	return MaxMp;
-}
+//int Creature::GetMaxMp()
+//{
+//	return MaxMp;
+//}
 
 int Creature::GetMp()
 {
@@ -276,4 +372,9 @@ int Creature::GetAttack()
 int Creature::GetDefense()
 {
 	return Defense;
+}
+
+EquipedE* Creature::GetEquipments()
+{
+	return Equipments;
 }
