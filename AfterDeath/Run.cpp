@@ -6,8 +6,10 @@
 #include "Monster.h"
 #include "Map.h"
 #include "Item.h"
+#include "ConsoleGotoxy.h"
 
 unique_ptr<Map> CurrentMap;
+
 
 int main()
 {
@@ -53,11 +55,19 @@ int main()
 		CurrentMap->PrintMap();
 	}
 	*/
-	GM->GetCurrentMap()->PrintMap();
+	//GM->GetCurrentMap()->PrintMap();
 
 	while (true)
 	{
-		GM->GetCurrentMap()->MovePlayer();
+		Gotoxy(0, 0);
+		GM->GetCurrentMap()->PrintMap();
+
+		int nextMap = GM->GetCurrentMap()->MovePlayer();
+		if (nextMap != -1)
+		{
+			GM->MoveMap(nextMap);
+			continue;
+		}
 		if (GM->DeathPlayerChecker())
 		{
 			continue; // 원래라면 게임 처음으로...또는 죽었을 때 가는 곳
@@ -72,8 +82,7 @@ int main()
 		GM->DeathMonsterChecker();
 		//GM->GetCurrentMap()->DeathChecker();
 		//GM->GetCurrentMap()->DeleteChecker();
-		system("cls");
-		GM->GetCurrentMap()->PrintMap();
+		//system("cls");
 	}
 
 

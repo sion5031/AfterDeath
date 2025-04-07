@@ -1,4 +1,5 @@
 #include "Map.h"
+#include "ConsoleGotoxy.h"
 
 //string Name;
 //int MaxMonster;
@@ -50,17 +51,12 @@ Map::Map()
 	//=======
 
 
-
-	cout << "맵을 생성했습니다." << endl;
 }
 
 Map::Map(int num)
 {
 	Num = num; // 만드는 곳에서!!! 되도록이면 GM에서
-	Name = "Start Map";
-	MaxMonster = 3;
-	MaxTreasure = 2;
-	StartLocation = 16;
+	StartLocation = 16;//수정
 
 	Obstacles = new bool* [MapSize];
 	for (int i = 0; i < MapSize;i++)
@@ -73,8 +69,20 @@ Map::Map(int num)
 	CreaturesLocation = new map<int, weak_ptr<Creature>>;
 	ObjectsLocation = new map<int, MapObjects*>;
 
+	if (num == 1)
+	{
+		
+		Name = "Start Map";
+		MaxMonster = 3;
+		MaxTreasure = 2;
+		StartLocation = 16;
 
-	cout << "맵을 생성했습니다." << endl;
+		
+
+		//맵 장애물 만들고
+		// 보물 넣고 // 관리 어디서?
+		// 포털 넣고
+	}
 }
 
 Map::Map(shared_ptr<Creature> player)
@@ -103,14 +111,13 @@ Map::Map(shared_ptr<Creature> player)
 
 	//===================
 
-	cout << "맵을 생성했습니다." << endl;
 }
 
 Map::~Map()
 {
 }
 
-void Map::MovePlayer()
+int Map::MovePlayer()
 {
 	char t;
 	int location = GetPlayerLocation();
@@ -119,30 +126,32 @@ void Map::MovePlayer()
 	vector<int> temCoordinate;
 
 	t = _getche();
+	GotoxyCll(1);
+	GotoxyClsLong(1);
 	if (t == 'w')
 	{
 		temCoordinate.push_back(coordinate[0] - 1); // 예외처리 범위로...
 		temCoordinate.push_back(coordinate[1]);
-		MoveEvent(location, temCoordinate);
+		return MoveEvent(location, temCoordinate);
 
 	}
 	else if (t == 'a')
 	{
 		temCoordinate.push_back(coordinate[0]);
 		temCoordinate.push_back(coordinate[1] - 1);
-		MoveEvent(location, temCoordinate);
+		return MoveEvent(location, temCoordinate);
 	}
 	else if (t == 's')
 	{
 		temCoordinate.push_back(coordinate[0] + 1);
 		temCoordinate.push_back(coordinate[1]);
-		MoveEvent(location, temCoordinate);
+		return MoveEvent(location, temCoordinate);
 	}
 	else if (t == 'd')
 	{
 		temCoordinate.push_back(coordinate[0]);
 		temCoordinate.push_back(coordinate[1] + 1);
-		MoveEvent(location, temCoordinate);
+		return MoveEvent(location, temCoordinate);
 	}
 	else if (t == 'i')
 	{
@@ -154,9 +163,11 @@ void Map::MovePlayer()
 		{
 			char itemChar;
 			int itemNum;
+			system("cls");
 			playableCreature->DisplayInventory();
-			cout << "아이템을 선택하거나 나갑니다." << endl;
+			cout << "\n아이템을 선택하거나 나갑니다." << endl;
 			itemChar = _getche();
+			GotoxyCll(1);
 			itemNum = itemChar - '0' - 1;
 
 			getItem = playableCreature->SelectInventoryItem(itemNum);
@@ -164,7 +175,10 @@ void Map::MovePlayer()
 			{
 				IConsumable* consumable = dynamic_cast<IConsumable*>(getItem);
 				consumable->UseItem(player);
-				playableCreature->ArrangeInventory();
+				if (consumable->GetNumber() <= 0)
+				{
+					playableCreature->CheckZeroInventory();
+				}
 			}
 		}
 	}
@@ -176,6 +190,7 @@ void Map::MovePlayer()
 	{
 		//??
 	}
+	return -1;
 }
 
 void Map::MoveMonster()
@@ -273,6 +288,13 @@ void Map::PrintMap()
 	{
 		for (int j = 0;j < MapSize;j++) {
 			if (bIsObstacle(i, j)) cout << "* ";
+			else if (bIsObject(IntCoordinateToLocation(i, j)))
+			{
+				vector<int> temCoor = { i,j };
+				int temLoc = CoordinateToLocation(temCoor);
+				if(ObjectsLocation->at(temLoc)->Portal != nullptr)cout << "# ";
+				else cout << "! ";
+			}
 			else if (bIsObject(IntCoordinateToLocation(i, j)))cout << "! ";
 			else if (bIsEnemy(IntCoordinateToLocation(i, j)))cout << "X ";
 			else if (bIsPlayer(IntCoordinateToLocation(i, j)))cout << "O ";
@@ -281,7 +303,14 @@ void Map::PrintMap()
 		// 상태창 출력????????????????
 		cout << endl;
 	}
-	cout << "Hp: " << GetCreature(GetPlayerLocation())->GetHp() << endl;
+	shared_ptr<Creature> player = GetCreature(GetPlayerLocation());
+	cout << "Hp: " << player->GetTotalStatus()->TotalMaxHp << "/" << player->GetHp()
+		<< "\tMp: " << player->GetTotalStatus()->TotalMaxMp << "/" << player->GetMp() << '\n'
+		<< "Atk: " << player->GetTotalStatus()->TotalAtk
+		<< "\t\tDef: " << player->GetTotalStatus()->TotalDef << "\n\n";
+
+	Gotoxy(0, 18);
+	//GotoxyClsLong(6);
 }
 
 shared_ptr<Creature> Map::GetCreature(int location)
@@ -345,7 +374,7 @@ int Map::IntCoordinateToLocation(int x, int y)
 	return location;
 }
 
-void Map::MoveEvent(int playerLocation, vector<int> nextCoordinate)
+int Map::MoveEvent(int playerLocation, vector<int> nextCoordinate)
 {
 	int x = nextCoordinate[0];
 	int y = nextCoordinate[1];
@@ -380,7 +409,7 @@ void Map::MoveEvent(int playerLocation, vector<int> nextCoordinate)
 			}
 			if (ObjectsLocation->at(nextLocation)->Portal != nullptr)
 			{
-				//이동!!!!!!!!!!!!!!!!!!!!!
+				return ObjectsLocation->at(nextLocation)->Portal->GetPortalInfo();
 			}
 			else
 			{
@@ -421,6 +450,7 @@ void Map::MoveEvent(int playerLocation, vector<int> nextCoordinate)
 		CreaturesLocation->insert({ nextLocation, CreaturesLocation->at(playerLocation) });//되려나
 		CreaturesLocation->erase(playerLocation);
 	}
+	return -1;
 }
 
 void Map::MoveMonsterEvent(int monsterLocation, vector<int> nextCoordinate) // MoveEvent와 합칠 수?

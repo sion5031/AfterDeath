@@ -17,7 +17,7 @@ struct MapObjects
 {
 	Treasure* Treasure = nullptr;
 	Item* Item = nullptr;
-	Portal* Portal = nullptr;
+	shared_ptr<Portal> Portal = nullptr;
 };
 
 class Map
@@ -42,7 +42,7 @@ public:
 	Map(shared_ptr<Creature> player); // ¾²³ª?
 	~Map();
 
-	void MovePlayer();
+	int MovePlayer();
 	void MoveMonster();
 	void UsePortal(int location);
 
@@ -61,7 +61,7 @@ public:
 	vector<int> LocationToCoordinate(int location);
 	int CoordinateToLocation(vector<int> coordinate);
 	int IntCoordinateToLocation(int x, int y);
-	void MoveEvent(int playerLocation, vector<int> nextCoordinate);
+	int MoveEvent(int playerLocation, vector<int> nextCoordinate);
 	void MoveMonsterEvent(int playerLocation, vector<int> nextCoordinate);
 	bool bIsObstacle(int x, int y);
 	bool bIsObject(int location);

@@ -43,3 +43,8 @@ int Skill::GetEffectValue()
 {
 	return EffectValue;
 }
+
+int Skill::GetMpConsume()
+{
+	return MpConsume;
+}

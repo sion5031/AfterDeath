@@ -31,6 +31,7 @@ public:
 	vector<Item*>* GetAllInventoryItems();
 	void InitInventory();
 	void ArrangeInventory();
+	void CheckZeroInventory();
 	bool bCheckPresence(int num);
 
 	int GetSN(int num);

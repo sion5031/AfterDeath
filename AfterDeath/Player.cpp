@@ -8,6 +8,10 @@
 #include "Shield.h"
 #include "HpPotion.h"
 #include "MpPotion.h"
+#include "FireBall.h"
+#include "IncreaseAttack.h"
+#include "AttackUp.h"
+#include "ConsoleGotoxy.h"
 
 //void Player::UseItem(int num)
 //{
@@ -107,7 +111,6 @@ Player::Player()
 	DeathCount = 0;
 	MyInven = new Inventory();
 
-	cout << "캐릭터를 생성했습니다." << endl;
 	Sleep(2000);
 }
 
@@ -128,12 +131,15 @@ Player::Player(string name)
 
 
 	MyInven->AddItem(new LongSword());
+	GotoxyCll(30, 0, 0);
 	//MyInven->TryEquip(0);
 	EquipItem(0); // 원래는 인벤에서 찾아서 그 번호 넣어야
-	MyInven->AddItem(new HpPotion(5));
+	MyInven->AddItem(new HpPotion(2));
+	GotoxyCll(30, 0, 0);
 
 
-	cout << "캐릭터를 생성했습니다." << endl;
+	Skill* fireBall = new FireBall();
+	Skills->push_back(fireBall);
 }
 
 Player::~Player()
@@ -155,18 +161,20 @@ Item* Player::SelectInventoryItem(int num)
 	if (MyInven->bCheckPresence(num))
 	{
 		char usage;
-
-		cout << "1. 사용하기" << endl << endl << "2. 장비하기" << endl << endl << "3. 제거하기" << endl;
-		cout << "===============================================" << endl << endl;
-		cout << "행동을 선택해주세요: ";
+		Gotoxy(0, 10);
+		GotoxyClsShort(4);
+		cout << "1. 사용하기" << '\n' << "2. 장비하기" << '\n' << "3. 제거하기" << endl;
 		usage = _getche();
+		GotoxyCll(1);
 
 		if (usage == '1')
 		{
-			return this->MyInven->TryUse(num); // 이게 맞나???? // 여기서 use!?
+			Gotoxy(0, 18);
+			return this->MyInven->TryUse(num);
 		}
 		else if (usage == '2')
 		{
+			Gotoxy(0, 18);
 			EquipItem(num);
 		}
 		else if (usage == '3')
@@ -175,12 +183,12 @@ Item* Player::SelectInventoryItem(int num)
 		}
 		else
 		{
-			cout << "잘못된 선택입니다." << endl << "행동을 스킵합니다." << endl;
+			AddNotification("행동을 스킵합니다.");
 		}
 	}
 	else
 	{
-		cout << "잘못된 선택입니다." << endl << "행동을 스킵합니다." << endl;
+		AddNotification("행동을 스킵합니다.");
 	}
 	return nullptr;
 }
@@ -200,9 +208,26 @@ void Player::ArrangeInventory()
 	MyInven->ArrangeInventory();
 }
 
+void Player::CheckZeroInventory()
+{
+	MyInven->CheckZeroInventory();
+}
+
 void Player::AddSkill(Skill* skill)
 {
 	Skills->push_back(skill);
+}
+
+Skill* Player::GetSkill(int num)
+{
+	if (num >= 0 && num < Skills->size())
+	{
+		return Skills->at(num);
+	}
+	else
+	{
+		cout << "잘못된 스킬 선택" << endl;
+	}
 }
 
 void Player::PlusDeathCount()
@@ -210,8 +235,21 @@ void Player::PlusDeathCount()
 	DeathCount++;
 }
 
-void Player::UseSkill(shared_ptr<Creature> creature)
+void Player::DisplaySkills()
 {
+	for (int i = 0;i < Skills->size();i++)
+	{
+		cout << "#" << i + 1 << "\t" << Skills->at(i)->GetName() << "(" << Skills->at(i)->GetMpConsume() << ")" << endl;
+	}
+}
+
+void Player::UseSkill(shared_ptr<Creature> creature, int num, int turn)
+{
+	if (num >= 0 && num < Skills->size())
+	{
+		CalcMp(-Skills->at(num)->GetMpConsume());
+		AddNotification(Skills->at(num)->Effect(creature, turn));
+	}
 }
 
 void Player::Die()

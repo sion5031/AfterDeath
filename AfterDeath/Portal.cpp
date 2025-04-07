@@ -1,18 +1,25 @@
 #include "Portal.h"
+//#include "Map.h"
 
 Portal::Portal()
 {
+}
+
+Portal::Portal(int newMap)
+{
+	NextMapNum = newMap;
 }
 
 Portal::~Portal()
 {
 }
 
-void Portal::SetPortalInfo(Map* nextMap)
+void Portal::SetPortalInfo(int nextMap)
 {
+	NextMapNum = nextMap;
 }
 
-Map* Portal::GetPortalInfo()
+int Portal::GetPortalInfo()
 {
-	return nullptr;
+	return NextMapNum;
 }

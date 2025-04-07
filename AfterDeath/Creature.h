@@ -65,6 +65,7 @@ struct Status
 	int TotalMaxMp = 0;
 };
 
+
 class Creature : enable_shared_from_this<Creature>
 {
 protected:
@@ -78,6 +79,8 @@ protected:
 	int Defense;
 	struct EquipedE* Equipments;
 	vector<Skill*>* Skills;
+	static vector<string>* Notifications;
+	int NotificationNum = 0;
 
 	const int ScreenSize = 30; //space ±‚¡ÿ 2ƒ≠¿Ã 1size
 
@@ -92,15 +95,16 @@ public:
 	void InitCreature();
 	//void Move(Map* currentMap, int* location);
 	void Fight(shared_ptr<Creature> player, shared_ptr<Creature> monster, int turn);
-	void NormalAttack(shared_ptr<Creature> attacker, shared_ptr<Creature> defender);
-	virtual void UseSkill(shared_ptr<Creature> creature) = 0;
+	void NormalAttack(shared_ptr<Creature> attacker, shared_ptr<Creature> defender, int countTurn);
+	void MonsterHitMotion(int countTurn, string defender, string attacker);
+	virtual void UseSkill(shared_ptr<Creature> creature, int num, int turn) = 0;
 	virtual void Die() = 0;
 	void CalcHp(int hp);
 	void CalcMp(int mp);
 
 	void PrintBattle(shared_ptr<Creature> player, shared_ptr<Creature> monster);
 
-	void ReadFile(string fileName);
+	void ReadFile(string fileName, int start);
 
 	struct Status* GetTotalStatus();
 
@@ -113,6 +117,8 @@ public:
 	void SetAtk(int attack);
 	void SetDef(int defense);
 	//void SetMyInven(shared_ptr<Inventory>);
+	void AddNotification(string notification);
+	void SetNotificationNum(int num);
 
 	string GetName();
 	int GetType();
@@ -122,6 +128,7 @@ public:
 	int GetMp();
 	int GetAttack();
 	int GetDefense();
+	int GetNotoficationNum();
 
 	EquipedE* GetEquipments();
 };

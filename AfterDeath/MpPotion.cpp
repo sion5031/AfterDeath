@@ -1,4 +1,5 @@
 #include "MpPotion.h"
+#include "ConsoleGotoxy.h"
 
 MpPotion::MpPotion(int num)
 {
@@ -15,6 +16,8 @@ MpPotion::~MpPotion()
 void MpPotion::UseItem(shared_ptr<Creature> player)
 {
 	player->CalcMp(this->EffectPoint);
+	Gotoxy(0, 17);
+	cout << "Hp를 " << EffectPoint << " 만큼 회복했습니다.\n";
 	Number--;
 	if (Number <= 0)
 	{

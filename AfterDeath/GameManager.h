@@ -22,12 +22,15 @@ public:
 	GameManager();
 	~GameManager();
 
+	void MoveMap(int nextMap);
+
 	shared_ptr<Map> GetMap(string name);
 	shared_ptr<Map> GetCurrentMap();
 
 	bool DeathPlayerChecker();
 	void DeathMonsterChecker();
+	void InitMonster(int mapNum);
 
-	void MakeMap1(shared_ptr<Map>);
-	void MakeMap2(shared_ptr<Map>);
+	void MakeMonsterMap1(shared_ptr<Map> map);
+	void MakeMonsterMap2(shared_ptr<Map> map);
 };

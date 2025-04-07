@@ -17,9 +17,9 @@ int Consumable::GetNumber()
 
 void Consumable::PlusNumber(int num)
 {
-	Number += num;
+	/*Number += num; // 동작 안 함. 동적할당 아니라?
 	if (Number < 0)
 	{
 		Number = 0;
-	}
+	}*/
 }

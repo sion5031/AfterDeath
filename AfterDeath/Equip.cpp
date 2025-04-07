@@ -7,6 +7,7 @@ Equip::Equip()
 
 void Equip::EquipItem()
 {
+	cout << this->GetName() << " 을 장착했습니다.\n";
 	Equiped = true;
 }
 

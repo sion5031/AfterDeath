@@ -26,10 +26,13 @@ public:
 	vector<Item*>* GetAllInventoryItems() override;
 	void InitInventory() override;
 	void ArrangeInventory() override;
+	void CheckZeroInventory() override;
 	void AddSkill(Skill* skill) override;
+	Skill* GetSkill(int num) override;
 	void PlusDeathCount() override;
 
-	void UseSkill(shared_ptr<Creature> creature) override;
+	void DisplaySkills();
+	void UseSkill(shared_ptr<Creature> creature, int num, int turn) override;
 	void Die() override;
 
 	void SetDeathCount(int deathCount);

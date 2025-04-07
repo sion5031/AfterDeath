@@ -132,14 +132,18 @@
   <ItemGroup>
     <ClInclude Include="ActiveSkill.h" />
     <ClInclude Include="Armor.h" />
+    <ClInclude Include="AttackUp.h" />
+    <ClInclude Include="ConsoleGotoxy.h" />
     <ClInclude Include="Consumable.h" />
     <ClInclude Include="Creature.h" />
     <ClInclude Include="Equip.h" />
+    <ClInclude Include="FireBall.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Glove.h" />
     <ClInclude Include="HpPotion.h" />
     <ClInclude Include="IConsumable.h" />
     <ClInclude Include="IEquipable.h" />
+    <ClInclude Include="IncreaseAttack.h" />
     <ClInclude Include="IPlayable.h" />
     <ClInclude Include="Inventory.h" />
     <ClInclude Include="Item.h" />
@@ -162,12 +166,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ActiveSkill.cpp" />
+    <ClCompile Include="AttackUp.cpp" />
+    <ClCompile Include="ConsoleGotoxy.cpp" />
     <ClCompile Include="Consumable.cpp" />
     <ClCompile Include="Creature.cpp" />
     <ClCompile Include="Equip.cpp" />
+    <ClCompile Include="FireBall.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Glove.cpp" />
     <ClCompile Include="HpPotion.cpp" />
+    <ClCompile Include="IncreaseAttack.cpp" />
     <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="LongSword.cpp" />

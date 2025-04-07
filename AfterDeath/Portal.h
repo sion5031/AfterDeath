@@ -1,16 +1,20 @@
 #pragma once
+#include <memory>
+
+using namespace std;
 
 class Map;
 
 class Portal
 {
 private:
-	Map* NextMap;
+	int NextMapNum;
 
 public:
 	Portal();
+	Portal(int newMap);
 	~Portal();
 
-	void SetPortalInfo(Map* nextMap);
-	Map* GetPortalInfo();
+	void SetPortalInfo(int nextMap);
+	int GetPortalInfo();
 };

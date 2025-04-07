@@ -1,6 +1,7 @@
 #include <algorithm>
 
 #include "Inventory.h"
+#include "ConsoleGotoxy.h"
 
 Item* Inventory::FindItem(int num)
 {
@@ -18,9 +19,31 @@ void Inventory::ArrangeInventory()
 		});
 	Items->clear();
 
+	int newKey = 0;
 	for (const auto& pair : ItemsVector)
 	{
-		(*Items)[pair.first] = pair.second;
+		(*Items)[newKey++] = pair.second;
+	}
+}
+
+void Inventory::CheckZeroInventory()
+{
+	int nonCount = 0;
+	int size = Items->size();
+	for (int i = 0;i < size + nonCount;i++) {
+		if (Items->find(i) != Items->end()) {
+			IConsumable* consumableItem = dynamic_cast<IConsumable*>(Items->at(i));
+			if (consumableItem)
+			{
+				consumableItem->GetNumber() <= 0;
+				//delete
+				Items->erase(i);
+			}
+		}
+		else
+		{
+			nonCount++;
+		}
 	}
 }
 
@@ -53,12 +76,23 @@ void Inventory::AddItem(Item* item)
 	int nonCount = 0;
 	int size = Items->size();
 	for (int i = 0;i <= size + nonCount;i++) {
-		if (Items->find(i) != Items->end() && Items->at(i)->GetSN() < 100 && Items->at(i)->GetSN() == item->GetSN())
+		if (Items->find(i) != Items->end())
 		{
-			IConsumable* consumableItem2 = dynamic_cast<IConsumable*>(Items->at(i));
-			consumableItem2->PlusNumber(consumableItem1->GetNumber());
+			if (Items->at(i)->GetSN() < 100 && Items->at(i)->GetSN() == item->GetSN())
+			{
+				IConsumable* consumableItem2 = dynamic_cast<IConsumable*>(Items->at(i));
+				consumableItem2->PlusNumber(consumableItem1->GetNumber());
 
-			return;
+				return;
+			}
+		}
+		else
+		{
+			if (i != size + nonCount - 1)
+			{
+				break;
+			}
+			nonCount++;
 		}
 	}
 
@@ -68,7 +102,11 @@ void Inventory::AddItem(Item* item)
 			Items->insert({ i, item });
 			break;
 		}
-	}	
+		else
+		{
+			nonCount++;
+		}
+	}
 }
 
 void Inventory::RemoveItem(int num)
@@ -114,7 +152,10 @@ Item* Inventory::TryEquip(int num)
 
 void Inventory::DisplayInventory()
 {
+	ArrangeInventory();
+
 	int nonCount = 0;
+
 	cout << endl;
 	for (int i = 0;i < this->Items->size() + nonCount;i++) {
 		if (bCheckPresence(i))

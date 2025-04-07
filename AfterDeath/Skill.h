@@ -9,17 +9,23 @@ class Creature;
 class Skill
 {
 private:
+
+protected:
 	string Name;
 	int Type; //0Àº Active / 1Àº Passive
 	int Level;
+	int MpConsume;
 	int EffectValue;
+	int Duration;
+	int Turn;
+	bool Using = false;
 
 public:
 	Skill();
 	//virtual ~Skill(){ cout << "~Skill()" << endl; }
 	virtual ~Skill() {}
 
-	virtual vector<int> Effect() = 0;
+	virtual string Effect(shared_ptr<Creature> player, int turn) = 0;
 
 	void SetName(string name);
 	void SetType(int type);
@@ -30,5 +36,6 @@ public:
 	int GetType();
 	int GetLevel();
 	int GetEffectValue();
+	int GetMpConsume();
 
 };

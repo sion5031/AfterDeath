@@ -9,7 +9,7 @@
 
 Monster::Monster()
 {
-	Name = "°íºí¸°";
+	Name = "½ºÄÌ·¹Åæ";
 	Type = 1;
 	MaxHp = 20;
 	Hp = MaxHp;
@@ -38,7 +38,7 @@ void Monster::SetItems(vector<Item*>* equipments)
 	Items = Items;
 }
 
-void Monster::UseSkill(shared_ptr<Creature> creature)
+void Monster::UseSkill(shared_ptr<Creature> creature, int num, int count)
 {
 	if (this->Skills->size() > 0)
 	{

@@ -14,6 +14,9 @@ public:
 	virtual vector<Item*>* GetAllInventoryItems() = 0;
 	virtual void InitInventory() = 0;
 	virtual void ArrangeInventory() = 0;
+	virtual void CheckZeroInventory() = 0;
 	virtual void AddSkill(Skill* skill) = 0;
+	virtual Skill* GetSkill(int num) = 0;
 	virtual void PlusDeathCount() = 0;
+	virtual void DisplaySkills() = 0;
 };

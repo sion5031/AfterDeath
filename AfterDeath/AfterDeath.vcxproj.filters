@@ -64,6 +64,18 @@
     <Filter Include="소스 파일\Inventory">
       <UniqueIdentifier>{0214aad5-7679-468d-9c84-9a6007140480}</UniqueIdentifier>
     </Filter>
+    <Filter Include="헤더 파일\Skill\ActiveSkill">
+      <UniqueIdentifier>{b3649a64-805c-41a8-a683-e98b21e11c2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Skill\PassiveSkill">
+      <UniqueIdentifier>{b5fadf7f-93ac-43f8-adbc-55e962cbb70e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Skill\ActiveSkill">
+      <UniqueIdentifier>{67599882-f85f-481a-8bde-2be4a5415ddf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Skill\PassiveSkill">
+      <UniqueIdentifier>{3089b51f-786c-4c9d-8f9a-e7933be9c080}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Map.h">
@@ -123,12 +135,6 @@
     <ClInclude Include="QuestItem.h">
       <Filter>헤더 파일\Item\QuestItem</Filter>
     </ClInclude>
-    <ClInclude Include="ActiveSkill.h">
-      <Filter>헤더 파일\Skill</Filter>
-    </ClInclude>
-    <ClInclude Include="PassiveSkill.h">
-      <Filter>헤더 파일\Skill</Filter>
-    </ClInclude>
     <ClInclude Include="Skill.h">
       <Filter>헤더 파일\Skill</Filter>
     </ClInclude>
@@ -151,6 +157,24 @@
       <Filter>헤더 파일\Creature</Filter>
     </ClInclude>
     <ClInclude Include="GameManager.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="ActiveSkill.h">
+      <Filter>헤더 파일\Skill\ActiveSkill</Filter>
+    </ClInclude>
+    <ClInclude Include="PassiveSkill.h">
+      <Filter>헤더 파일\Skill\PassiveSkill</Filter>
+    </ClInclude>
+    <ClInclude Include="FireBall.h">
+      <Filter>헤더 파일\Skill\ActiveSkill</Filter>
+    </ClInclude>
+    <ClInclude Include="AttackUp.h">
+      <Filter>헤더 파일\Skill\PassiveSkill</Filter>
+    </ClInclude>
+    <ClInclude Include="IncreaseAttack.h">
+      <Filter>헤더 파일\Skill\ActiveSkill</Filter>
+    </ClInclude>
+    <ClInclude Include="ConsoleGotoxy.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
@@ -200,15 +224,6 @@
     <ClCompile Include="Upper.cpp">
       <Filter>소스 파일\Item\Equip\Armor</Filter>
     </ClCompile>
-    <ClCompile Include="ActiveSkill.cpp">
-      <Filter>소스 파일\Skill</Filter>
-    </ClCompile>
-    <ClCompile Include="PassiveSkill.cpp">
-      <Filter>소스 파일\Skill</Filter>
-    </ClCompile>
-    <ClCompile Include="Skill.cpp">
-      <Filter>소스 파일\Skill</Filter>
-    </ClCompile>
     <ClCompile Include="Creature.cpp">
       <Filter>소스 파일\Creature</Filter>
     </ClCompile>
@@ -225,6 +240,27 @@
       <Filter>소스 파일\Item\Equip</Filter>
     </ClCompile>
     <ClCompile Include="GameManager.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="PassiveSkill.cpp">
+      <Filter>소스 파일\Skill\PassiveSkill</Filter>
+    </ClCompile>
+    <ClCompile Include="Skill.cpp">
+      <Filter>소스 파일\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="ActiveSkill.cpp">
+      <Filter>소스 파일\Skill\ActiveSkill</Filter>
+    </ClCompile>
+    <ClCompile Include="FireBall.cpp">
+      <Filter>소스 파일\Skill\ActiveSkill</Filter>
+    </ClCompile>
+    <ClCompile Include="AttackUp.cpp">
+      <Filter>소스 파일\Skill\PassiveSkill</Filter>
+    </ClCompile>
+    <ClCompile Include="IncreaseAttack.cpp">
+      <Filter>소스 파일\Skill\ActiveSkill</Filter>
+    </ClCompile>
+    <ClCompile Include="ConsoleGotoxy.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

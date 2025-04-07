@@ -10,5 +10,5 @@ public:
 	//virtual ~ActiveSkill(){ cout << "~ActiveSkill()" << endl; }
 	~ActiveSkill();
 
-	vector<int> Effect() override;
+	virtual string Effect(shared_ptr<Creature> player, int turn) = 0;
 };

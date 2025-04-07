@@ -13,7 +13,7 @@ public:
 
 	void SetItems(vector<Item*>* equipments);
 
-	void UseSkill(shared_ptr<Creature> creature) override;
+	void UseSkill(shared_ptr<Creature> creature, int num, int count) override;
 	void Die() override;
 
 	//int GetTotalAtk();

@@ -4,6 +4,8 @@ Item::Item()
 {
 	AtkPoint = 0;
 	DefPoint = 0;
+	HpPoint = 0;
+	MpPoint = 0;
 	EffectPoint = 0;
 	Equiped = false;
 }

@@ -1,4 +1,20 @@
+#include <functional>
+
 #include "Creature.h"
+//#include "Player.h"
+//#include "Monster.h"
+#include "IConsumable.h"
+#include "ConsoleGotoxy.h"
+
+vector<string>* Creature::Notifications = new vector<string>;
+
+COORD POS;
+
+void notificationErase(int x, int y, int line)
+{
+	Gotoxy(x, y);
+	GotoxyClsLong(line);
+}
 
 Creature::Creature()
 {
@@ -19,6 +35,10 @@ void Creature::Fight(shared_ptr<Creature> player, shared_ptr<Creature> monster, 
 	int countTurn = turn;
 	char t;
 
+	vector<function<void(int)>> PlayerDurationSkills;
+	//vector<UseSkillFuncPtr> MonsterDurationSkills;
+
+
 	//==========
 
 	// 출력 부(캐릭터, 상태, 
@@ -28,15 +48,35 @@ void Creature::Fight(shared_ptr<Creature> player, shared_ptr<Creature> monster, 
 
 	while (true)
 	{
+		//상태 갱신
+		string strTurn;
+		GotoxyPrintReturn(to_string(countTurn) + " 턴", 0, 0 );
+		//cout << countTurn << " 턴" << endl << endl; // 위에서 출력하고 지우지 않게 하기
+
+		ReadFile(monster->GetName(), 40);
+
+		POS = GetCurrentXY();
+
+		Gotoxy(0, 5);
+		cout << "Hp: " << player->GetHp() << "/" << player->GetTotalStatus()->TotalMaxHp
+			<< "  Mp: " << player->GetMp() << "/" << player->GetTotalStatus()->TotalMaxMp << '\n'
+			<< "Atk: " << player->GetTotalStatus()->TotalAtk
+			<< "\t  Def: " << player->GetTotalStatus()->TotalDef << "\n\n";
+
+
 		if (countTurn % 2 == 0)
-		{// t값 예외처리!!
-			system("cls");
-			cout << countTurn << " 턴" << endl << endl; // 위에서 출력하고 지우지 않게 하기
-			cout << "1. 공격\n\n2. 스킬\n\n3. 가방\n\n4. 포기\n" << endl;
+		{
+			Gotoxy(0, 10);
+			GotoxyClsShort(4);
+			cout << "1. 공격\t|\n2. 스킬\t|\n3. 가방\t|\n4. 포기\t|\n" << endl;
 			t = _getche();
+			GotoxyCll(1);
+
+			Gotoxy(0, POS.Y);
+
 			if (t == '1')
 			{
-				player->NormalAttack(player, monster); // 의미 없는 주체...
+				player->NormalAttack(player, monster, countTurn); // 의미 없는 주체...
 				if (monster->GetHp() <= 0)
 				{
 					break;
@@ -44,51 +84,48 @@ void Creature::Fight(shared_ptr<Creature> player, shared_ptr<Creature> monster, 
 			}
 			else if (t == '2')
 			{
-				for (int i = 0;i < player->Skills->size();i++) // 동작?
+				shared_ptr<IPlayable> addableCreature = dynamic_pointer_cast<IPlayable>(player);
+				if (addableCreature)
 				{
-					if (player->Skills->at(i)->GetType() == 0)
-					{
-						cout << i + 1 << ".\t" << player->Skills->at(i) << endl << endl;
-					}
-				}
-				cout << "스킬 선택" << endl;
-				t = _getche();
-				int skillNum = t - '0';
-				int count = 1;
-				for (int i = 0;i < player->Skills->size();i++)
-				{
-					if (player->Skills->at(i)->GetType() == 0)
-					{
-						if (skillNum == count)
-						{
-							if (player->Skills->at(i)->Effect().at(0) == 0)
-							{
-								player->UseSkill(monster);
-							}
-						}
-					}
-					else
-					{
+					addableCreature->DisplaySkills();
+					Gotoxy(0, POS.Y);
+					notificationErase(0, POS.Y, 6);
+					addableCreature->DisplaySkills();
+					cout << "스킬을 선택하거나 나갑니다." << endl;
+					char skillChar = _getche();
+					GotoxyCll(1);
+					int skillNum = skillChar - '1';
 
-					}
+					Gotoxy(POS.X, POS.Y);
+					player->UseSkill(monster, skillNum, countTurn);
+					MonsterHitMotion(countTurn, monster->GetName(), player->GetName());
+					PlayerDurationSkills.push_back([&](int count) {player->UseSkill(monster, skillNum, count);});
 				}
+				
 			}
 			else if (t == '3')
 			{
 				shared_ptr<IPlayable> addableCreature = dynamic_pointer_cast<IPlayable>(player);
 				if (addableCreature)
 				{
-					addableCreature->DisplayInventory();					
-				}
-				t = _getche();
-				if (t == '1')
-				{
-					int selectItem;
-					cout << endl << "아이템을 선택해주세요: ";
-					t = _getche();
-					selectItem = t - '0';
+					notificationErase(0, POS.Y, 6);
+					addableCreature->DisplayInventory();
 
-					addableCreature->SelectInventoryItem(selectItem);
+					cout << "아이템을 선택하거나 나갑니다.\n";
+					char itemChar = _getche();
+					GotoxyCll(1);
+					int itemNum = itemChar - '1';
+
+					Item* getItem = addableCreature->SelectInventoryItem(itemNum);
+					if (getItem != nullptr)
+					{
+						IConsumable* consumable = dynamic_cast<IConsumable*>(getItem);
+						consumable->UseItem(player);
+						if (consumable->GetNumber() <= 0)
+						{
+							addableCreature->CheckZeroInventory();
+						}
+					}
 				}
 				
 			}
@@ -99,14 +136,14 @@ void Creature::Fight(shared_ptr<Creature> player, shared_ptr<Creature> monster, 
 		}
 		else // 몬스터 턴 ================
 		{
-			system("cls");
-			cout << countTurn << " 턴" << endl << endl; // 위에서 출력
+			Gotoxy(10, POS.Y);
 
 			int num = rand() % 2; // 공격, 스킬 사용 빈도 몬스터에서 받아오기?
 
 			if (num < 2)
 			{
-				monster->NormalAttack(monster, player);
+				notificationErase(0, POS.Y, 6);
+				monster->NormalAttack(monster, player, countTurn);
 				if (player->GetHp() <= 0)
 				{
 					break;
@@ -114,7 +151,9 @@ void Creature::Fight(shared_ptr<Creature> player, shared_ptr<Creature> monster, 
 			}
 			else if (num == 2)
 			{
-				monster->UseSkill(player);
+				notificationErase(0, POS.Y, 6);
+				int num = 0;// 수정!!!
+				monster->UseSkill(player, num, countTurn);
 			}
 			else
 			{
@@ -123,18 +162,60 @@ void Creature::Fight(shared_ptr<Creature> player, shared_ptr<Creature> monster, 
 
 		}
 		countTurn++;
+			
+
+		// 지속 스킬 구현부
+		//for (int i = 0;i < PlayerDurationSkills.size();i++)
+		//{
+		//	PlayerDurationSkills[i](countTurn);
+		//}
+
 	}
 
+	//초기화(상태 및 delete)
+	//system("cls");
+	Gotoxy(0, 0);
+	GotoxyClsLong(17);
+	Notifications->clear();
 
 }
 
-void Creature::NormalAttack(shared_ptr<Creature> attacker, shared_ptr<Creature> defender) //방어력 계산 필요
+void Creature::NormalAttack(shared_ptr<Creature> attacker, shared_ptr<Creature> defender, int countTurn) //방어력 계산 필요
 {
-	cout << "atk: " << attacker->GetTotalStatus()->TotalAtk << ", def: " << defender->GetTotalStatus()->TotalDef << endl;
+	//cout << "atk: " << attacker->GetTotalStatus()->TotalAtk << ", def: " << defender->GetTotalStatus()->TotalDef << endl;
 	int before = defender->Hp;
 	defender->CalcHp(-attacker->GetTotalStatus()->TotalAtk);
 	int after = defender->Hp;
-	cout << defender->GetName() << "가 " << before - after << " 만큼의 피해를 입었습니다." << endl;
+	//cout << defender->GetName() << "가 " << before - after << " 만큼의 피해를 입었습니다.     ";
+	
+	// 6줄 날리기 길게
+	notificationErase(0, POS.Y, 6);
+	string difference = to_string(before - after);
+	AddNotification(defender->GetName() + " 가 " + difference + " 만큼의 피해를 입었습니다.     ");
+	//GotoxyPrintXReturn("                                                  ", 0);
+	
+	MonsterHitMotion(countTurn, defender->GetName(), attacker->GetName());
+}
+
+void Creature::MonsterHitMotion(int countTurn, string defender, string attacker)
+{
+	if (countTurn % 2 == 0)
+	{
+		ReadFile(defender, 42);
+	}
+	else
+	{
+		ReadFile(attacker, 30);
+	}
+	Sleep(150);
+	if (countTurn % 2 == 0)
+	{
+		ReadFile(defender, 40);
+	}
+	else
+	{
+		ReadFile(attacker, 40);
+	}
 	Sleep(1000);
 }
 
@@ -161,6 +242,10 @@ void Creature::CalcHp(int hp)
 	else
 	{
 		Hp += hp;
+		if (Hp > MaxHp)
+		{
+			Hp = MaxHp;
+		}
 	}
 	
 }
@@ -168,6 +253,17 @@ void Creature::CalcHp(int hp)
 void Creature::CalcMp(int mp)
 {
 	Mp += mp;
+
+	if (Mp + mp <= 0)
+	{
+		Mp = 0;
+	}
+	if (Mp > MaxMp)
+	{
+
+		Mp += mp;
+		Mp = MaxMp;
+	}
 }
 
 void Creature::PrintBattle(shared_ptr<Creature> player, shared_ptr<Creature> monster)
@@ -191,16 +287,21 @@ void Creature::PrintBattle(shared_ptr<Creature> player, shared_ptr<Creature> mon
 	for (int i = 0;i < ScreenSize;i++) cout << "= ";
 }
 
-void Creature::ReadFile(string fileName)
+void Creature::ReadFile(string fileName, int start)
 {
-	ifstream in("..\\"+fileName);
+	ifstream in("..\\"+fileName+".txt");
 	string s;
+	int line = 2;
 
 	if (in.is_open()) {
 		while (!in.eof())
 		{
 			getline(in, s);
+			Gotoxy(start, line);
+			GotoxyPrintXReturn("                                        ", start - 10);
+			Gotoxy(start, line);
 			cout<< s << std::endl;
+			line++;
 		}
 	}
 	else {
@@ -334,6 +435,25 @@ void Creature::SetDef(int Def)
 	this->Defense = Def;
 }
 
+void Creature::AddNotification(string notification)
+{
+	Notifications->push_back(notification);
+	if (Notifications->size() > 6)
+	{
+		Notifications->erase(Notifications->begin());
+	}
+	Gotoxy(0, 18);
+	for (int i = 0;i < Notifications->size();i++)
+	{
+		cout << Notifications->at(i) << '\n';
+	}
+}
+
+void Creature::SetNotificationNum(int num)
+{
+	NotificationNum = num;
+}
+
 string Creature::GetName()
 {
 	return Name;
@@ -372,6 +492,11 @@ int Creature::GetAttack()
 int Creature::GetDefense()
 {
 	return Defense;
+}
+
+int Creature::GetNotoficationNum()
+{
+	return NotificationNum;
 }
 
 EquipedE* Creature::GetEquipments()
