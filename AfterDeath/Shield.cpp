@@ -7,6 +7,13 @@ Shield::Shield()
 	this->SetDefPoint(6);
 }
 
+Shield::Shield(int level)
+{
+	this->SetSN(114);
+	this->SetName("¹æÆÐ +" + to_string(level));
+	this->SetDefPoint(6 * (1 + 0.5 * level));
+}
+
 Shield::~Shield()
 {
 }

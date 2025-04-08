@@ -70,6 +70,7 @@ class Creature : enable_shared_from_this<Creature>
 {
 protected:
 	string Name;
+	static string PlayerName;
 	int Type; // 0은 Player, 이외는 Monster
 	int MaxHp;
 	int Hp;
@@ -80,7 +81,6 @@ protected:
 	struct EquipedE* Equipments;
 	vector<Skill*>* Skills;
 	static vector<string>* Notifications;
-	int NotificationNum = 0;
 
 	const int ScreenSize = 30; //space 기준 2칸이 1size
 
@@ -96,15 +96,16 @@ public:
 	//void Move(Map* currentMap, int* location);
 	void Fight(shared_ptr<Creature> player, shared_ptr<Creature> monster, int turn);
 	void NormalAttack(shared_ptr<Creature> attacker, shared_ptr<Creature> defender, int countTurn);
-	void MonsterHitMotion(int countTurn, string defender, string attacker);
-	virtual void UseSkill(shared_ptr<Creature> creature, int num, int turn) = 0;
+	void MonsterHitMotion(int countTurn, string defender, string attacker, string color);
+	void PrintMonsterStatus(int x, int y);
+	virtual bool UseSkill(shared_ptr<Creature> creature, int num, int turn) = 0;
 	virtual void Die() = 0;
 	void CalcHp(int hp);
 	void CalcMp(int mp);
+	int GetSkillType(int num);
 
-	void PrintBattle(shared_ptr<Creature> player, shared_ptr<Creature> monster);
 
-	void ReadFile(string fileName, int start);
+	void ReadFile(string fileName, int start, int erase);
 
 	struct Status* GetTotalStatus();
 
@@ -118,7 +119,6 @@ public:
 	void SetDef(int defense);
 	//void SetMyInven(shared_ptr<Inventory>);
 	void AddNotification(string notification);
-	void SetNotificationNum(int num);
 
 	string GetName();
 	int GetType();
@@ -128,7 +128,6 @@ public:
 	int GetMp();
 	int GetAttack();
 	int GetDefense();
-	int GetNotoficationNum();
 
 	EquipedE* GetEquipments();
 };

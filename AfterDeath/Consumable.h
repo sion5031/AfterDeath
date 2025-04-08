@@ -14,7 +14,7 @@ public:
 	Consumable(int num);
 	virtual ~Consumable(){}
 
-	virtual void UseItem(shared_ptr<Creature> player) = 0;
+	virtual string UseItem(shared_ptr<Creature> player) = 0;
 
 	void SetNumber(int num) override;
 	int GetNumber() override;

@@ -13,4 +13,7 @@ void GotoxyCls(int size, int x, int y);
 void GotoxyPrintReturn(string str, int x, int y);
 void GotoxyPrintXReturn(string str, int x);
 
+void GotoxyPreparePrintMenu();
+void GotoxyPreparePrintSituation();
+
 COORD GetCurrentXY();

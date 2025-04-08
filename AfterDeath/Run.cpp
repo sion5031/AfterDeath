@@ -13,6 +13,10 @@ unique_ptr<Map> CurrentMap;
 
 int main()
 {
+	//콘솔 창 크기 변경
+	system("mode con:cols=90 lines=35");
+	
+	//커서 숨기기
 	CONSOLE_CURSOR_INFO cursorInfo = { 0, };
 	cursorInfo.bVisible = 0;
 	cursorInfo.dwSize = 1;
@@ -21,68 +25,63 @@ int main()
 	srand(time(NULL));
 	//=============위는 건들지 말기
 
-
+	//locale::global(locale(".UTF-8"));
+	//SetConsoleOutputCP(949);
+	//SetConsoleOutputCP(CP_UTF8);
 
 
 	GameManager* GM = new GameManager();
-	/*
-	//==
-	shared_ptr<Creature> Hero = make_shared<Player>();		
-	shared_ptr<Creature> Monster1 = make_shared<Monster>();
-	shared_ptr<Creature> Monster2 = make_shared<Monster>();
+	system("cls");
 
-	CurrentMap = make_unique<Map>();
-	CurrentMap->AddCreature(26, Hero);
-	CurrentMap->AddCreature(36, Monster1);
-	CurrentMap->AddCreature(190, Monster2);
+	//오프닝
+	SetConsoleOutputCP(CP_UTF8);
+	GM->PrintStartPage("Main_After", 11, 4);
+	//GM->PrintStartPage("Main_After_BOM", 10, 4);
+	Sleep(500);
+	GM->PrintStartPage("Main_Death", 10, 18);
+	//GM->PrintStartPage("Main_Death_BOM", 9, 18);
+	SetConsoleOutputCP(949);
+	Gotoxy(34, 31);
+	cout << "PRESS ANY KEY";
+	_getche();
+	GotoxyCll(1);
+	system("cls");
+
+
+
 	
-	
 
-	CurrentMap->PrintMap();
-
-	//Hero->ReadFile("player.txt");
 
 	while (true)
 	{
-		CurrentMap->MovePlayer();
-		CurrentMap->DeathChecker();
-		//Monster1.reset();
-		CurrentMap->DeleteChecker();
-		CurrentMap->MoveMonster();
-		CurrentMap->DeathChecker();
-		CurrentMap->DeleteChecker();
-		system("cls");
-		CurrentMap->PrintMap();
-	}
-	*/
-	//GM->GetCurrentMap()->PrintMap();
+		
 
-	while (true)
-	{
-		Gotoxy(0, 0);
-		GM->GetCurrentMap()->PrintMap();
 
-		int nextMap = GM->GetCurrentMap()->MovePlayer();
-		if (nextMap != -1)
-		{
-			GM->MoveMap(nextMap);
-			continue;
-		}
-		if (GM->DeathPlayerChecker())
-		{
-			continue; // 원래라면 게임 처음으로...또는 죽었을 때 가는 곳
-		}
-		GM->DeathMonsterChecker();
 
-		GM->GetCurrentMap()->MoveMonster();
-		if (GM->DeathPlayerChecker())
+		while (true)
 		{
-			continue; // 원래라면 게임 처음으로...또는 죽었을 때 가는 곳
+			Gotoxy(0, 0);
+			GM->GetCurrentMap()->PrintMap();
+
+			int nextMap = GM->GetCurrentMap()->MovePlayer();
+			if (nextMap != -1)
+			{
+				GM->MoveMap(nextMap);
+				continue;
+			}
+			if (GM->DeathPlayerChecker())
+			{
+				break;
+			}
+			GM->DeathMonsterChecker();
+
+			GM->GetCurrentMap()->MoveMonster();
+			if (GM->DeathPlayerChecker())
+			{
+				break;
+			}
+			GM->DeathMonsterChecker();
 		}
-		GM->DeathMonsterChecker();
-		//GM->GetCurrentMap()->DeathChecker();
-		//GM->GetCurrentMap()->DeleteChecker();
-		//system("cls");
 	}
 
 

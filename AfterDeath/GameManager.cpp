@@ -1,5 +1,7 @@
 #include "GameManager.h"
 #include "ConsoleGotoxy.h"
+#include <algorithm>
+#include <random>
 
 GameManager::GameManager()
 {
@@ -9,6 +11,8 @@ GameManager::GameManager()
 	{
 		Maps->insert({ i, make_shared<Map>(i) });
 	}
+	Gotoxy(20, 17);
+	cout << "플레이어의 이름을 입력하세요 : ";
 	cin >> name;
 	Hero = make_shared<Player>(name);
 	CurrentMap = (*Maps)[0];
@@ -22,6 +26,7 @@ GameManager::GameManager()
 	
 	MakeMonsterMap1(Maps->at(0));
 	MakeMonsterMap2(Maps->at(1));
+	MakeMonsterMap3(Maps->at(2));
 
 	Maps->at(0)->AddCreature(Maps->at(0)->GetStartLocation(), Hero);
 
@@ -30,6 +35,64 @@ GameManager::GameManager()
 GameManager::~GameManager()
 {
 }
+
+void GameManager::PrintStartPage(string fileName, int x, int y)
+{
+	ifstream readFile;
+	readFile.open("..\\" + fileName + ".txt");
+	vector<string> strVector;
+	int line = 0;
+
+	if (readFile.is_open()) {
+		while (!readFile.eof())
+		{
+			string s;
+			getline(readFile, s);
+			strVector.push_back(s);
+			line++;
+		}
+	}
+	else {
+		cout << "파일을 찾을 수 없습니다!" << endl;
+	}
+	random_device rd;
+	mt19937 g(rd());
+	vector<int> randomVector;
+	for (int i = 0;i < strVector.size();i++)
+	{
+		randomVector.push_back(i);
+	}
+	std::shuffle(randomVector.begin(), randomVector.end(), g);
+	for (int i = 0;i < strVector.size();i++)
+	{
+		Gotoxy(x, y + randomVector[i]);
+		cout << strVector[randomVector[i]] << '\n';
+		Sleep(80);
+	}
+
+	readFile.close();
+}
+//void GameManager::PrintStartPage(string fileName, int x, int y)
+//{
+//	ifstream readFile;
+//	readFile.open("..\\" + fileName + ".txt");
+//	string s;
+//	int line = 0;
+//
+//	if (readFile.is_open()) {
+//		while (!readFile.eof())
+//		{
+//			getline(readFile, s);
+//			Gotoxy(x, y + line);
+//			cout << s << endl;
+//			line++;
+//		}
+//	}
+//	else {
+//		cout << "파일을 찾을 수 없습니다!" << endl;
+//	}
+//	readFile.close();
+//}
 
 void GameManager::MoveMap(int nextMap)
 {
@@ -69,9 +132,6 @@ bool GameManager::DeathPlayerChecker()
 		MakeMonsterMap1(Maps->at(0)); // 초기화 시 자리있음!
 		MakeMonsterMap2(Maps->at(1));
 
-
-
-
 		Hero->InitCreature();		//hp, mp, Equipments
 
 
@@ -109,9 +169,6 @@ bool GameManager::DeathPlayerChecker()
 			}
 		}
 		
-		
-		
-
 		//CurrentMap->DeletePlayer();
 
 		CurrentMap = Maps->at(0); // 첫 맵으로 전환
@@ -131,12 +188,6 @@ void GameManager::DeathMonsterChecker()
 		{
 			if (Monsters->at(i)->at(j)->GetHp() <= 0)
 			{
-				//EquipedE* dropItem = new EquipedE;
-				//dropItem = Monsters->at(i)->at(j)->GetEquipments();
-				//MapObjects* dropObjects = new MapObjects;
-				//dropObjects->Item = dropItem->myGlove;
-				//CurrentMap->AddObject(, dropObjects); // Map에서 구현함
-
 				Monsters->at(i)->at(j).reset();
 				Monsters->at(i)->erase(Monsters->at(i)->begin() + j);//위와 같은말?
 				
@@ -145,31 +196,6 @@ void GameManager::DeathMonsterChecker()
 			}
 		}
 	}
-
-	//int MapSize = CurrentMap->GetMapSize();
-	//for (int i = 0;i < MapSize * MapSize;i++)
-	//{
-	//	if (CurrentMap->GetCreature(i)!=nullptr)
-	//	{
-	//		if (CurrentMap->GetCreature(i)->GetHp() <= 0 && CurrentMap->GetCreature(i)->GetType() == 0)
-	//		{
-	//			if (CurrentMap->GetCreature(i)->GetType() == 0)
-	//			{
-	//				//GetCreature(i).reset();
-	//				break;
-	//			}
-	//			else if (CurrentMap->GetCreature(i)->GetType() > 0)
-	//			{
-	//				CurrentMap->GetCreature(i).reset();
-	//				break;
-	//			}
-	//			else
-	//			{
-	//				cout << "Creature Type Error" << endl;
-	//			}
-	//		}
-	//	}
-	//}
 }
 
 void GameManager::InitMonster(int mapNum)
@@ -192,35 +218,58 @@ void GameManager::InitMonster(int mapNum)
 void GameManager::MakeMonsterMap1(shared_ptr<Map> map)
 {
 	//creature 넣기
-	Monsters->at(0)->clear();
-	Monsters->at(0)->push_back(make_shared<Monster>());
-	Monsters->at(0)->push_back(make_shared<Monster>());
+	int num = map->GetNum();
+	Monsters->at(num)->clear();
+	Maps->at(num)->DeleteChecker();
 
-	Maps->at(0)->DeleteChecker();
-	Maps->at(0)->AddCreature(36, Monsters->at(0)->at(0));
-	Maps->at(0)->AddCreature(190, Monsters->at(0)->at(1));
+	Monsters->at(num)->push_back(make_shared<Monster>());
+	Monsters->at(num)->push_back(make_shared<Monster>());
+
+	Maps->at(num)->AddCreature(36, Monsters->at(num)->at(0));
+	Maps->at(num)->AddCreature(190, Monsters->at(num)->at(1));
 
 	MapObjects* newMapObject = new MapObjects;
 	newMapObject->Portal = make_shared<Portal>(1);
-	Maps->at(0)->AddObject(191, newMapObject); // 초기화시 아마 자리있음?
+	Maps->at(0)->AddObject(191, newMapObject);
 }
 
 void GameManager::MakeMonsterMap2(shared_ptr<Map> map)
 {
-	int num = 1;
+	int num = map->GetNum();
 	//creature 넣기
 	Monsters->at(num)->clear();
-	Monsters->at(num)->push_back(make_shared<Monster>());
-	Monsters->at(num)->push_back(make_shared<Monster>());
-	Monsters->at(num)->push_back(make_shared<Monster>());
-
 	Maps->at(num)->DeleteChecker();
-	//Maps->at(num)->AddCreature(Maps->at(num)->GetStartLocation(), Hero);
+
+	Monsters->at(num)->push_back(make_shared<Monster>());
+	Monsters->at(num)->push_back(make_shared<Monster>());
+	Monsters->at(num)->push_back(make_shared<Monster>(1));
+
 	Maps->at(num)->AddCreature(36, Monsters->at(num)->at(0));
 	Maps->at(num)->AddCreature(190, Monsters->at(num)->at(1));
 	Maps->at(num)->AddCreature(160, Monsters->at(num)->at(2));
 
 	MapObjects* newMapObject = new MapObjects;
-	newMapObject->Portal = make_shared<Portal>(0);
+	newMapObject->Portal = make_shared<Portal>(2);
 	Maps->at(num)->AddObject(92, newMapObject);
+}
+
+void GameManager::MakeMonsterMap3(shared_ptr<Map> map)
+{
+	int num = map->GetNum();
+	//creature 넣기
+	Monsters->at(num)->clear();
+	Maps->at(num)->DeleteChecker();
+
+	Monsters->at(num)->push_back(make_shared<Monster>());
+	Monsters->at(num)->push_back(make_shared<Monster>(1));
+	Monsters->at(num)->push_back(make_shared<Monster>(2));
+
+	Maps->at(num)->AddCreature(36, Monsters->at(num)->at(0));
+	Maps->at(num)->AddCreature(190, Monsters->at(num)->at(1));
+	Maps->at(num)->AddCreature(160, Monsters->at(num)->at(2));
+
+	//마지막 맵이라
+	//MapObjects* newMapObject = new MapObjects;
+	//newMapObject->Portal = make_shared<Portal>(0);
+	//Maps->at(num)->AddObject(92, newMapObject);
 }

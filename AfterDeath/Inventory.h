@@ -23,7 +23,7 @@ public:
 	Inventory();
 	~Inventory();
 
-	void AddItem(Item* item);
+	string AddItem(Item* item);
 	void RemoveItem(int num);
 	Item* TryUse(int num);
 	Item* TryEquip(int num);

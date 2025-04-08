@@ -8,6 +8,7 @@ private:
 
 public:
 	Shoes();
+	Shoes(int level);
 	//virtual ~Shoes(){ cout << "~Shoes()" << endl; }
 	~Shoes();
 

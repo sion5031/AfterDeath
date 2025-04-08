@@ -3,7 +3,7 @@
 AttackUp::AttackUp()
 {
 	Name = "공격력 증가";
-	Type = 1;
+	Type = 0;
 	EffectValue = 3;
 	Level = 1;
 }

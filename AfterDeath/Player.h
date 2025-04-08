@@ -32,7 +32,7 @@ public:
 	void PlusDeathCount() override;
 
 	void DisplaySkills();
-	void UseSkill(shared_ptr<Creature> creature, int num, int turn) override;
+	bool UseSkill(shared_ptr<Creature> creature, int num, int turn) override;
 	void Die() override;
 
 	void SetDeathCount(int deathCount);

@@ -9,11 +9,12 @@ private:
 
 public:
 	Monster();
+	Monster(int level);
 	~Monster();
 
 	void SetItems(vector<Item*>* equipments);
 
-	void UseSkill(shared_ptr<Creature> creature, int num, int count) override;
+	bool UseSkill(shared_ptr<Creature> creature, int num, int count) override;
 	void Die() override;
 
 	//int GetTotalAtk();

@@ -22,6 +22,8 @@ public:
 	GameManager();
 	~GameManager();
 
+	void PrintStartPage(string fileName, int x, int y);
+
 	void MoveMap(int nextMap);
 
 	shared_ptr<Map> GetMap(string name);
@@ -33,4 +35,5 @@ public:
 
 	void MakeMonsterMap1(shared_ptr<Map> map);
 	void MakeMonsterMap2(shared_ptr<Map> map);
+	void MakeMonsterMap3(shared_ptr<Map> map);
 };

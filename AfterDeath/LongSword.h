@@ -8,6 +8,7 @@ private:
 
 public:
 	LongSword();
+	LongSword(int level);
 	//virtual ~LongSword(){ cout << "~LongSword()" << endl; }
 	~LongSword();
 

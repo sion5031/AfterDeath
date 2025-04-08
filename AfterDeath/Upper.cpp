@@ -7,6 +7,13 @@ Upper::Upper()
 	this->SetDefPoint(10);
 }
 
+Upper::Upper(int level)
+{
+	this->SetSN(110);
+	this->SetName("»óÀÇ +" + to_string(level));
+	this->SetDefPoint(10 * (1 + 0.5 * level));
+}
+
 Upper::~Upper()
 {
 }

@@ -7,6 +7,13 @@ ShortSword::ShortSword()
 	this->SetAtkPoint(8);
 }
 
+ShortSword::ShortSword(int level)
+{
+	this->SetSN(101);
+	this->SetName("´Ü°Ë +" + to_string(level));
+	this->SetAtkPoint(8 * (1 + 0.5 * level));
+}
+
 ShortSword::~ShortSword()
 {
 }

@@ -117,8 +117,9 @@ Player::Player()
 Player::Player(string name)
 {
 	Name = name;
+	PlayerName = name;
 	Type = 0;
-	MaxHp = 50;
+	MaxHp = 100;
 	Hp = MaxHp;
 	MaxMp = 50;
 	Mp = MaxMp;
@@ -130,16 +131,22 @@ Player::Player(string name)
 	MyInven = new Inventory();
 
 
-	MyInven->AddItem(new LongSword());
-	GotoxyCll(30, 0, 0);
-	//MyInven->TryEquip(0);
+	AddNotification(MyInven->AddItem(new LongSword()));
+	//GotoxyCll(30, 0, 0);
+	Gotoxy(0, 0);
+	GotoxyClsLong(1);
 	EquipItem(0); // 원래는 인벤에서 찾아서 그 번호 넣어야
-	MyInven->AddItem(new HpPotion(2));
-	GotoxyCll(30, 0, 0);
+	AddNotification(MyInven->AddItem(new HpPotion(2)));
+	//GotoxyCll(30, 0, 0);
+	Gotoxy(0, 0);
+	GotoxyClsLong(1);
 
 
 	Skill* fireBall = new FireBall();
+	Skill* increaseAttack = new IncreaseAttack();
+
 	Skills->push_back(fireBall);
+	Skills->push_back(increaseAttack);
 }
 
 Player::~Player()
@@ -153,7 +160,7 @@ void Player::DisplayInventory()
 
 void Player::AddInventory(Item* item)
 {
-	MyInven->AddItem(item);
+	AddNotification(MyInven->AddItem(item));
 }
 
 Item* Player::SelectInventoryItem(int num)
@@ -161,7 +168,7 @@ Item* Player::SelectInventoryItem(int num)
 	if (MyInven->bCheckPresence(num))
 	{
 		char usage;
-		Gotoxy(0, 10);
+		Gotoxy(0, 5);
 		GotoxyClsShort(4);
 		cout << "1. 사용하기" << '\n' << "2. 장비하기" << '\n' << "3. 제거하기" << endl;
 		usage = _getche();
@@ -243,13 +250,22 @@ void Player::DisplaySkills()
 	}
 }
 
-void Player::UseSkill(shared_ptr<Creature> creature, int num, int turn)
+bool Player::UseSkill(shared_ptr<Creature> creature, int num, int turn)
 {
-	if (num >= 0 && num < Skills->size())
+	string message = Skills->at(num)->Effect(creature, turn);
+	if (!message.empty())
 	{
-		CalcMp(-Skills->at(num)->GetMpConsume());
-		AddNotification(Skills->at(num)->Effect(creature, turn));
+
+		if (message == "-1")
+		{
+			return false;
+		}
+		else
+		{
+			AddNotification(message);
+		}
 	}
+	return true;
 }
 
 void Player::Die()

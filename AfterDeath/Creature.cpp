@@ -7,6 +7,7 @@
 #include "ConsoleGotoxy.h"
 
 vector<string>* Creature::Notifications = new vector<string>;
+string Creature::PlayerName;
 
 COORD POS;
 
@@ -35,7 +36,7 @@ void Creature::Fight(shared_ptr<Creature> player, shared_ptr<Creature> monster, 
 	int countTurn = turn;
 	char t;
 
-	vector<function<void(int)>> PlayerDurationSkills;
+	vector<function<bool(int)>> PlayerDurationSkills;
 	//vector<UseSkillFuncPtr> MonsterDurationSkills;
 
 
@@ -51,23 +52,39 @@ void Creature::Fight(shared_ptr<Creature> player, shared_ptr<Creature> monster, 
 		//상태 갱신
 		string strTurn;
 		GotoxyPrintReturn(to_string(countTurn) + " 턴", 0, 0 );
+		monster->PrintMonsterStatus(42, 0);
 		//cout << countTurn << " 턴" << endl << endl; // 위에서 출력하고 지우지 않게 하기
 
-		ReadFile(monster->GetName(), 40);
+		ReadFile(monster->GetName(), 40, 4);
 
 		POS = GetCurrentXY();
+		POS.X += 2;
 
-		Gotoxy(0, 5);
-		cout << "Hp: " << player->GetHp() << "/" << player->GetTotalStatus()->TotalMaxHp
-			<< "  Mp: " << player->GetMp() << "/" << player->GetTotalStatus()->TotalMaxMp << '\n'
-			<< "Atk: " << player->GetTotalStatus()->TotalAtk
-			<< "\t  Def: " << player->GetTotalStatus()->TotalDef << "\n\n";
 
+		for (int i = 0;i < PlayerDurationSkills.size();i++)
+		{
+			//PlayerDurationSkills[i](countTurn);
+			if (!PlayerDurationSkills[i](countTurn))//스킬이 종료(false) 되었다면
+			{
+				PlayerDurationSkills.erase(PlayerDurationSkills.begin() + i);
+			}
+		}
+
+
+
+
+
+		Gotoxy(0, 13);
+		GotoxyClsShort(2);
+		cout << "HP: " << player->GetHp() << "/" << player->GetTotalStatus()->TotalMaxHp
+			<< "\tAtk: " << player->GetTotalStatus()->TotalAtk << '\n'
+			<< "MP: " << player->GetMp() << "/" << player->GetTotalStatus()->TotalMaxMp
+			<< "\tDef: " << player->GetTotalStatus()->TotalDef << "\n"
+			<< "====================\n";
 
 		if (countTurn % 2 == 0)
 		{
-			Gotoxy(0, 10);
-			GotoxyClsShort(4);
+			GotoxyPreparePrintMenu();
 			cout << "1. 공격\t|\n2. 스킬\t|\n3. 가방\t|\n4. 포기\t|\n" << endl;
 			t = _getche();
 			GotoxyCll(1);
@@ -77,29 +94,48 @@ void Creature::Fight(shared_ptr<Creature> player, shared_ptr<Creature> monster, 
 			if (t == '1')
 			{
 				player->NormalAttack(player, monster, countTurn); // 의미 없는 주체...
-				if (monster->GetHp() <= 0)
-				{
-					break;
-				}
 			}
 			else if (t == '2')
 			{
 				shared_ptr<IPlayable> addableCreature = dynamic_pointer_cast<IPlayable>(player);
 				if (addableCreature)
 				{
+					GotoxyPreparePrintMenu();
 					addableCreature->DisplaySkills();
-					Gotoxy(0, POS.Y);
-					notificationErase(0, POS.Y, 6);
-					addableCreature->DisplaySkills();
-					cout << "스킬을 선택하거나 나갑니다." << endl;
+					//cout << "스킬을 선택하거나 나갑니다." << endl;
 					char skillChar = _getche();
 					GotoxyCll(1);
 					int skillNum = skillChar - '1';
 
 					Gotoxy(POS.X, POS.Y);
-					player->UseSkill(monster, skillNum, countTurn);
-					MonsterHitMotion(countTurn, monster->GetName(), player->GetName());
-					PlayerDurationSkills.push_back([&](int count) {player->UseSkill(monster, skillNum, count);});
+					if (player->GetSkillType(skillNum) == 1) // 타인에게 발동
+					{
+						if (GetMp() < Skills->at(skillNum)->GetMpConsume())
+						{
+							AddNotification("\"" + Skills->at(skillNum)->GetName() + "\"" + " 사용을 위한 Mp가 부족합니다.");
+						}
+						else
+						{
+							CalcMp(-Skills->at(skillNum)->GetMpConsume());
+							player->UseSkill(monster, skillNum, countTurn);
+							MonsterHitMotion(countTurn, monster->GetName(), player->GetName(), "color 4f");
+							PlayerDurationSkills.push_back([&](int count) -> bool {return player->UseSkill(monster, skillNum, count);});
+						}
+					}
+					else if (player->GetSkillType(skillNum) == 2) // 스스로에게 발동
+					{
+						if (GetMp() < Skills->at(skillNum)->GetMpConsume())
+						{
+							AddNotification("\"" + Skills->at(skillNum)->GetName() + "\"" + " 사용을 위한 Mp가 부족합니다.");
+						}
+						else
+						{
+							CalcMp(-Skills->at(skillNum)->GetMpConsume());
+							player->UseSkill(player, skillNum, countTurn);							
+							PlayerDurationSkills.push_back([&](int count) -> bool {return player->UseSkill(player, skillNum, count);});
+						}
+						
+					}
 				}
 				
 			}
@@ -108,10 +144,9 @@ void Creature::Fight(shared_ptr<Creature> player, shared_ptr<Creature> monster, 
 				shared_ptr<IPlayable> addableCreature = dynamic_pointer_cast<IPlayable>(player);
 				if (addableCreature)
 				{
-					notificationErase(0, POS.Y, 6);
+					GotoxyPreparePrintMenu();
 					addableCreature->DisplayInventory();
-
-					cout << "아이템을 선택하거나 나갑니다.\n";
+					//cout << "아이템을 선택하거나 나갑니다.\n";
 					char itemChar = _getche();
 					GotoxyCll(1);
 					int itemNum = itemChar - '1';
@@ -120,7 +155,7 @@ void Creature::Fight(shared_ptr<Creature> player, shared_ptr<Creature> monster, 
 					if (getItem != nullptr)
 					{
 						IConsumable* consumable = dynamic_cast<IConsumable*>(getItem);
-						consumable->UseItem(player);
+						player->AddNotification(consumable->UseItem(player));
 						if (consumable->GetNumber() <= 0)
 						{
 							addableCreature->CheckZeroInventory();
@@ -136,7 +171,7 @@ void Creature::Fight(shared_ptr<Creature> player, shared_ptr<Creature> monster, 
 		}
 		else // 몬스터 턴 ================
 		{
-			Gotoxy(10, POS.Y);
+			Sleep(200);
 
 			int num = rand() % 2; // 공격, 스킬 사용 빈도 몬스터에서 받아오기?
 
@@ -144,10 +179,6 @@ void Creature::Fight(shared_ptr<Creature> player, shared_ptr<Creature> monster, 
 			{
 				notificationErase(0, POS.Y, 6);
 				monster->NormalAttack(monster, player, countTurn);
-				if (player->GetHp() <= 0)
-				{
-					break;
-				}
 			}
 			else if (num == 2)
 			{
@@ -160,6 +191,11 @@ void Creature::Fight(shared_ptr<Creature> player, shared_ptr<Creature> monster, 
 				//예외?
 			}
 
+		}
+
+		if (player->GetHp() <= 0 || monster->GetHp() <= 0)
+		{
+			break;
 		}
 		countTurn++;
 			
@@ -176,7 +212,7 @@ void Creature::Fight(shared_ptr<Creature> player, shared_ptr<Creature> monster, 
 	//system("cls");
 	Gotoxy(0, 0);
 	GotoxyClsLong(17);
-	Notifications->clear();
+	//Notifications->clear();
 
 }
 
@@ -194,29 +230,62 @@ void Creature::NormalAttack(shared_ptr<Creature> attacker, shared_ptr<Creature> 
 	AddNotification(defender->GetName() + " 가 " + difference + " 만큼의 피해를 입었습니다.     ");
 	//GotoxyPrintXReturn("                                                  ", 0);
 	
-	MonsterHitMotion(countTurn, defender->GetName(), attacker->GetName());
+	MonsterHitMotion(countTurn, defender->GetName(), attacker->GetName(), "color 04");
 }
 
-void Creature::MonsterHitMotion(int countTurn, string defender, string attacker)
+void Creature::MonsterHitMotion(int countTurn, string defender, string attacker, string color)
 {
 	if (countTurn % 2 == 0)
 	{
-		ReadFile(defender, 42);
+		//system(color.c_str());
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12);
+		ReadFile(defender, 42, 2);
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
 	}
 	else
 	{
-		ReadFile(attacker, 30);
+		//system(color.c_str());
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 14);
+		//ReadFile(attacker, 40, 2);
+		Sleep(200);
+		ReadFile(attacker, 30, 2);
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+		//Sleep(100);
 	}
-	Sleep(150);
+	Sleep(300);
 	if (countTurn % 2 == 0)
 	{
-		ReadFile(defender, 40);
+		//system("color 0f");
+		ReadFile(defender, 40, 4);
 	}
 	else
 	{
-		ReadFile(attacker, 40);
+		//system("color 0f");
+		ReadFile(attacker, 40, 12);
 	}
-	Sleep(1000);
+	Sleep(700);
+}
+
+void Creature::PrintMonsterStatus(int x, int y)
+{
+	GotoxyPrintReturn("<"+Name+">", x, y);
+	Gotoxy(x, y+1);
+	int maxHp = GetTotalStatus()->TotalMaxHp/5;
+	int currentHp = GetHp()/5;
+	if (currentHp == 0 && GetHp() > 0)
+	{
+		currentHp = 1;
+	}
+	cout << "HP [";
+	for (int i = 0;i < currentHp;i++)
+	{
+		cout << '=';
+	}
+	for (int i = 0;i < maxHp - currentHp;i++)
+	{
+		cout << '-';
+	}
+	cout << "]";
 }
 
 void Creature::CalcHp(int hp)
@@ -266,28 +335,20 @@ void Creature::CalcMp(int mp)
 	}
 }
 
-void Creature::PrintBattle(shared_ptr<Creature> player, shared_ptr<Creature> monster)
+int Creature::GetSkillType(int num)
 {
-	for (int i = 0;i < ScreenSize;i++) cout << "= ";
-	for (int i = 0;i < ScreenSize;i++) cout << "  ";
-
-	int size = 4;
-	for (int i = 0;i < size;i++)
+	if (num >= 0 && num < Skills->size())
 	{
-		for (int j = 0;j < ScreenSize-size;j++) cout << "  ";
-		//for
+		return Skills->at(num)->GetType();
 	}
-
-
-
-
-
-
-	for (int i = 0;i < ScreenSize;i++) cout << "  ";
-	for (int i = 0;i < ScreenSize;i++) cout << "= ";
+	else
+	{
+		return -1;
+	}
 }
 
-void Creature::ReadFile(string fileName, int start)
+
+void Creature::ReadFile(string fileName, int start, int erase)
 {
 	ifstream in("..\\"+fileName+".txt");
 	string s;
@@ -298,8 +359,8 @@ void Creature::ReadFile(string fileName, int start)
 		{
 			getline(in, s);
 			Gotoxy(start, line);
-			GotoxyPrintXReturn("                                        ", start - 10);
-			Gotoxy(start, line);
+			GotoxyPrintXReturn("                                                  ", start - erase);
+			//Gotoxy(start, line);
 			cout<< s << std::endl;
 			line++;
 		}
@@ -370,30 +431,6 @@ Status* Creature::GetTotalStatus()
 	return totalStatus;
 }
 
-//void Creature::ReadFile(string fileName)
-//{
-//	wstring tem;
-//	tem.assign(fileName.begin(), fileName.end());
-//	wstring path = L"..\\" + tem;
-//
-//	wifstream in;
-//	in.imbue(locale(locale::empty(), new codecvt_utf16<wchar_t, 0x10ffff, consume_header>));
-//	in.open(path);
-//	wstring s;
-//
-//	if (in.is_open()) {
-//		while (!in.eof())
-//		{
-//			cout << "진입" << endl;
-//			getline(in, s);
-//			wcout << s << endl;
-//		}
-//	}
-//	else {
-//		cout << "파일을 찾을 수 없습니다!" << std::endl;
-//	}
-//	in.close();
-//}
 
 void Creature::SetName(string Name)
 {
@@ -435,23 +472,68 @@ void Creature::SetDef(int Def)
 	this->Defense = Def;
 }
 
+//void Creature::AddNotification(string notification)
+//{
+//	Notifications->push_back(notification);
+//	if (Notifications->size() > 6)
+//	{
+//		Notifications->erase(Notifications->begin());
+//	}
+//	GotoxyPreparePrintSituation();
+//	for (int i = 0;i < Notifications->size();i++)
+//	{
+//		cout << Notifications->at(i) << '\n';
+//	}
+//}
+
 void Creature::AddNotification(string notification)
 {
+	int position;
+	int index = 0;
+	string str;
+
 	Notifications->push_back(notification);
 	if (Notifications->size() > 6)
 	{
 		Notifications->erase(Notifications->begin());
 	}
-	Gotoxy(0, 18);
+	
+	GotoxyPreparePrintSituation();
 	for (int i = 0;i < Notifications->size();i++)
 	{
-		cout << Notifications->at(i) << '\n';
-	}
-}
+		bool bPrint = false;
+		str = Notifications->at(i);
+		while ((position = str.find(' ', index)) != string::npos)
+		{
+			int len = position - index;
+			string result = str.substr(index, len);
+			if (result == PlayerName)
+			{
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10);
+				cout << result;
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+				result = str.substr(len + 1, str.length() - len);
+				cout << result << "\n";
+				bPrint = true;
+			}
+			else if (result == "스켈레톤" || result == "드래곤")
+			{
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12);
+				cout << result;
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+				result = str.substr(len + 1, str.length() - len);
+				cout << result << "\n";
+				bPrint = true;
+			}
 
-void Creature::SetNotificationNum(int num)
-{
-	NotificationNum = num;
+			//index = position + 1;
+			break; // 첫번째 단어만 체크 가능하게 됨
+		}
+		if (bPrint == false)
+		{
+			cout << Notifications->at(i) << '\n';
+		}
+	}
 }
 
 string Creature::GetName()
@@ -492,11 +574,6 @@ int Creature::GetAttack()
 int Creature::GetDefense()
 {
 	return Defense;
-}
-
-int Creature::GetNotoficationNum()
-{
-	return NotificationNum;
 }
 
 EquipedE* Creature::GetEquipments()

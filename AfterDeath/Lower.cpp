@@ -7,6 +7,13 @@ Lower::Lower()
 	this->SetDefPoint(8);
 }
 
+Lower::Lower(int level)
+{
+	this->SetSN(111);
+	this->SetName("гоюг +" + to_string(level));
+	this->SetDefPoint(8 * (1 + 0.5 * level));
+}
+
 Lower::~Lower()
 {
 }

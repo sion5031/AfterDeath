@@ -7,14 +7,13 @@
 #include "Shoes.h"
 #include "Shield.h"
 
+
 Monster::Monster()
 {
 	Name = "스켈레톤";
 	Type = 1;
 	MaxHp = 20;
-	Hp = MaxHp;
 	MaxMp = 5;
-	Mp = MaxMp;
 	Attack = 15;
 	Defense = 3;
 	Items = new vector<Item*>;
@@ -27,6 +26,31 @@ Monster::Monster()
 	Equipments->myGlove = new Glove();
 	Equipments->myShoes = new Shoes();
 	Equipments->myShield = new Shield();
+
+	Hp = GetTotalStatus()->TotalMaxHp;
+	Mp = GetTotalStatus()->TotalMaxMp;
+}
+
+Monster::Monster(int level)
+{
+	Name = "드래곤";
+	Type = 1;
+	MaxHp = 200;
+	Hp = MaxHp;
+	MaxMp = 800;
+	Mp = MaxMp;
+	Attack = 35;
+	Defense = 10;
+	Items = new vector<Item*>;
+	Skills = new vector<Skill*>;
+	//Equipments = new EquipedE; //Creature 생성자에서 생성
+
+	Equipments->myWeapon = new LongSword(level);
+	Equipments->myUpper = new Upper(level);
+	Equipments->myLower = new Lower(level);
+	Equipments->myGlove = new Glove(level);
+	Equipments->myShoes = new Shoes(level);
+	Equipments->myShield = new Shield(level);
 }
 
 Monster::~Monster()
@@ -38,7 +62,7 @@ void Monster::SetItems(vector<Item*>* equipments)
 	Items = Items;
 }
 
-void Monster::UseSkill(shared_ptr<Creature> creature, int num, int count)
+bool Monster::UseSkill(shared_ptr<Creature> creature, int num, int count)
 {
 	if (this->Skills->size() > 0)
 	{
@@ -46,70 +70,9 @@ void Monster::UseSkill(shared_ptr<Creature> creature, int num, int count)
 		cout << this->Skills->at(num)->GetName() << " 사용" << endl;
 		creature->CalcHp(-this->Skills->at(num)->GetEffectValue());
 	}
+	return true;
 }
 
 void Monster::Die()
 {
 }
-
-//int Monster::GetTotalAtk()
-//{
-//	int sum = Attack;
-//
-//	if (Equipments->myWeapon != nullptr)
-//	{
-//		sum += Equipments->myWeapon->GetAtkPoint();
-//	}
-//	if (Equipments->myWeapon != nullptr)
-//	{
-//		sum += Equipments->myWeapon->GetAtkPoint();
-//	}
-//	if (Equipments->myWeapon != nullptr)
-//	{
-//		sum += Equipments->myWeapon->GetAtkPoint();
-//	}
-//	if (Equipments->myWeapon != nullptr)
-//	{
-//		sum += Equipments->myWeapon->GetAtkPoint();
-//	}
-//	if (Equipments->myWeapon != nullptr)
-//	{
-//		sum += Equipments->myWeapon->GetAtkPoint();
-//	}
-//	if (Equipments->myWeapon != nullptr)
-//	{
-//		sum += Equipments->myWeapon->GetAtkPoint();
-//	}
-//
-//	return sum;
-//}
-//
-//int Monster::GetTotalDef()
-//{
-//	int sum = Defense;
-//	for (int i = 0;i < Equipments->size();i++)
-//	{
-//		sum += Equipments->at(i)->GetDefPoint();
-//	}
-//	return sum;
-//}
-//
-//int Monster::GetTotalMaxHp()
-//{
-//	int sum = MaxHp;
-//	for (int i = 0;i < Equipments->size();i++)
-//	{
-//		sum += Equipments->at(i)->GetHpPoint();
-//	}
-//	return sum;
-//}
-//
-//int Monster::GetTotalMaxMp()
-//{
-//	int sum = MaxMp;
-//	for (int i = 0;i < Equipments->size();i++)
-//	{
-//		sum += Equipments->at(i)->GetMpPoint();
-//	}
-//	return sum;
-//}
