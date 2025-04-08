@@ -8,6 +8,7 @@ private:
 
 public:
 	Shield();
+	Shield(int level);
 	//virtual ~Shield(){ cout << "~Shield()" << endl; }
 	~Shield();
 

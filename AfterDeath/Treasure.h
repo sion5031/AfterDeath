@@ -17,6 +17,7 @@ public:
 	~Treasure();
 
 	void SetItems(vector<Item*>* treasure);
+	void AddItems(Item* treasure);
 	void SetNewSkill(Skill* skill);
 
 	vector<Item*>* GetItems();

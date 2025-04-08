@@ -33,6 +33,7 @@ private:
 	map<int, weak_ptr<Creature>>* CreaturesLocation;
 	map<int, MapObjects*>* ObjectsLocation;
 	const int MapSize = 15;
+	bool bRealTime = true;
 
 	void FillMap();
 
@@ -52,7 +53,6 @@ public:
 	//void MoveMap(?);
 	//void Pause(?);
 	
-	void _printMap();
 	void PrintMap();
 	shared_ptr<Creature> GetCreature(int location);
 	int GetPlayerLocation();
@@ -70,7 +70,7 @@ public:
 
 	const int GetMapSize();
 
-	void DeathChecker();
+	//void DeathChecker();
 	void DeleteChecker();
 	void DeletePlayer();
 

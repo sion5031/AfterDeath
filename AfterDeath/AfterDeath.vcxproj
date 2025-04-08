@@ -130,6 +130,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\Users\KGA\Downloads\ConsoleHelper.h" />
     <ClInclude Include="ActiveSkill.h" />
     <ClInclude Include="Armor.h" />
     <ClInclude Include="AttackUp.h" />
@@ -165,6 +166,7 @@
     <ClInclude Include="Weapon.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\Users\KGA\Downloads\ConsoleHelper.cpp" />
     <ClCompile Include="ActiveSkill.cpp" />
     <ClCompile Include="AttackUp.cpp" />
     <ClCompile Include="ConsoleGotoxy.cpp" />

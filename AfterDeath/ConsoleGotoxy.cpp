@@ -34,7 +34,7 @@ void GotoxyClsShort(int size)
 	COORD Pos = { presentCur.dwCursorPosition.X , presentCur.dwCursorPosition.Y };
 	for (int i = 0;i < size;i++)
 	{
-		cout << "                    \n";
+		cout << "                              \n";
 	}
 	
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Pos);
@@ -47,7 +47,7 @@ void GotoxyClsLong(int size)
 	COORD Pos = { presentCur.dwCursorPosition.X , presentCur.dwCursorPosition.Y };
 	for (int i = 0;i < size;i++)
 	{
-		cout << "                                                            \n";
+		cout << "                                                                                  \n";
 	}
 
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Pos);
@@ -82,8 +82,21 @@ void GotoxyPrintXReturn(string str, int x)
 	COORD Pos = { x , presentCur.dwCursorPosition.Y };
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Pos);
 	cout << str;
-	Pos = { presentCur.dwCursorPosition.X , (short)((int)presentCur.dwCursorPosition.Y + 1) };
+	//Pos = { presentCur.dwCursorPosition.X , (short)((int)presentCur.dwCursorPosition.Y + 1) };
+	Pos = { presentCur.dwCursorPosition.X , presentCur.dwCursorPosition.Y };
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Pos);
+}
+
+void GotoxyPreparePrintMenu()
+{
+	Gotoxy(0, 5);
+	GotoxyClsShort(4);
+}
+
+void GotoxyPreparePrintSituation()
+{
+	Gotoxy(0, 19);
+	GotoxyClsLong(6);
 }
 
 COORD GetCurrentXY()

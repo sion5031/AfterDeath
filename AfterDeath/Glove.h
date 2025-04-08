@@ -8,6 +8,7 @@ private:
 
 public:
 	Glove();
+	Glove(int level);
 	//virtual ~Glove(){ cout << "~Glove()" << endl; }
 	~Glove();
 

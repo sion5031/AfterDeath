@@ -11,5 +11,5 @@ public:
 	//virtual ~MpPotion(){ cout << "~MpPotion()" << endl; }
 	~MpPotion();
 
-	void UseItem(shared_ptr<Creature> player) override;
+	string UseItem(shared_ptr<Creature> player) override;
 };

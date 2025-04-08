@@ -9,6 +9,7 @@ private:
 
 public:
 	Monster();
+	Monster(int level);
 	~Monster();
 
 	void SetItems(vector<Item*>* equipments);

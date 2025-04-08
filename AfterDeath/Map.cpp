@@ -1,4 +1,11 @@
+#include <conio.h>
+
 #include "Map.h"
+#include "HpPotion.h"
+#include "MpPotion.h"
+#include "FireBall.h"
+#include "IncreaseAttack.h"
+#include "AttackUp.h"
 #include "ConsoleGotoxy.h"
 
 //string Name;
@@ -117,124 +124,337 @@ Map::~Map()
 {
 }
 
+//int Map::MovePlayer()
+//{
+//	char t;
+//	int location = GetPlayerLocation();
+//	vector<int> coordinate = LocationToCoordinate(location);	
+//
+//	vector<int> temCoordinate;
+//
+//	t = _getche();
+//	GotoxyCll(1);
+//	GotoxyClsLong(1);
+//	if (t == 'w')
+//	{
+//		temCoordinate.push_back(coordinate[0] - 1); // 예외처리 범위로...
+//		temCoordinate.push_back(coordinate[1]);
+//		return MoveEvent(location, temCoordinate);
+//
+//	}
+//	else if (t == 'a')
+//	{
+//		temCoordinate.push_back(coordinate[0]);
+//		temCoordinate.push_back(coordinate[1] - 1);
+//		return MoveEvent(location, temCoordinate);
+//	}
+//	else if (t == 's')
+//	{
+//		temCoordinate.push_back(coordinate[0] + 1);
+//		temCoordinate.push_back(coordinate[1]);
+//		return MoveEvent(location, temCoordinate);
+//	}
+//	else if (t == 'd')
+//	{
+//		temCoordinate.push_back(coordinate[0]);
+//		temCoordinate.push_back(coordinate[1] + 1);
+//		return MoveEvent(location, temCoordinate);
+//	}
+//	else if (t == 'i')
+//	{
+//		Item* getItem;
+//		shared_ptr<Creature> player = GetCreature(location);
+//		
+//		shared_ptr<Player> playableCreature = dynamic_pointer_cast<Player>(player);
+//		if (playableCreature)
+//		{
+//			char itemChar;
+//			int itemNum;
+//			system("cls");
+//			GotoxyPreparePrintMenu();
+//			playableCreature->DisplayInventory();
+//			//cout << "\n아이템을 선택하거나 나갑니다." << endl;
+//			itemChar = _getche();
+//			GotoxyCll(1);
+//			itemNum = itemChar - '1';
+//
+//			getItem = playableCreature->SelectInventoryItem(itemNum);
+//			if (getItem != nullptr)
+//			{
+//				IConsumable* consumable = dynamic_cast<IConsumable*>(getItem);
+//				playableCreature->AddNotification(consumable->UseItem(player));
+//				if (consumable->GetNumber() <= 0)
+//				{
+//					playableCreature->CheckZeroInventory();
+//				}
+//			}
+//		}
+//	}
+//	else if (t == 'j')
+//	{
+//		
+//	}
+//	else
+//	{
+//		//??
+//	}
+//	return -1;
+//}
+
+
 int Map::MovePlayer()
 {
-	char t;
-	int location = GetPlayerLocation();
-	vector<int> coordinate = LocationToCoordinate(location);	
+	if (bRealTime == false)
+	{
+		char t;
+		int location = GetPlayerLocation();
+		vector<int> coordinate = LocationToCoordinate(location);
 
-	vector<int> temCoordinate;
+		vector<int> temCoordinate;
 
-	t = _getche();
-	GotoxyCll(1);
-	GotoxyClsLong(1);
-	if (t == 'w')
-	{
-		temCoordinate.push_back(coordinate[0] - 1); // 예외처리 범위로...
-		temCoordinate.push_back(coordinate[1]);
-		return MoveEvent(location, temCoordinate);
-
-	}
-	else if (t == 'a')
-	{
-		temCoordinate.push_back(coordinate[0]);
-		temCoordinate.push_back(coordinate[1] - 1);
-		return MoveEvent(location, temCoordinate);
-	}
-	else if (t == 's')
-	{
-		temCoordinate.push_back(coordinate[0] + 1);
-		temCoordinate.push_back(coordinate[1]);
-		return MoveEvent(location, temCoordinate);
-	}
-	else if (t == 'd')
-	{
-		temCoordinate.push_back(coordinate[0]);
-		temCoordinate.push_back(coordinate[1] + 1);
-		return MoveEvent(location, temCoordinate);
-	}
-	else if (t == 'i')
-	{
-		Item* getItem;
-		shared_ptr<Creature> player = GetCreature(location);
-		
-		shared_ptr<Player> playableCreature = dynamic_pointer_cast<Player>(player);
-		if (playableCreature)
+		t = _getche();
+		GotoxyCll(1);
+		GotoxyClsLong(1);
+		if (t == 'w')
 		{
-			char itemChar;
-			int itemNum;
-			system("cls");
-			playableCreature->DisplayInventory();
-			cout << "\n아이템을 선택하거나 나갑니다." << endl;
-			itemChar = _getche();
-			GotoxyCll(1);
-			itemNum = itemChar - '0' - 1;
+			temCoordinate.push_back(coordinate[0] - 1); // 예외처리 범위로...
+			temCoordinate.push_back(coordinate[1]);
+			return MoveEvent(location, temCoordinate);
 
-			getItem = playableCreature->SelectInventoryItem(itemNum);
-			if (getItem != nullptr)
+		}
+		else if (t == 'a')
+		{
+			temCoordinate.push_back(coordinate[0]);
+			temCoordinate.push_back(coordinate[1] - 1);
+			return MoveEvent(location, temCoordinate);
+		}
+		else if (t == 's')
+		{
+			temCoordinate.push_back(coordinate[0] + 1);
+			temCoordinate.push_back(coordinate[1]);
+			return MoveEvent(location, temCoordinate);
+		}
+		else if (t == 'd')
+		{
+			temCoordinate.push_back(coordinate[0]);
+			temCoordinate.push_back(coordinate[1] + 1);
+			return MoveEvent(location, temCoordinate);
+		}
+		else if (t == 'i')
+		{
+			Item* getItem;
+			shared_ptr<Creature> player = GetCreature(location);
+
+			shared_ptr<Player> playableCreature = dynamic_pointer_cast<Player>(player);
+			if (playableCreature)
 			{
-				IConsumable* consumable = dynamic_cast<IConsumable*>(getItem);
-				consumable->UseItem(player);
-				if (consumable->GetNumber() <= 0)
+				char itemChar;
+				int itemNum;
+				system("cls");
+				GotoxyPreparePrintMenu();
+				playableCreature->DisplayInventory();
+				//cout << "\n아이템을 선택하거나 나갑니다." << endl;
+				itemChar = _getche();
+				GotoxyCll(1);
+				itemNum = itemChar - '1';
+
+				getItem = playableCreature->SelectInventoryItem(itemNum);
+				if (getItem != nullptr)
 				{
-					playableCreature->CheckZeroInventory();
+					IConsumable* consumable = dynamic_cast<IConsumable*>(getItem);
+					playableCreature->AddNotification(consumable->UseItem(player));
+					if (consumable->GetNumber() <= 0)
+					{
+						playableCreature->CheckZeroInventory();
+					}
 				}
 			}
 		}
+		else if (t == 'j')
+		{
+
+		}
+		else
+		{
+			//??
+		}
+		return -1;
 	}
-	else if (t == 'j')
-	{
-		
-	}
+
 	else
 	{
-		//??
+		while (true)
+		{
+			if (_kbhit())
+			{
+				char t = _getch();
+				int location = GetPlayerLocation();
+				vector<int> coordinate = LocationToCoordinate(location);
+
+				vector<int> temCoordinate;
+
+				GotoxyClsLong(1);
+				if (t == 'w')
+				{
+					temCoordinate.push_back(coordinate[0] - 1); // 예외처리 범위로...
+					temCoordinate.push_back(coordinate[1]);
+					return MoveEvent(location, temCoordinate);
+
+				}
+				else if (t == 'a')
+				{
+					temCoordinate.push_back(coordinate[0]);
+					temCoordinate.push_back(coordinate[1] - 1);
+					return MoveEvent(location, temCoordinate);
+				}
+				else if (t == 's')
+				{
+					temCoordinate.push_back(coordinate[0] + 1);
+					temCoordinate.push_back(coordinate[1]);
+					return MoveEvent(location, temCoordinate);
+				}
+				else if (t == 'd')
+				{
+					temCoordinate.push_back(coordinate[0]);
+					temCoordinate.push_back(coordinate[1] + 1);
+					return MoveEvent(location, temCoordinate);
+				}
+				else if (t == 'i')
+				{
+					Item* getItem;
+					shared_ptr<Creature> player = GetCreature(location);
+
+					shared_ptr<Player> playableCreature = dynamic_pointer_cast<Player>(player);
+					if (playableCreature)
+					{
+						char itemChar;
+						int itemNum;
+						system("cls");
+						GotoxyPreparePrintMenu();
+						playableCreature->DisplayInventory();
+						//cout << "\n아이템을 선택하거나 나갑니다." << endl;
+						itemChar = _getche();
+						GotoxyCll(1);
+						itemNum = itemChar - '1';
+
+						getItem = playableCreature->SelectInventoryItem(itemNum);
+						if (getItem != nullptr)
+						{
+							IConsumable* consumable = dynamic_cast<IConsumable*>(getItem);
+							playableCreature->AddNotification(consumable->UseItem(player));
+							if (consumable->GetNumber() <= 0)
+							{
+								playableCreature->CheckZeroInventory();
+							}
+						}
+					}
+				}
+				else if (t == 'j')
+				{
+
+				}
+				else
+				{
+					//??
+				}
+				return -1;
+			}
+			else
+			{
+				Sleep(100);
+				return -1;
+			}
+		}
 	}
-	return -1;
 }
 
 void Map::MoveMonster()
 {
-	vector<int> locations = GetMonsterLocation();
-
-	for (auto i : locations)
+	if (bRealTime == false)
 	{
-		vector<int> temCoordinate;
+		vector<int> locations = GetMonsterLocation();
 
-		vector<int> coordinate = LocationToCoordinate(i);
+		for (auto i : locations)
+		{
+			vector<int> temCoordinate;
 
-		int ran = rand() % 5;
+			vector<int> coordinate = LocationToCoordinate(i);
 
-		if (ran == 0)
-		{
-			temCoordinate.push_back(coordinate[0] - 1); // 예외처리 범위로...
-			temCoordinate.push_back(coordinate[1]);
-			MoveMonsterEvent(i, temCoordinate);
+			int ran = rand() % 5;
 
+			if (ran == 0)
+			{
+				temCoordinate.push_back(coordinate[0] - 1); // 예외처리 범위로...
+				temCoordinate.push_back(coordinate[1]);
+				MoveMonsterEvent(i, temCoordinate);
+
+			}
+			else if (ran == 1)
+			{
+				temCoordinate.push_back(coordinate[0]);
+				temCoordinate.push_back(coordinate[1] - 1);
+				MoveMonsterEvent(i, temCoordinate);
+			}
+			else if (ran == 2)
+			{
+				temCoordinate.push_back(coordinate[0] + 1);
+				temCoordinate.push_back(coordinate[1]);
+				MoveMonsterEvent(i, temCoordinate);
+			}
+			else if (ran == 3)
+			{
+				temCoordinate.push_back(coordinate[0]);
+				temCoordinate.push_back(coordinate[1] + 1);
+				MoveMonsterEvent(i, temCoordinate);
+			}
+			else if (ran == 4)
+			{
+				
+			}
 		}
-		else if (ran == 1)
+	}
+
+	else
+	{
+		vector<int> locations = GetMonsterLocation();
+
+		for (auto i : locations)
 		{
-			temCoordinate.push_back(coordinate[0]);
-			temCoordinate.push_back(coordinate[1] - 1);
-			MoveMonsterEvent(i, temCoordinate);
-		}
-		else if (ran == 2)
-		{
-			temCoordinate.push_back(coordinate[0] + 1);
-			temCoordinate.push_back(coordinate[1]);
-			MoveMonsterEvent(i, temCoordinate);
-		}
-		else if (ran == 3)
-		{
-			temCoordinate.push_back(coordinate[0]);
-			temCoordinate.push_back(coordinate[1] + 1);
-			MoveMonsterEvent(i, temCoordinate);
-		}
-		else if (ran == 4)
-		{
-			//temCoordinate.push_back(coordinate[0]);
-			//temCoordinate.push_back(coordinate[1]);
-			//MoveMonsterEvent(i, temCoordinate);
+			vector<int> temCoordinate;
+
+			vector<int> coordinate = LocationToCoordinate(i);
+
+			int ran = rand() % 20;
+
+			if (ran == 0)
+			{
+				temCoordinate.push_back(coordinate[0] - 1); // 예외처리 범위로...
+				temCoordinate.push_back(coordinate[1]);
+				MoveMonsterEvent(i, temCoordinate);
+
+			}
+			else if (ran == 1)
+			{
+				temCoordinate.push_back(coordinate[0]);
+				temCoordinate.push_back(coordinate[1] - 1);
+				MoveMonsterEvent(i, temCoordinate);
+			}
+			else if (ran == 2)
+			{
+				temCoordinate.push_back(coordinate[0] + 1);
+				temCoordinate.push_back(coordinate[1]);
+				MoveMonsterEvent(i, temCoordinate);
+			}
+			else if (ran == 3)
+			{
+				temCoordinate.push_back(coordinate[0]);
+				temCoordinate.push_back(coordinate[1] + 1);
+				MoveMonsterEvent(i, temCoordinate);
+			}
+			else
+			{
+
+			}
 		}
 	}
 
@@ -270,18 +490,6 @@ void Map::AddObject(int location, MapObjects* mapObjects)
 	}
 }
 
-void Map::_printMap()
-{
-	for (int i = 0;i < MapSize;i++)
-	{
-		for (int j = 0;j < MapSize;j++) {
-			if (Obstacles[i][j] == true) cout << "**";
-			else cout << "  ";
-		}
-		cout << endl;
-	}
-}
-
 void Map::PrintMap()
 {
 	for (int i = 0;i < MapSize;i++)
@@ -303,11 +511,16 @@ void Map::PrintMap()
 		// 상태창 출력????????????????
 		cout << endl;
 	}
+	GotoxyPrintReturn(" 0 - 플레이어", MapSize * 2, 0);
+	GotoxyPrintReturn(" X - 몬스터", MapSize * 2, 1);
+	GotoxyPrintReturn(" ! - 오브젝트", MapSize * 2, 2);
+	GotoxyPrintReturn(" # - 포털", MapSize * 2, 3);
+	GotoxyPrintReturn(" * - 장애물", MapSize * 2, 4);
 	shared_ptr<Creature> player = GetCreature(GetPlayerLocation());
-	cout << "Hp: " << player->GetTotalStatus()->TotalMaxHp << "/" << player->GetHp()
-		<< "\tMp: " << player->GetTotalStatus()->TotalMaxMp << "/" << player->GetMp() << '\n'
-		<< "Atk: " << player->GetTotalStatus()->TotalAtk
-		<< "\t\tDef: " << player->GetTotalStatus()->TotalDef << "\n\n";
+	cout << "Hp: " << player->GetHp() << "/" << player->GetTotalStatus()->TotalMaxHp
+		<< "\tAtk: " << player->GetTotalStatus()->TotalAtk << '\n'
+		<< "Mp: " << player->GetMp() << "/" << player->GetTotalStatus()->TotalMaxMp
+		<< "\tDef: " << player->GetTotalStatus()->TotalDef << "\n";
 
 	Gotoxy(0, 18);
 	//GotoxyClsLong(6);
@@ -435,6 +648,20 @@ int Map::MoveEvent(int playerLocation, vector<int> nextCoordinate)
 			if (dropItem->GetItem(ran) != nullptr)
 			{
 				MapObjects* dropObject = new MapObjects;
+				dropObject->Treasure = new Treasure();
+				//dropObject->Item = new Item;
+				if (ran % 3 == 1)
+				{
+					ran = rand() % 6;
+					HpPotion* hpPotion = new HpPotion(ran % 3 + 1);
+					dropObject->Treasure->AddItems(hpPotion);
+				}
+				else if (ran % 3 == 2)
+				{
+					ran = rand() % 6;
+					MpPotion* mpPotion = new MpPotion(ran % 3 + 1);
+					dropObject->Treasure->AddItems(mpPotion);
+				}
 				dropObject->Item = dropItem->GetItem(ran);
 				ObjectsLocation->insert({ nextLocation, dropObject });
 			}
@@ -542,32 +769,32 @@ const int Map::GetMapSize()
 //	}
 //}
 
-void Map::DeathChecker()
-{
-	for (int i = 0;i < MapSize * MapSize;i++)
-	{
-		if (CreaturesLocation->find(i) != CreaturesLocation->end())
-		{
-			if (GetCreature(i)->GetHp() <= 0 && GetCreature(i)->GetType() == 0)
-			{
-				if (GetCreature(i)->GetType() == 0)
-				{
-					//GetCreature(i).reset();
-					break;
-				}
-				else if (GetCreature(i)->GetType() > 0)
-				{
-					GetCreature(i).reset();
-					break;
-				}
-				else
-				{
-					cout << "Creature Type Error" << endl;
-				}
-			}
-		}
-	}
-}
+//void Map::DeathChecker()
+//{
+//	for (int i = 0;i < MapSize * MapSize;i++)
+//	{
+//		if (CreaturesLocation->find(i) != CreaturesLocation->end())
+//		{
+//			if (GetCreature(i)->GetHp() <= 0 && GetCreature(i)->GetType() == 0)
+//			{
+//				if (GetCreature(i)->GetType() == 0)
+//				{
+//					//GetCreature(i).reset();
+//					break;
+//				}
+//				else if (GetCreature(i)->GetType() > 0)
+//				{
+//					GetCreature(i).reset();
+//					break;
+//				}
+//				else
+//				{
+//					cout << "Creature Type Error" << endl;
+//				}
+//			}
+//		}
+//	}
+//}
 
 void Map::DeleteChecker()
 {

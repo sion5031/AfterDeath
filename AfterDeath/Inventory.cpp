@@ -61,16 +61,17 @@ Inventory::~Inventory()
 {
 }
 
-void Inventory::AddItem(Item* item)
+string Inventory::AddItem(Item* item)
 {
+	string message;
 	IConsumable* consumableItem1 = dynamic_cast<IConsumable*>(item);
 	if (consumableItem1)
 	{
-		cout << item->GetName() << "(" << consumableItem1->GetNumber() << ")" << "¿ª »πµÊ«ﬂΩ¿¥œ¥Ÿ." << endl;
+		message = item->GetName() + "(" + to_string(consumableItem1->GetNumber()) + ") ¿ª »πµÊ«ﬂΩ¿¥œ¥Ÿ.";
 	}
 	else
 	{
-		cout << item->GetName() << "¿ª »πµÊ«ﬂΩ¿¥œ¥Ÿ." << endl;
+		message = item->GetName() + "¿ª »πµÊ«ﬂΩ¿¥œ¥Ÿ.";
 	}
 
 	int nonCount = 0;
@@ -83,7 +84,7 @@ void Inventory::AddItem(Item* item)
 				IConsumable* consumableItem2 = dynamic_cast<IConsumable*>(Items->at(i));
 				consumableItem2->PlusNumber(consumableItem1->GetNumber());
 
-				return;
+				return message;
 			}
 		}
 		else
@@ -107,6 +108,7 @@ void Inventory::AddItem(Item* item)
 			nonCount++;
 		}
 	}
+	return message;
 }
 
 void Inventory::RemoveItem(int num)
@@ -156,7 +158,6 @@ void Inventory::DisplayInventory()
 
 	int nonCount = 0;
 
-	cout << endl;
 	for (int i = 0;i < this->Items->size() + nonCount;i++) {
 		if (bCheckPresence(i))
 		{

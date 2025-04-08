@@ -8,6 +8,7 @@ private:
 
 public:
 	Lower();
+	Lower(int level);
 	//virtual ~Lower(){ cout << "~Lower()" << endl; }
 	~Lower();
 
