@@ -1,15 +1,15 @@
 #pragma once
 #include "PassiveSkill.h"
 
-class AttackUp : public PassiveSkill
+class DefenseUp : public PassiveSkill
 {
 private:
 
 public:
-	AttackUp();
-	AttackUp(int level);
+	DefenseUp();
+	DefenseUp(int level);
 	//virtual ~PassiveSkill(){ cout << "~PassiveSkill()" << endl; }
-	~AttackUp() {};
+	~DefenseUp() {};
 
 	string Effect(shared_ptr<Creature> player, int turn) override;
 };

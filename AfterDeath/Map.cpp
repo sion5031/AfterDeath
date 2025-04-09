@@ -76,15 +76,37 @@ Map::Map(int num)
 	CreaturesLocation = new map<int, weak_ptr<Creature>>;
 	ObjectsLocation = new map<int, MapObjects*>;
 
-	if (num == 1)
+	if (num == 0)
 	{
 		
-		Name = "Start Map";
+		Name = "버려진 성지";
+		MaxMonster = 3;
+		MaxTreasure = 2;
+		StartLocation = 16;
+		
+		//맵 장애물 만들고
+		// 보물 넣고 // 관리 어디서?
+		// 포털 넣고
+	}
+	if (num == 1)
+	{
+
+		Name = "관문";
 		MaxMonster = 3;
 		MaxTreasure = 2;
 		StartLocation = 16;
 
-		
+		//맵 장애물 만들고
+		// 보물 넣고 // 관리 어디서?
+		// 포털 넣고
+	}
+	if (num == 2)
+	{
+
+		Name = "드래곤 둥지";
+		MaxMonster = 3;
+		MaxTreasure = 2;
+		StartLocation = 16;
 
 		//맵 장애물 만들고
 		// 보물 넣고 // 관리 어디서?
@@ -241,26 +263,26 @@ int Map::MoveCondition(char t)
 	vector<int> coordinate = LocationToCoordinate(location);
 	vector<int> temCoordinate;
 
-	if (t == 'w')
+	if (t == 'a')
 	{
 		temCoordinate.push_back(coordinate[0] - 1); // 예외처리 범위로...
 		temCoordinate.push_back(coordinate[1]);
 		return MoveEvent(location, temCoordinate);
 
 	}
-	else if (t == 'a')
+	else if (t == 'w')
 	{
 		temCoordinate.push_back(coordinate[0]);
 		temCoordinate.push_back(coordinate[1] - 1);
 		return MoveEvent(location, temCoordinate);
 	}
-	else if (t == 's')
+	else if (t == 'd')
 	{
 		temCoordinate.push_back(coordinate[0] + 1);
 		temCoordinate.push_back(coordinate[1]);
 		return MoveEvent(location, temCoordinate);
 	}
-	else if (t == 'd')
+	else if (t == 's')
 	{
 		temCoordinate.push_back(coordinate[0]);
 		temCoordinate.push_back(coordinate[1] + 1);
@@ -276,12 +298,14 @@ int Map::MoveCondition(char t)
 		{
 			char itemChar;
 			int itemNum;
+
 			system("cls");
-			GotoxyPreparePrintMenu();
 			playableCreature->DisplayInventory();
-			//cout << "\n아이템을 선택하거나 나갑니다." << endl;
+
+			FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
 			itemChar = _getche();
 			GotoxyCll(1);
+
 			itemNum = itemChar - '1';
 
 			getItem = playableCreature->SelectInventoryItem(itemNum);
@@ -298,7 +322,13 @@ int Map::MoveCondition(char t)
 	}
 	else if (t == 'j')
 	{
-
+		shared_ptr<Creature> player = GetCreature(location);
+		shared_ptr<IPlayable> displayableCreature = dynamic_pointer_cast<IPlayable>(player);
+		displayableCreature->DisplaySkillsDetail();
+		FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
+		_getche();
+		//GotoxyCll(1);
+		system("cls");
 	}
 	else
 	{
@@ -309,94 +339,55 @@ int Map::MoveCondition(char t)
 
 void Map::MoveMonster()
 {
-	if (bRealTime == false)
+	vector<int> locations = GetMonsterLocation();
+
+	for (auto i : locations)
 	{
-		vector<int> locations = GetMonsterLocation();
+		vector<int> temCoordinate;
 
-		for (auto i : locations)
+		vector<int> coordinate = LocationToCoordinate(i);
+
+		int ran;
+
+		if (bRealTime == true)
 		{
-			vector<int> temCoordinate;
+			ran = rand() % 20;
+		}
+		else
+		{
+			ran = rand() % 5;
+		}
 
-			vector<int> coordinate = LocationToCoordinate(i);
+		if (ran == 0)
+		{
+			temCoordinate.push_back(coordinate[0] - 1); // 예외처리 범위로...
+			temCoordinate.push_back(coordinate[1]);
+			MoveMonsterEvent(i, temCoordinate);
 
-			int ran = rand() % 5;
-
-			if (ran == 0)
-			{
-				temCoordinate.push_back(coordinate[0] - 1); // 예외처리 범위로...
-				temCoordinate.push_back(coordinate[1]);
-				MoveMonsterEvent(i, temCoordinate);
-
-			}
-			else if (ran == 1)
-			{
-				temCoordinate.push_back(coordinate[0]);
-				temCoordinate.push_back(coordinate[1] - 1);
-				MoveMonsterEvent(i, temCoordinate);
-			}
-			else if (ran == 2)
-			{
-				temCoordinate.push_back(coordinate[0] + 1);
-				temCoordinate.push_back(coordinate[1]);
-				MoveMonsterEvent(i, temCoordinate);
-			}
-			else if (ran == 3)
-			{
-				temCoordinate.push_back(coordinate[0]);
-				temCoordinate.push_back(coordinate[1] + 1);
-				MoveMonsterEvent(i, temCoordinate);
-			}
-			else if (ran == 4)
-			{
+		}
+		else if (ran == 1)
+		{
+			temCoordinate.push_back(coordinate[0]);
+			temCoordinate.push_back(coordinate[1] - 1);
+			MoveMonsterEvent(i, temCoordinate);
+		}
+		else if (ran == 2)
+		{
+			temCoordinate.push_back(coordinate[0] + 1);
+			temCoordinate.push_back(coordinate[1]);
+			MoveMonsterEvent(i, temCoordinate);
+		}
+		else if (ran == 3)
+		{
+			temCoordinate.push_back(coordinate[0]);
+			temCoordinate.push_back(coordinate[1] + 1);
+			MoveMonsterEvent(i, temCoordinate);
+		}
+		else if (ran == 4)
+		{
 				
-			}
 		}
 	}
-
-	else
-	{
-		vector<int> locations = GetMonsterLocation();
-
-		for (auto i : locations)
-		{
-			vector<int> temCoordinate;
-
-			vector<int> coordinate = LocationToCoordinate(i);
-
-			int ran = rand() % 20;
-
-			if (ran == 0)
-			{
-				temCoordinate.push_back(coordinate[0] - 1); // 예외처리 범위로...
-				temCoordinate.push_back(coordinate[1]);
-				MoveMonsterEvent(i, temCoordinate);
-
-			}
-			else if (ran == 1)
-			{
-				temCoordinate.push_back(coordinate[0]);
-				temCoordinate.push_back(coordinate[1] - 1);
-				MoveMonsterEvent(i, temCoordinate);
-			}
-			else if (ran == 2)
-			{
-				temCoordinate.push_back(coordinate[0] + 1);
-				temCoordinate.push_back(coordinate[1]);
-				MoveMonsterEvent(i, temCoordinate);
-			}
-			else if (ran == 3)
-			{
-				temCoordinate.push_back(coordinate[0]);
-				temCoordinate.push_back(coordinate[1] + 1);
-				MoveMonsterEvent(i, temCoordinate);
-			}
-			else
-			{
-
-			}
-		}
-	}
-
 }
 
 void Map::UsePortal(int location)
@@ -431,9 +422,14 @@ void Map::AddObject(int location, MapObjects* mapObjects)
 
 void Map::PrintMap()
 {
+	GotoxyClsLong(1);
+	Gotoxy(SCREEN_START_X*2, SCREEN_START_Y);
+	GotoxyClsLong(1);
+	cout << "<" << GetName() << ">";
 	for (int i = 0;i < MapSize;i++)
 	{
 		for (int j = 0;j < MapSize;j++) {
+			Gotoxy((i + SCREEN_START_X) * 2, j + SCREEN_START_Y + 1);
 			if (bIsObstacle(i, j)) cout << "* ";
 			else if (bIsObject(IntCoordinateToLocation(i, j)))
 			{
@@ -449,17 +445,25 @@ void Map::PrintMap()
 		}
 		// 상태창 출력????????????????
 		cout << endl;
-	}
-	GotoxyPrintReturn(" 0 - 플레이어", MapSize * 2, 0);
-	GotoxyPrintReturn(" X - 몬스터", MapSize * 2, 1);
-	GotoxyPrintReturn(" ! - 오브젝트", MapSize * 2, 2);
-	GotoxyPrintReturn(" # - 포털", MapSize * 2, 3);
-	GotoxyPrintReturn(" * - 장애물", MapSize * 2, 4);
+	}	
+	GotoxyPrintReturn(" 0 - 플레이어", (MapSize + SCREEN_START_X) * 2, SCREEN_START_Y + 1);
+	GotoxyPrintReturn(" X - 몬스터", (MapSize + SCREEN_START_X) * 2, SCREEN_START_Y + 2);
+	GotoxyPrintReturn(" ! - 오브젝트", (MapSize + SCREEN_START_X) * 2, SCREEN_START_Y + 3);
+	GotoxyPrintReturn(" # - 포털", (MapSize + SCREEN_START_X) * 2, SCREEN_START_Y + 4);
+	GotoxyPrintReturn(" * - 장애물", (MapSize + SCREEN_START_X) * 2, SCREEN_START_Y + 5);
+	GotoxyPrintReturn(" i 버튼 - 인벤토리", (MapSize + SCREEN_START_X) * 2, SCREEN_START_Y + 7);
+	GotoxyPrintReturn(" j 버튼 - 스킬상세", (MapSize + SCREEN_START_X) * 2, SCREEN_START_Y + 8);
+	GotoxyPrintReturn(" j 버튼 - 스킬상세", (MapSize + SCREEN_START_X) * 2, SCREEN_START_Y + 8);
+
 	shared_ptr<Creature> player = GetCreature(GetPlayerLocation());
+	Gotoxy(SCREEN_START_X * 2, SCREEN_START_Y + MapSize + 1);
+	GotoxyClsShort(1);
 	cout << "HP: " << player->GetHp() << "/" << player->GetTotalStatus()->TotalMaxHp
-		<< "\tAtk: " << player->GetTotalStatus()->TotalAtk << '\n'
-		<< "MP: " << player->GetMp() << "/" << player->GetTotalStatus()->TotalMaxMp
-		<< "\tDef: " << player->GetTotalStatus()->TotalDef << "\n";
+		<< "\tAtk: " << player->GetTotalStatus()->TotalAtk;
+	Gotoxy(SCREEN_START_X * 2, SCREEN_START_Y + MapSize + 2);
+	GotoxyClsShort(1);
+	cout << "MP: " << player->GetMp() << "/" << player->GetTotalStatus()->TotalMaxMp
+		<< "\t\tDef: " << player->GetTotalStatus()->TotalDef << "\n";
 
 	Gotoxy(0, 18);
 	//GotoxyClsLong(6);
@@ -583,27 +587,42 @@ int Map::MoveEvent(int playerLocation, vector<int> nextCoordinate)
 			EquipedE* dropItem = new EquipedE;
 			dropItem = GetCreature(nextLocation)->GetEquipments();
 
+			MapObjects* dropObject = new MapObjects;
+			dropObject->Treasure = new Treasure();
+
+			// 장비 드랍
 			int ran = rand() % 6;
+
 			if (dropItem->GetItem(ran) != nullptr)
 			{
-				MapObjects* dropObject = new MapObjects;
-				dropObject->Treasure = new Treasure();
-				//dropObject->Item = new Item;
-				if (ran % 3 == 1)
-				{
-					ran = rand() % 6;
-					HpPotion* hpPotion = new HpPotion(ran % 3 + 1);
-					dropObject->Treasure->AddItems(hpPotion);
-				}
-				else if (ran % 3 == 2)
-				{
-					ran = rand() % 6;
-					MpPotion* mpPotion = new MpPotion(ran % 3 + 1);
-					dropObject->Treasure->AddItems(mpPotion);
-				}
 				dropObject->Item = dropItem->GetItem(ran);
-				ObjectsLocation->insert({ nextLocation, dropObject });
 			}
+
+			//소모품 드랍
+			ran = rand() % 6;
+
+			if (ran % 3 == 1)
+			{
+				ran = rand() % 6;
+				HpPotion* hpPotion = new HpPotion(ran % 3 + 1);
+				dropObject->Treasure->AddItems(hpPotion);
+			}
+			else if (ran % 3 == 2)
+			{
+				ran = rand() % 6;
+				MpPotion* mpPotion = new MpPotion(ran % 3 + 1);
+				dropObject->Treasure->AddItems(mpPotion);
+			}
+
+			// 스킬 드랍
+			ran = rand() % (GetCreature(nextLocation)->GetSkills()->size() * 2); // 확률 50%
+
+			if (ran < GetCreature(nextLocation)->GetSkills()->size())
+			{
+				dropObject->Treasure->SetNewSkill(GetCreature(nextLocation)->GetSkills()->at(ran));
+			}
+
+			ObjectsLocation->insert({ nextLocation, dropObject });
 		}
 		//DeathChecker(player, tem);
 		//DeleteChecker();

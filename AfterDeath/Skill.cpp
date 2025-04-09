@@ -1,7 +1,13 @@
+#include <string>
 #include "Skill.h"
 
 Skill::Skill()
 {
+}
+
+void Skill::PlusLevel(int level)
+{
+	Level += level;
 }
 
 void Skill::SetName(string name)
@@ -29,6 +35,11 @@ string Skill::GetName()
 	return Name;
 }
 
+string Skill::GetEnhancedName()
+{
+	return Name + " +" + to_string(Level);
+}
+
 int Skill::GetType()
 {
 	return Type;
@@ -47,4 +58,9 @@ int Skill::GetEffectValue()
 int Skill::GetMpConsume()
 {
 	return MpConsume;
+}
+
+string Skill::GetExplanation()
+{
+	return Explanation;
 }

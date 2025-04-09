@@ -23,6 +23,7 @@ public:
 	~GameManager();
 
 	void PrintStartPage(string fileName, int x, int y);
+	void PrintDeathMessage();
 
 	void MoveMap(int nextMap);
 
