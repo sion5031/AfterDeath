@@ -4,7 +4,7 @@
 HpPotion::HpPotion(int num)
 {
 	Number = num;
-	this->SetName("Hp 포션");
+	this->SetName("HP 포션");
 	this->SetSN(20);
 	this->EffectPoint = 30;
 }

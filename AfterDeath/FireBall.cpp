@@ -6,8 +6,18 @@ FireBall::FireBall()
 	Name = "화염구";
 	Type = 1;
 	MpConsume = 15;
-	EffectValue = 20;
+	EffectValue = 30;
 	Level = 1;
+	Explanation = "대상의 방어력을 50% 무시하는 " + to_string((int)(EffectValue + EffectValue * 0.5 * Level)) + " 의 데미지를 입힙니다.";
+}
+
+FireBall::FireBall(int level)
+{
+	Name = "화염구";
+	Type = 1;
+	MpConsume = 15;
+	EffectValue = 20;
+	Level = level;
 }
 
 string FireBall::Effect(shared_ptr<Creature> player, int turn)

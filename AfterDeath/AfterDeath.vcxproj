@@ -130,13 +130,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\Users\KGA\Downloads\ConsoleHelper.h" />
     <ClInclude Include="ActiveSkill.h" />
     <ClInclude Include="Armor.h" />
     <ClInclude Include="AttackUp.h" />
     <ClInclude Include="ConsoleGotoxy.h" />
     <ClInclude Include="Consumable.h" />
     <ClInclude Include="Creature.h" />
+    <ClInclude Include="DefenseUp.h" />
     <ClInclude Include="Equip.h" />
     <ClInclude Include="FireBall.h" />
     <ClInclude Include="GameManager.h" />
@@ -157,6 +157,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="QuestItem.h" />
+    <ClInclude Include="Config.h" />
     <ClInclude Include="Shield.h" />
     <ClInclude Include="Shoes.h" />
     <ClInclude Include="ShortSword.h" />
@@ -166,12 +167,12 @@
     <ClInclude Include="Weapon.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\Users\KGA\Downloads\ConsoleHelper.cpp" />
     <ClCompile Include="ActiveSkill.cpp" />
     <ClCompile Include="AttackUp.cpp" />
     <ClCompile Include="ConsoleGotoxy.cpp" />
     <ClCompile Include="Consumable.cpp" />
     <ClCompile Include="Creature.cpp" />
+    <ClCompile Include="DefenseUp.cpp" />
     <ClCompile Include="Equip.cpp" />
     <ClCompile Include="FireBall.cpp" />
     <ClCompile Include="GameManager.cpp" />

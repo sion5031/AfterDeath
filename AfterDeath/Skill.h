@@ -19,6 +19,7 @@ protected:
 	int Duration;
 	int Turn;
 	bool Using = false;
+	string Explanation;
 
 public:
 	Skill();
@@ -26,6 +27,7 @@ public:
 	virtual ~Skill() {}
 
 	virtual string Effect(shared_ptr<Creature> player, int turn) = 0;
+	void PlusLevel(int level);
 
 	void SetName(string name);
 	void SetType(int type);
@@ -33,9 +35,11 @@ public:
 	void SetEffectValue(int value);
 
 	string GetName();
+	string GetEnhancedName();
 	int GetType();
 	int GetLevel();
 	int GetEffectValue();
 	int GetMpConsume();
+	string GetExplanation();
 
 };

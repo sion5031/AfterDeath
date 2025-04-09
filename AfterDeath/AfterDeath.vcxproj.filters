@@ -177,8 +177,11 @@
     <ClInclude Include="ConsoleGotoxy.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\Users\KGA\Downloads\ConsoleHelper.h">
+    <ClInclude Include="Config.h">
       <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="DefenseUp.h">
+      <Filter>헤더 파일\Skill\PassiveSkill</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -266,8 +269,8 @@
     <ClCompile Include="ConsoleGotoxy.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\Users\KGA\Downloads\ConsoleHelper.cpp">
-      <Filter>소스 파일</Filter>
+    <ClCompile Include="DefenseUp.cpp">
+      <Filter>소스 파일\Skill\PassiveSkill</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

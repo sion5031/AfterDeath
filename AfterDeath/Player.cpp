@@ -11,6 +11,7 @@
 #include "FireBall.h"
 #include "IncreaseAttack.h"
 #include "AttackUp.h"
+#include "DefenseUp.h"
 #include "ConsoleGotoxy.h"
 
 //void Player::UseItem(int num)
@@ -29,10 +30,14 @@ void Player::EquipItem(int num) // 패턴 이용해서 편하게 가능??
 				Equipments->myWeapon->SetEquipedFalse();
 			}
 			Equipments->myWeapon = MyInven->TryEquip(num);
+			if (Equipments->myWeapon != nullptr)
+			{
+				AddNotification(Equipments->myWeapon->GetName() + " 을 장착했습니다.");
+			}
 		}
 		else
 		{
-			cout << "장검은 방패와 같이 사용할 수 없습니다." << endl;
+			AddNotification("장검은 방패와 같이 사용할 수 없습니다.");
 		}
 	}
 	else if (MyInven->GetSN(num) == 101) // 단검
@@ -42,6 +47,10 @@ void Player::EquipItem(int num) // 패턴 이용해서 편하게 가능??
 			Equipments->myWeapon->SetEquipedFalse();
 		}
 		Equipments->myWeapon = MyInven->TryEquip(num);
+		if (Equipments->myWeapon != nullptr)
+		{
+			AddNotification(Equipments->myWeapon->GetName() + " 을 장착했습니다.");
+		}
 	}
 	else if (MyInven->GetSN(num) == 110) // 상의
 	{
@@ -50,6 +59,10 @@ void Player::EquipItem(int num) // 패턴 이용해서 편하게 가능??
 			Equipments->myUpper->SetEquipedFalse();
 		}
 		Equipments->myUpper = MyInven->TryEquip(num);
+		if (Equipments->myUpper != nullptr)
+		{
+			AddNotification(Equipments->myUpper->GetName() + " 을 장착했습니다.");
+		}
 	}
 	else if (MyInven->GetSN(num) == 111) // 하의
 	{
@@ -58,6 +71,10 @@ void Player::EquipItem(int num) // 패턴 이용해서 편하게 가능??
 			Equipments->myLower->SetEquipedFalse();
 		}
 		Equipments->myLower = MyInven->TryEquip(num);
+		if (Equipments->myLower != nullptr)
+		{
+			AddNotification(Equipments->myLower->GetName() + " 을 장착했습니다.");
+		}
 	}
 	else if (MyInven->GetSN(num) == 112) // 장갑
 	{
@@ -66,6 +83,10 @@ void Player::EquipItem(int num) // 패턴 이용해서 편하게 가능??
 			Equipments->myGlove->SetEquipedFalse();
 		}
 		Equipments->myGlove = MyInven->TryEquip(num);
+		if (Equipments->myGlove != nullptr)
+		{
+			AddNotification(Equipments->myGlove->GetName() + " 을 장착했습니다.");
+		}
 	}
 	else if (MyInven->GetSN(num) == 113) // 신발
 	{
@@ -74,6 +95,10 @@ void Player::EquipItem(int num) // 패턴 이용해서 편하게 가능??
 			Equipments->myShoes->SetEquipedFalse();
 		}
 		Equipments->myShoes = MyInven->TryEquip(num);
+		if (Equipments->myShoes != nullptr)
+		{
+			AddNotification(Equipments->myShoes->GetName() + " 을 장착했습니다.");
+		}
 	}
 	else if (MyInven->GetSN(num) == 114) // 방패
 	{
@@ -84,10 +109,14 @@ void Player::EquipItem(int num) // 패턴 이용해서 편하게 가능??
 				Equipments->myShield->SetEquipedFalse();
 			}
 			Equipments->myShield = MyInven->TryEquip(num);
+			if (Equipments->myShield != nullptr)
+			{
+				AddNotification(Equipments->myShield->GetName() + " 을 장착했습니다.");
+			}
 		}
 		else
 		{
-			cout << "방패는 단검과만 같이 사용할 수 없습니다." << endl;
+			AddNotification("방패는 가벼운 무기와만 같이 사용할 수 있습니다.");
 		}
 	}
 }
@@ -101,15 +130,16 @@ Player::Player()
 	Name = "홍길동";
 	Type = 0;
 	MaxHp = 100;
-	Hp = MaxHp;
 	MaxMp = 50;
-	Mp = MaxMp;
 	Attack = 10;
 	Defense = 5;
 	Skills = new vector<Skill*>;
 	//Equipments = new EquipedE; //Creature 생성자에서 생성
 	DeathCount = 0;
 	MyInven = new Inventory();
+
+	Hp = GetTotalStatus()->TotalMaxHp;
+	Mp = GetTotalStatus()->TotalMaxMp;
 
 	Sleep(2000);
 }
@@ -120,10 +150,8 @@ Player::Player(string name)
 	PlayerName = name;
 	Type = 0;
 	MaxHp = 100;
-	Hp = MaxHp;
 	MaxMp = 50;
-	Mp = MaxMp;
-	Attack = 35;
+	Attack = 25;
 	Defense = 3;
 	Skills = new vector<Skill*>;
 
@@ -144,9 +172,16 @@ Player::Player(string name)
 
 	Skill* fireBall = new FireBall();
 	Skill* increaseAttack = new IncreaseAttack();
+	Skill* attackUp = new AttackUp();
+	Skill* defenseUp = new DefenseUp();
 
 	Skills->push_back(fireBall);
 	Skills->push_back(increaseAttack);
+	Skills->push_back(attackUp);
+	Skills->push_back(defenseUp);
+
+	Hp = GetTotalStatus()->TotalMaxHp;
+	Mp = GetTotalStatus()->TotalMaxMp;
 }
 
 Player::~Player()
@@ -168,20 +203,27 @@ Item* Player::SelectInventoryItem(int num)
 	if (MyInven->bCheckPresence(num))
 	{
 		char usage;
-		Gotoxy(0, 5);
-		GotoxyClsShort(4);
-		cout << "1. 사용하기" << '\n' << "2. 장비하기" << '\n' << "3. 제거하기" << endl;
+		GotoxyPreparePrintMenu(0);
+		cout << "1. 사용하기";
+		GotoxyPreparePrintMenu(1);
+		cout << "2. 장비하기";
+		GotoxyPreparePrintMenu(2);
+		cout << "3. 제거하기";
+		FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
 		usage = _getche();
 		GotoxyCll(1);
 
 		if (usage == '1')
 		{
-			Gotoxy(0, 18);
-			return this->MyInven->TryUse(num);
+			Item* returnItem = this->MyInven->TryUse(num);
+			if (returnItem == nullptr)
+			{
+				AddNotification("사용할 수 없는 아이템입니다.");
+			}
+			return returnItem;
 		}
 		else if (usage == '2')
 		{
-			Gotoxy(0, 18);
 			EquipItem(num);
 		}
 		else if (usage == '3')
@@ -222,7 +264,17 @@ void Player::CheckZeroInventory()
 
 void Player::AddSkill(Skill* skill)
 {
+	for (int i = 0;i < Skills->size();i++)
+	{
+		if (Skills->at(i)->GetName() == skill->GetName())
+		{
+			Skills->at(i)->PlusLevel(skill->GetLevel());
+			AddNotification(skill->GetEnhancedName() + " 을 획득해 " + Skills->at(i)->GetEnhancedName() + "으로 강화되었습니다.");
+			return;
+		}
+	}
 	Skills->push_back(skill);
+	AddNotification(skill->GetEnhancedName() + " 을 획득했습니다.");
 }
 
 Skill* Player::GetSkill(int num)
@@ -244,9 +296,42 @@ void Player::PlusDeathCount()
 
 void Player::DisplaySkills()
 {
+	GotoxyPreparePrintMenu(-2);
+	cout << "<스킬>";
 	for (int i = 0;i < Skills->size();i++)
 	{
-		cout << "#" << i + 1 << "\t" << Skills->at(i)->GetName() << "(" << Skills->at(i)->GetMpConsume() << ")" << endl;
+		GotoxyPreparePrintMenu(i);
+		if (Skills->at(i)->GetType() != 0)
+		{
+			cout << "#" << i + 1 << " " << Skills->at(i)->GetName() << "(" << Skills->at(i)->GetMpConsume() << ")";
+		}
+		else
+		{
+			cout << "#" << i + 1 << " " << Skills->at(i)->GetName();
+		}
+	}
+}
+
+void Player::DisplaySkillsDetail()
+{
+	system("cls");
+	GotoxyPreparePrintMenu(-2);
+	cout << "<스킬>";
+	for (int i = 0;i < Skills->size();i++)
+	{
+		GotoxyPreparePrintMenu(i * 3);
+		GotoxyClsLong(1);
+		if (Skills->at(i)->GetType() != 0)
+		{
+			cout << "#" << i << " " << Skills->at(i)->GetEnhancedName() << " | MP : " << Skills->at(i)->GetMpConsume();
+		}
+		else
+		{
+			cout << "#" << i << " " << Skills->at(i)->GetEnhancedName();
+		}
+		GotoxyPreparePrintMenu(i * 3 + 1);
+		GotoxyClsLong(1);
+		cout << Skills->at(i)->GetExplanation();
 	}
 }
 

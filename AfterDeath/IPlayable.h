@@ -19,4 +19,6 @@ public:
 	virtual Skill* GetSkill(int num) = 0;
 	virtual void PlusDeathCount() = 0;
 	virtual void DisplaySkills() = 0;
+	virtual void DisplaySkillsDetail() = 0;
+	virtual int GetDeathCount() = 0;
 };

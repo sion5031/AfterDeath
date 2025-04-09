@@ -11,7 +11,7 @@ GameManager::GameManager()
 	{
 		Maps->insert({ i, make_shared<Map>(i) });
 	}
-	Gotoxy(20, 17);
+	Gotoxy(23, 17);
 	cout << "플레이어의 이름을 입력하세요 : ";
 	cin >> name;
 	Hero = make_shared<Player>(name);
@@ -72,27 +72,34 @@ void GameManager::PrintStartPage(string fileName, int x, int y)
 
 	readFile.close();
 }
-//void GameManager::PrintStartPage(string fileName, int x, int y)
-//{
-//	ifstream readFile;
-//	readFile.open("..\\" + fileName + ".txt");
-//	string s;
-//	int line = 0;
-//
-//	if (readFile.is_open()) {
-//		while (!readFile.eof())
-//		{
-//			getline(readFile, s);
-//			Gotoxy(x, y + line);
-//			cout << s << endl;
-//			line++;
-//		}
-//	}
-//	else {
-//		cout << "파일을 찾을 수 없습니다!" << endl;
-//	}
-//	readFile.close();
-//}
+
+void GameManager::PrintDeathMessage()
+{
+	shared_ptr<IPlayable> playableCreature = dynamic_pointer_cast<IPlayable>(Hero);
+	if (playableCreature->GetDeathCount() > 0)
+	{
+		system("cls");
+		Gotoxy(38, 16);
+		string dead = "DEAD!";
+
+		for (int i = 0;i < dead.length();i++)
+		{
+			cout << dead[i] << "    ";
+			Sleep(300);
+		}
+		Sleep(1000);
+		GotoxyPrintXReturn("                                 ", 36);
+
+		Gotoxy(40, 16);
+
+		cout << "사망 횟수  ";
+		Sleep(1000);
+		cout << playableCreature->GetDeathCount();
+		Sleep(2000);
+
+		GotoxyPrintXReturn("                      ", 36);
+	}
+}
 
 void GameManager::MoveMap(int nextMap)
 {

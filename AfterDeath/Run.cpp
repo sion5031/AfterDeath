@@ -14,7 +14,7 @@ unique_ptr<Map> CurrentMap;
 int main()
 {
 	//콘솔 창 크기 변경
-	system("mode con:cols=90 lines=35");
+	system("mode con:cols=130 lines=35");
 	
 	//커서 숨기기
 	CONSOLE_CURSOR_INFO cursorInfo = { 0, };
@@ -35,14 +35,13 @@ int main()
 
 	//오프닝
 	SetConsoleOutputCP(CP_UTF8);
-	GM->PrintStartPage("Main_After", 11, 4);
-	//GM->PrintStartPage("Main_After_BOM", 10, 4);
+	GM->PrintStartPage("Main_After", 13, 4);
 	Sleep(500);
-	GM->PrintStartPage("Main_Death", 10, 18);
-	//GM->PrintStartPage("Main_Death_BOM", 9, 18);
+	GM->PrintStartPage("Main_Death", 12, 18);
 	SetConsoleOutputCP(949);
-	Gotoxy(34, 31);
+	Gotoxy(36, 31);
 	cout << "PRESS ANY KEY";
+	FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
 	_getche();
 	GotoxyCll(1);
 	system("cls");
@@ -54,8 +53,7 @@ int main()
 
 	while (true)
 	{
-		
-
+		GM->PrintDeathMessage();
 
 
 		while (true)

@@ -31,12 +31,13 @@ public:
 	Skill* GetSkill(int num) override;
 	void PlusDeathCount() override;
 
-	void DisplaySkills();
+	void DisplaySkills() override;
+	void DisplaySkillsDetail() override;
 	bool UseSkill(shared_ptr<Creature> creature, int num, int turn) override;
 	void Die() override;
 
 	void SetDeathCount(int deathCount);
-	int GetDeathCount();
+	int GetDeathCount() override;
 
 	//int GetTotalAtk();
 	//int GetTotalDef();

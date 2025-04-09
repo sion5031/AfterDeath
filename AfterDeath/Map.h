@@ -4,6 +4,7 @@
 #include <Windows.h>
 #include <conio.h>
 
+#include "Config.h"
 #include "Creature.h"
 #include "Player.h"
 #include "Monster.h"
@@ -32,8 +33,8 @@ private:
 	bool** Obstacles;
 	map<int, weak_ptr<Creature>>* CreaturesLocation;
 	map<int, MapObjects*>* ObjectsLocation;
-	const int MapSize = 15;
-	bool bRealTime = false;
+	const static int MapSize = MAP_SIZE;
+	bool bRealTime = true;
 
 	void FillMap();
 

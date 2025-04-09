@@ -128,8 +128,8 @@ Item* Inventory::TryUse(int num)
 			//consumable->UseItem(player); // 안 쓰고 넘길게.
 			return FindItem(num);
 		}
-		else {
-			std::cout << "이 아이템은 사용할 수 없습니다.\n";
+		else {			
+			return nullptr;
 		}
 	}
 	return nullptr;
@@ -145,7 +145,6 @@ Item* Inventory::TryEquip(int num)
 			return FindItem(num);
 		}
 		else {
-			std::cout << "이 아이템은 장비할 수 없습니다.\n";
 			return nullptr;
 		}
 	}
@@ -157,10 +156,15 @@ void Inventory::DisplayInventory()
 	ArrangeInventory();
 
 	int nonCount = 0;
+	int printCount = 0;
+
+	GotoxyPreparePrintMenu(-2);
+	cout << "<인벤토리>";
 
 	for (int i = 0;i < this->Items->size() + nonCount;i++) {
 		if (bCheckPresence(i))
 		{
+			GotoxyPreparePrintMenu(printCount);
 			if (this->Items->at(i)->GetSN() >= 100)
 			{
 				if (this->Items->at(i)->GetEquiped() == true)
@@ -177,6 +181,7 @@ void Inventory::DisplayInventory()
 				IConsumable* consumableItem = dynamic_cast<IConsumable*>(this->Items->at(i));
 				cout << '#' << i + 1 << '\t' << this->Items->at(i)->GetName() << "\t\t" << consumableItem->GetNumber() << endl;
 			}
+			printCount++;
 		}
 		else
 		{

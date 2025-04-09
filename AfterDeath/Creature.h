@@ -128,6 +128,7 @@ public:
 	int GetMp();
 	int GetAttack();
 	int GetDefense();
+	vector<Skill*>* GetSkills();
 
 	EquipedE* GetEquipments();
 };

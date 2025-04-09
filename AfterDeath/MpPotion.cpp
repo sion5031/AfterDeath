@@ -4,7 +4,7 @@
 MpPotion::MpPotion(int num)
 {
 	Number = num;
-	this->SetName("Mp 포션");
+	this->SetName("MP 포션");
 	this->SetSN(21);
 	this->EffectPoint = 20;
 }

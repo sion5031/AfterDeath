@@ -1,4 +1,5 @@
 #include "ConsoleGotoxy.h"
+#include "Config.h"
 
 void Gotoxy(int x, int y)
 {
@@ -33,10 +34,12 @@ void GotoxyClsShort(int size)
 	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &presentCur);  	//현재 커서의 위치 정보를 저장하는 함수
 	COORD Pos = { presentCur.dwCursorPosition.X , presentCur.dwCursorPosition.Y };
 	for (int i = 0;i < size;i++)
-	{
-		cout << "                              \n";
+	{		
+		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Pos);
+		cout << "                                   \n";
+		Pos.Y++;
 	}
-	
+	Pos = { presentCur.dwCursorPosition.X , presentCur.dwCursorPosition.Y };
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Pos);
 }
 
@@ -47,7 +50,7 @@ void GotoxyClsLong(int size)
 	COORD Pos = { presentCur.dwCursorPosition.X , presentCur.dwCursorPosition.Y };
 	for (int i = 0;i < size;i++)
 	{
-		cout << "                                                                                  \n";
+		cout << "                                                                                            \n";
 	}
 
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Pos);
@@ -87,16 +90,17 @@ void GotoxyPrintXReturn(string str, int x)
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Pos);
 }
 
-void GotoxyPreparePrintMenu()
+void GotoxyPreparePrintMenu(int line)
 {
-	Gotoxy(0, 5);
-	GotoxyClsShort(4);
+	Gotoxy(SCREEN_START_X * 2 + 0, SCREEN_START_Y + 5 + line);
+	GotoxyClsShort(8);
 }
 
-void GotoxyPreparePrintSituation()
-{
-	Gotoxy(0, 19);
-	GotoxyClsLong(6);
+void GotoxyPreparePrintSituation(int line)
+{	
+	//Gotoxy(0, 19); //15+4
+	Gotoxy(SCREEN_START_X * 2 + 0, SCREEN_START_Y + MAP_SIZE + 4 + line);
+	GotoxyClsLong(1);
 }
 
 COORD GetCurrentXY()
