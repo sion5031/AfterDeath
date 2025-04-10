@@ -14,10 +14,6 @@
 #include "DefenseUp.h"
 #include "ConsoleGotoxy.h"
 
-//void Player::UseItem(int num)
-//{
-//	MyInven->TryUse(num);
-//}
 
 void Player::EquipItem(int num) // 패턴 이용해서 편하게 가능??
 {
@@ -151,7 +147,7 @@ Player::Player(string name)
 	Type = 0;
 	MaxHp = 100;
 	MaxMp = 50;
-	Attack = 25;
+	Attack = 250;
 	Defense = 3;
 	Skills = new vector<Skill*>;
 
@@ -191,6 +187,11 @@ Player::~Player()
 void Player::DisplayInventory()
 {
 	this->MyInven->DisplayInventory();
+}
+
+void Player::DisplayInventoryDetail()
+{
+	this->MyInven->DisplayInventoryDetail();
 }
 
 void Player::AddInventory(Item* item)
@@ -366,23 +367,3 @@ int Player::GetDeathCount()
 {
 	return DeathCount;
 }
-
-//int Player::GetTotalAtk()
-//{
-//	return MyInven->GetTotalEquipmentAtk() + Attack;
-//}
-//
-//int Player::GetTotalDef()
-//{
-//	return MyInven->GetTotalEquipmentDef() + Defense;
-//}
-//
-//int Player::GetTotalMaxHp()
-//{
-//	return MyInven->GetTotalEquipmentMaxHp() + MaxHp;
-//}
-//
-//int Player::GetTotalMaxMp()
-//{
-//	return MyInven->GetTotalEquipmentMaxMp() + MaxMp;
-//}

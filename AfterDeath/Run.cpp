@@ -25,33 +25,38 @@ int main()
 	srand(time(NULL));
 	//=============위는 건들지 말기
 
-	//locale::global(locale(".UTF-8"));
-	//SetConsoleOutputCP(949);
-	//SetConsoleOutputCP(CP_UTF8);
 
 
 	GameManager* GM = new GameManager();
 	system("cls");
 
-	//오프닝
-	SetConsoleOutputCP(CP_UTF8);
-	GM->PrintStartPage("Main_After", 13, 4);
-	Sleep(500);
-	GM->PrintStartPage("Main_Death", 12, 18);
-	SetConsoleOutputCP(949);
-	Gotoxy(36, 31);
-	cout << "PRESS ANY KEY";
-	FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
-	_getche();
-	GotoxyCll(1);
-	system("cls");
+	if (false)
+	{
+		//오프닝
+		SetConsoleOutputCP(CP_UTF8);
+		GM->PrintOpeningMessage("오프닝 문구");
+		SetConsoleOutputCP(CP_UTF8);
+		GM->PrintOpeningPage("Main_After", 13, 4);
+		Sleep(500);
+		GM->PrintOpeningPage("Main_Death", 12, 18);
+		SetConsoleOutputCP(949);
+		Gotoxy(36, 31);
+		cout << "PRESS ANY KEY";
+		FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
+		_getche();
+		GotoxyCll(1);
+		system("cls");
 
+		SetConsoleOutputCP(CP_UTF8);
+		GM->PrintStory("오프닝 스토리");
+		SetConsoleOutputCP(949);
 
-
+		system("cls");
+	}
 	
+	int end = true;
 
-
-	while (true)
+	while (end)
 	{
 		GM->PrintDeathMessage();
 
@@ -61,10 +66,15 @@ int main()
 			Gotoxy(0, 0);
 			GM->GetCurrentMap()->PrintMap();
 
-			int nextMap = GM->GetCurrentMap()->MovePlayer();
-			if (nextMap != -1)
+			int mapOrHead = GM->GetCurrentMap()->MovePlayer();
+			if (mapOrHead == -100)
 			{
-				GM->MoveMap(nextMap);
+				end = false;
+				break;
+			}
+			else if (mapOrHead != -1)
+			{
+				GM->MoveMap(mapOrHead);
 				continue;
 			}
 			if (GM->DeathPlayerChecker())
@@ -82,24 +92,7 @@ int main()
 		}
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	GM->PrintStory("엔딩 스토리");
 
 
 	return 0;

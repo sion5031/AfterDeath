@@ -22,7 +22,9 @@ public:
 	GameManager();
 	~GameManager();
 
-	void PrintStartPage(string fileName, int x, int y);
+	void PrintOpeningPage(string fileName, int x, int y);
+	void PrintOpeningMessage(string str);
+	void PrintStory(string str);
 	void PrintDeathMessage();
 
 	void MoveMap(int nextMap);

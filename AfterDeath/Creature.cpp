@@ -1,8 +1,6 @@
 #include <functional>
 
 #include "Creature.h"
-//#include "Player.h"
-//#include "Monster.h"
 #include "IConsumable.h"
 #include "ConsoleGotoxy.h"
 #include "Config.h"
@@ -115,44 +113,54 @@ void Creature::Fight(shared_ptr<Creature> player, shared_ptr<Creature> monster, 
 				shared_ptr<IPlayable> addableCreature = dynamic_pointer_cast<IPlayable>(player);
 				if (addableCreature)
 				{
-					addableCreature->DisplaySkills();
-
-					FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
-					char skillChar = _getche();
-					GotoxyCll(1);
-
-					int skillNum = skillChar - '1';
-
-					Gotoxy(POS.X, POS.Y);
-					if (player->GetSkillType(skillNum) == 1) // 타인에게 발동
+					while (true) // 액티브 스킬 없으면 무한루프...
 					{
-						if (GetMp() < player->Skills->at(skillNum)->GetMpConsume())
+						addableCreature->DisplaySkills();
+
+						FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
+						char skillChar = _getche();
+						GotoxyCll(1);
+
+						int skillNum = skillChar - '1';
+
+						if (skillNum < player->GetSkills()->size() && skillNum >= 0)
 						{
-							AddNotification("\"" + player->Skills->at(skillNum)->GetName() + "\"" + " 사용을 위한 Mp가 부족합니다.");
+							Gotoxy(POS.X, POS.Y);
+							if (player->GetSkillType(skillNum) == 1) // 타인에게 발동
+							{
+								if (GetMp() < player->Skills->at(skillNum)->GetMpConsume())
+								{
+									AddNotification("\"" + player->Skills->at(skillNum)->GetName() + "\"" + " 사용을 위한 Mp가 부족합니다.");
+								}
+								else
+								{
+									CalcMp(-player->Skills->at(skillNum)->GetMpConsume());
+									player->UseSkill(monster, skillNum, countTurn);
+									MonsterHitMotion(countTurn, monster->GetName(), player->GetName(), "color 4f");
+
+									//타인에게 사용하는 턴제 스킬이 아니면 X
+									//PlayerDurationSkills.push_back([&](int count) -> bool {return player->UseSkill(monster, skillNum, count);});
+								}
+							}
+							else if (player->GetSkillType(skillNum) == 2) // 스스로에게 발동
+							{
+								if (GetMp() < player->Skills->at(skillNum)->GetMpConsume())
+								{
+									AddNotification("\"" + player->Skills->at(skillNum)->GetName() + "\"" + " 사용을 위한 Mp가 부족합니다.");
+								}
+								else
+								{
+									CalcMp(-player->Skills->at(skillNum)->GetMpConsume());
+									player->UseSkill(player, skillNum, countTurn);
+									PlayerDurationSkills.push_back([&](int count) -> bool {return player->UseSkill(player, skillNum, count);});
+								}
+							}
+							break;
 						}
 						else
 						{
-							CalcMp(-player->Skills->at(skillNum)->GetMpConsume());
-							player->UseSkill(monster, skillNum, countTurn);
-							MonsterHitMotion(countTurn, monster->GetName(), player->GetName(), "color 4f");
-							
-							//타인에게 사용하는 턴제 스킬이 아니면 X
-							//PlayerDurationSkills.push_back([&](int count) -> bool {return player->UseSkill(monster, skillNum, count);});
+							AddNotification("잘못된 입력입니다.");
 						}
-					}
-					else if (player->GetSkillType(skillNum) == 2) // 스스로에게 발동
-					{
-						if (GetMp() < player->Skills->at(skillNum)->GetMpConsume())
-						{
-							AddNotification("\"" + player->Skills->at(skillNum)->GetName() + "\"" + " 사용을 위한 Mp가 부족합니다.");
-						}
-						else
-						{
-							CalcMp(-player->Skills->at(skillNum)->GetMpConsume());
-							player->UseSkill(player, skillNum, countTurn);							
-							PlayerDurationSkills.push_back([&](int count) -> bool {return player->UseSkill(player, skillNum, count);});
-						}
-						
 					}
 				}
 				
@@ -185,27 +193,29 @@ void Creature::Fight(shared_ptr<Creature> player, shared_ptr<Creature> monster, 
 			}
 			else if (t == '4') // 포기
 			{
-				AddNotification("*플레이어가 사망합니다.*");
+				AddNotification("\n*플레이어가 사망합니다.*");
 				player->SetHp(0);
 				Sleep(2000);
 				break;
+			}
+			else
+			{
+				AddNotification(to_string(countTurn) + " 턴을 스킵합니다.");
 			}
 		}
 		else // 몬스터 턴 ================
 		{
 			Sleep(200);
 
-			int num = rand() % 2; // 공격, 스킬 사용 빈도 몬스터에서 받아오기?
+			int num = rand() % 3; // 공격, 스킬 사용 빈도 몬스터에서 받아오기?
 
 			if (num < 2)
 			{
-				notificationErase(0, POS.Y, 6);
 				monster->NormalAttack(monster, player, countTurn);
 			}
 			else if (num == 2)
 			{
-				notificationErase(0, POS.Y, 6);
-				int num = 0;// 수정!!!
+				num = 0;// 수정!!!
 				monster->UseSkill(player, num, countTurn);
 			}
 			else
@@ -224,7 +234,15 @@ void Creature::Fight(shared_ptr<Creature> player, shared_ptr<Creature> monster, 
 		else if (player->GetHp() <= 0 || monster->GetHp() <= 0)
 		{
 			AddNotification(monster->GetName() + " 을 처치하여 전투가 종료됩니다.");
-				break;
+			AddNotification("아무키나 눌러 맵으로 돌아가세요.");
+			
+			FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
+			char skillChar = _getche();
+			GotoxyCll(1);
+			
+			EraseFile(monster->GetName(), 40, 4);
+			
+			break;
 		}
 		countTurn++;
 	}
@@ -239,19 +257,16 @@ void Creature::Fight(shared_ptr<Creature> player, shared_ptr<Creature> monster, 
 
 void Creature::NormalAttack(shared_ptr<Creature> attacker, shared_ptr<Creature> defender, int countTurn) //방어력 계산 필요
 {
-	//cout << "atk: " << attacker->GetTotalStatus()->TotalAtk << ", def: " << defender->GetTotalStatus()->TotalDef << endl;
 	int before = defender->Hp;
 	defender->CalcHp(-attacker->GetTotalStatus()->TotalAtk);
 	int after = defender->Hp;
-	//cout << defender->GetName() << "가 " << before - after << " 만큼의 피해를 입었습니다.     ";
 	
+	MonsterHitMotion(countTurn, defender->GetName(), attacker->GetName(), "color 04");
+
 	// 6줄 날리기 길게
 	notificationErase(SCREEN_START_X, POS.Y, 6);
 	string difference = to_string(before - after);
-	AddNotification(defender->GetName() + " 가 " + difference + " 만큼의 피해를 입었습니다.     ");
-	//GotoxyPrintXReturn("                                                  ", 0);
-	
-	MonsterHitMotion(countTurn, defender->GetName(), attacker->GetName(), "color 04");
+	AddNotification(defender->GetName() + " 가 " + difference + " 만큼의 피해를 입었습니다.");	
 }
 
 void Creature::MonsterHitMotion(int countTurn, string defender, string attacker, string color)
@@ -313,14 +328,6 @@ void Creature::CalcHp(int hp)
 {
 	if (hp < 0)// 데미지 계산
 	{
-		//if (GetTotalStatus()->TotalDef >= -hp*1.1) // 방어력이 높아도 데미지의 10%는 보장
-		//{
-		//	hp /= 10;
-		//}
-		//else
-		//{
-		//	hp += GetTotalStatus()->TotalDef;
-		//}
 		hp = min(hp + GetTotalStatus()->TotalDef, hp / 10);
 	}
 	
@@ -343,16 +350,16 @@ void Creature::CalcHp(int hp)
 
 void Creature::CalcMp(int mp)
 {
-	Mp += mp;
-
 	if (Mp + mp <= 0)
 	{
 		Mp = 0;
 	}
+	else
+	{
+		Mp += mp;
+	}
 	if (Mp > GetTotalStatus()->TotalMaxMp)
 	{
-
-		Mp += mp;
 		Mp = GetTotalStatus()->TotalMaxMp;
 	}
 }
@@ -384,6 +391,27 @@ void Creature::ReadFile(string fileName, int start, int erase)
 			GotoxyPrintXReturn("                                                  ", SCREEN_START_X * 2 + start - erase);
 			//Gotoxy(start, line);
 			cout<< s << std::endl;
+			line++;
+		}
+	}
+	else {
+		std::cout << "파일을 찾을 수 없습니다!" << std::endl;
+	}
+	in.close();
+}
+
+void Creature::EraseFile(string fileName, int start, int erase)
+{
+	ifstream in("..\\" + fileName + ".txt");
+	string s;
+	int line = 2;
+
+	if (in.is_open()) {
+		while (!in.eof())
+		{
+			getline(in, s);
+			Gotoxy(SCREEN_START_X * 2 + start, SCREEN_START_Y + line);
+			GotoxyPrintXReturn("                                                  ", SCREEN_START_X * 2 + start - erase);
 			line++;
 		}
 	}
@@ -620,6 +648,7 @@ void Creature::AddNotification(string notification)
 			line++;
 		}
 	}
+	Sleep(400);
 }
 
 string Creature::GetName()

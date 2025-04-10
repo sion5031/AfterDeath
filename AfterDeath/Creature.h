@@ -106,6 +106,7 @@ public:
 
 
 	void ReadFile(string fileName, int start, int erase);
+	void EraseFile(string fileName, int start, int erase);
 
 	struct Status* GetTotalStatus();
 

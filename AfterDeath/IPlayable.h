@@ -9,6 +9,7 @@ public:
 	virtual ~IPlayable() = default;
 
 	virtual void DisplayInventory() = 0;
+	virtual void DisplayInventoryDetail() = 0;
 	virtual void AddInventory(Item* item) = 0;
 	virtual Item* SelectInventoryItem(int num) = 0;
 	virtual vector<Item*>* GetAllInventoryItems() = 0;

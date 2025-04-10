@@ -34,9 +34,10 @@ private:
 	map<int, weak_ptr<Creature>>* CreaturesLocation;
 	map<int, MapObjects*>* ObjectsLocation;
 	const static int MapSize = MAP_SIZE;
-	bool bRealTime = true;
+	bool bRealTime = false;
 
 	void FillMap();
+	void FillMapLine(int rowNum, int startNum, int endNum);
 
 public:
 	Map();

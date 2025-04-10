@@ -3,17 +3,11 @@
 #include "Map.h"
 #include "HpPotion.h"
 #include "MpPotion.h"
+#include "ShortSword.h"
 #include "FireBall.h"
 #include "IncreaseAttack.h"
 #include "AttackUp.h"
 #include "ConsoleGotoxy.h"
-
-//string Name;
-//int MaxMonster;
-//int MaxTreasure;
-//bool** Obstacles;
-//map<int, Creature*> CreaturesLocation;
-//map<int, struct MapObjects*> ObjectsLocation;
 
 void Map::FillMap()
 {
@@ -29,6 +23,14 @@ void Map::FillMap()
 				}
 			}
 		}
+	}
+}
+
+void Map::FillMapLine(int rowNum, int startNum, int endNum)
+{
+	for (int i = startNum;i < endNum;i++)
+	{
+		Obstacles[i][rowNum] = true;
 	}
 }
 
@@ -50,13 +52,6 @@ Map::Map()
 
 	CreaturesLocation = new map<int, weak_ptr<Creature>>;
 	ObjectsLocation = new map<int, MapObjects*>;
-
-	//=======
-	//shared_ptr<Creature> Monster1 = make_shared<Monster>();
-	//this->AddCreature(36, Monster1);
-
-	//=======
-
 
 }
 
@@ -85,7 +80,19 @@ Map::Map(int num)
 		StartLocation = 16;
 		
 		//맵 장애물 만들고
-		// 보물 넣고 // 관리 어디서?
+		std::fill(Obstacles[3] + 2, Obstacles[3] + 6, true);
+		FillMapLine(9, 1, 8);
+		FillMapLine(4, 6, 14);
+
+		// 보물 넣고
+		MapObjects* dropObject = new MapObjects;
+		dropObject->Treasure = new Treasure();
+
+		Item* newPotion = new HpPotion(1);
+		dropObject->Treasure->AddItems(newPotion);
+
+		ObjectsLocation->insert({ 41, dropObject });
+		
 		// 포털 넣고
 	}
 	if (num == 1)
@@ -97,7 +104,27 @@ Map::Map(int num)
 		StartLocation = 16;
 
 		//맵 장애물 만들고
+		FillMapLine(3, 6, 14);
+		FillMapLine(5, 1, 11);
+		FillMapLine(9, 6, 14);
+		FillMapLine(11, 1, 8);
+
 		// 보물 넣고 // 관리 어디서?
+		MapObjects* dropObject1 = new MapObjects;
+		MapObjects* dropObject2 = new MapObjects;
+		dropObject1->Treasure = new Treasure();
+		dropObject2->Treasure = new Treasure();
+
+		Item* newPotion = new MpPotion(2);
+		Item* newEquipment = new ShortSword(2);
+		Skill* newSkill = new FireBall(2);
+		dropObject1->Treasure->AddItems(newPotion);
+		dropObject1->Treasure->AddItems(newEquipment);
+		dropObject2->Treasure->SetNewSkill(newSkill);
+
+		ObjectsLocation->insert({ 181, dropObject1 });
+		ObjectsLocation->insert({ 28, dropObject2 });
+
 		// 포털 넣고
 	}
 	if (num == 2)
@@ -131,98 +158,13 @@ Map::Map(shared_ptr<Creature> player)
 	CreaturesLocation = new map<int, weak_ptr<Creature>>;
 	ObjectsLocation = new map<int, MapObjects*>;
 
-	//===================
-	//Creature* monster1 = new Monster();
-
 	CreaturesLocation->insert({ 16, player });
-	//CreaturesLocation->insert({ 28, player });
-
-
-	//===================
 
 }
 
 Map::~Map()
 {
 }
-
-//int Map::MovePlayer()
-//{
-//	char t;
-//	int location = GetPlayerLocation();
-//	vector<int> coordinate = LocationToCoordinate(location);	
-//
-//	vector<int> temCoordinate;
-//
-//	t = _getche();
-//	GotoxyCll(1);
-//	GotoxyClsLong(1);
-//	if (t == 'w')
-//	{
-//		temCoordinate.push_back(coordinate[0] - 1); // 예외처리 범위로...
-//		temCoordinate.push_back(coordinate[1]);
-//		return MoveEvent(location, temCoordinate);
-//
-//	}
-//	else if (t == 'a')
-//	{
-//		temCoordinate.push_back(coordinate[0]);
-//		temCoordinate.push_back(coordinate[1] - 1);
-//		return MoveEvent(location, temCoordinate);
-//	}
-//	else if (t == 's')
-//	{
-//		temCoordinate.push_back(coordinate[0] + 1);
-//		temCoordinate.push_back(coordinate[1]);
-//		return MoveEvent(location, temCoordinate);
-//	}
-//	else if (t == 'd')
-//	{
-//		temCoordinate.push_back(coordinate[0]);
-//		temCoordinate.push_back(coordinate[1] + 1);
-//		return MoveEvent(location, temCoordinate);
-//	}
-//	else if (t == 'i')
-//	{
-//		Item* getItem;
-//		shared_ptr<Creature> player = GetCreature(location);
-//		
-//		shared_ptr<Player> playableCreature = dynamic_pointer_cast<Player>(player);
-//		if (playableCreature)
-//		{
-//			char itemChar;
-//			int itemNum;
-//			system("cls");
-//			GotoxyPreparePrintMenu();
-//			playableCreature->DisplayInventory();
-//			//cout << "\n아이템을 선택하거나 나갑니다." << endl;
-//			itemChar = _getche();
-//			GotoxyCll(1);
-//			itemNum = itemChar - '1';
-//
-//			getItem = playableCreature->SelectInventoryItem(itemNum);
-//			if (getItem != nullptr)
-//			{
-//				IConsumable* consumable = dynamic_cast<IConsumable*>(getItem);
-//				playableCreature->AddNotification(consumable->UseItem(player));
-//				if (consumable->GetNumber() <= 0)
-//				{
-//					playableCreature->CheckZeroInventory();
-//				}
-//			}
-//		}
-//	}
-//	else if (t == 'j')
-//	{
-//		
-//	}
-//	else
-//	{
-//		//??
-//	}
-//	return -1;
-//}
-
 
 int Map::MovePlayer()
 {
@@ -300,7 +242,8 @@ int Map::MoveCondition(char t)
 			int itemNum;
 
 			system("cls");
-			playableCreature->DisplayInventory();
+			//playableCreature->DisplayInventory();
+			playableCreature->DisplayInventoryDetail();
 
 			FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
 			itemChar = _getche();
@@ -423,7 +366,7 @@ void Map::AddObject(int location, MapObjects* mapObjects)
 void Map::PrintMap()
 {
 	GotoxyClsLong(1);
-	Gotoxy(SCREEN_START_X*2, SCREEN_START_Y);
+	Gotoxy(SCREEN_START_X*2, SCREEN_START_Y - 1);
 	GotoxyClsLong(1);
 	cout << "<" << GetName() << ">";
 	for (int i = 0;i < MapSize;i++)
@@ -443,7 +386,6 @@ void Map::PrintMap()
 			else if (bIsPlayer(IntCoordinateToLocation(i, j)))cout << "O ";
 			else cout << "  ";
 		}
-		// 상태창 출력????????????????
 		cout << endl;
 	}	
 	GotoxyPrintReturn(" 0 - 플레이어", (MapSize + SCREEN_START_X) * 2, SCREEN_START_Y + 1);
@@ -453,7 +395,7 @@ void Map::PrintMap()
 	GotoxyPrintReturn(" * - 장애물", (MapSize + SCREEN_START_X) * 2, SCREEN_START_Y + 5);
 	GotoxyPrintReturn(" i 버튼 - 인벤토리", (MapSize + SCREEN_START_X) * 2, SCREEN_START_Y + 7);
 	GotoxyPrintReturn(" j 버튼 - 스킬상세", (MapSize + SCREEN_START_X) * 2, SCREEN_START_Y + 8);
-	GotoxyPrintReturn(" j 버튼 - 스킬상세", (MapSize + SCREEN_START_X) * 2, SCREEN_START_Y + 8);
+	GotoxyPrintReturn(" Enter - 확인 및 스킵", (MapSize + SCREEN_START_X) * 2, SCREEN_START_Y + 9);
 
 	shared_ptr<Creature> player = GetCreature(GetPlayerLocation());
 	Gotoxy(SCREEN_START_X * 2, SCREEN_START_Y + MapSize + 1);
@@ -591,14 +533,23 @@ int Map::MoveEvent(int playerLocation, vector<int> nextCoordinate)
 			dropObject->Treasure = new Treasure();
 
 			// 장비 드랍
+			for (int i = 0;i < 6;i++)
+			{
+				if (dropItem->GetItem(i) != nullptr && dropItem->GetItem(i)->GetSN() == 30)
+				{
+					return -100;
+				}
+			}
+
 			int ran = rand() % 6;
 
 			if (dropItem->GetItem(ran) != nullptr)
 			{
 				dropObject->Item = dropItem->GetItem(ran);
 			}
+			
 
-			//소모품 드랍
+			//소모품 드랍(랜덤 생성)
 			ran = rand() % 6;
 
 			if (ran % 3 == 1)
@@ -613,6 +564,15 @@ int Map::MoveEvent(int playerLocation, vector<int> nextCoordinate)
 				MpPotion* mpPotion = new MpPotion(ran % 3 + 1);
 				dropObject->Treasure->AddItems(mpPotion);
 			}
+			else
+			{
+				ran = rand() % 5;
+				HpPotion* hpPotion = new HpPotion(ran % 3 + 1);
+				dropObject->Treasure->AddItems(hpPotion);
+				ran = rand() % 5;
+				MpPotion* mpPotion = new MpPotion(ran % 3 + 1);
+				dropObject->Treasure->AddItems(mpPotion);
+			}
 
 			// 스킬 드랍
 			ran = rand() % (GetCreature(nextLocation)->GetSkills()->size() * 2); // 확률 50%
@@ -624,9 +584,7 @@ int Map::MoveEvent(int playerLocation, vector<int> nextCoordinate)
 
 			ObjectsLocation->insert({ nextLocation, dropObject });
 		}
-		//DeathChecker(player, tem);
-		//DeleteChecker();
-		//아마도 출력
+
 
 	}
 	else
@@ -714,57 +672,8 @@ const int Map::GetMapSize()
 	return MapSize;
 }
 
-//void Map::DeathChecker(shared_ptr<Creature> player, shared_ptr<Creature> monster)
-//{
-//	if (monster->GetHp() <= 0)
-//	{
-//		monster.reset();
-//	}
-//	else if (player->GetHp() <= 0)
-//	{
-//		//=======================
-//		
-//	}
-//}
-
-//void Map::DeathChecker()
-//{
-//	for (int i = 0;i < MapSize * MapSize;i++)
-//	{
-//		if (CreaturesLocation->find(i) != CreaturesLocation->end())
-//		{
-//			if (GetCreature(i)->GetHp() <= 0 && GetCreature(i)->GetType() == 0)
-//			{
-//				if (GetCreature(i)->GetType() == 0)
-//				{
-//					//GetCreature(i).reset();
-//					break;
-//				}
-//				else if (GetCreature(i)->GetType() > 0)
-//				{
-//					GetCreature(i).reset();
-//					break;
-//				}
-//				else
-//				{
-//					cout << "Creature Type Error" << endl;
-//				}
-//			}
-//		}
-//	}
-//}
-
 void Map::DeleteChecker()
 {
-	//for (auto it = CreaturesLocation->begin(); it != CreaturesLocation->end(); ) {
-	//	if (it->second.expired()) {  // Creature가 소멸되었는지 확인
-	//		std::cout << "Removing creature ID: " << it->first << std::endl;
-	//		it = CreaturesLocation->erase(it);  // 소멸된 객체 제거
-	//	}
-	//	else {
-	//		++it;
-	//	}
-	//}
 	for (auto it = CreaturesLocation->begin(); it != CreaturesLocation->end(); ) //플레이어 소멸 가능성
 	{
 		if (it->second.expired())

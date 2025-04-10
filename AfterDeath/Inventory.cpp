@@ -190,6 +190,61 @@ void Inventory::DisplayInventory()
 	}
 }
 
+void Inventory::DisplayInventoryDetail()
+{
+	ArrangeInventory();
+
+	int nonCount = 0;
+	int printCount = 0;
+
+	GotoxyPreparePrintMenu(-2);
+	cout << "<인벤토리>";
+
+	for (int i = 0;i < this->Items->size() + nonCount;i++) {
+		if (bCheckPresence(i))
+		{
+			GotoxyPreparePrintMenu(printCount);
+			if (this->Items->at(i)->GetSN() >= 100)
+			{
+				if (this->Items->at(i)->GetEquiped() == true)
+				{
+					cout << '#' << i + 1 << '\t' << this->Items->at(i)->GetName() << "\t\t" << "장착\t";
+				}
+				else
+				{
+					cout << '#' << i + 1 << '\t' << this->Items->at(i)->GetName() << "\t\t\t";
+				}
+				if (this->Items->at(i)->GetAtkPoint() > 0)
+				{
+					cout << "Atk(" << this->Items->at(i)->GetAtkPoint() << ")\t";
+				}
+				if (this->Items->at(i)->GetDefPoint() > 0)
+				{
+					cout << "Def(" << this->Items->at(i)->GetDefPoint() << ")\t";
+				}
+				if (this->Items->at(i)->GetHpPoint() > 0)
+				{
+					cout << "MaxHP(" << this->Items->at(i)->GetHpPoint() << ")\t";
+				}
+				if (this->Items->at(i)->GetMpPoint() > 0)
+				{
+					cout << "MaxMP(" << this->Items->at(i)->GetMpPoint() << ")\t";
+				}
+			}
+			else
+			{
+				IConsumable* consumableItem = dynamic_cast<IConsumable*>(this->Items->at(i));
+				cout << '#' << i + 1 << '\t' << this->Items->at(i)->GetName() << "\t\t" << consumableItem->GetNumber();
+			}
+			printCount++;
+		}
+		else
+		{
+			nonCount++;
+		}
+	}
+}
+
 vector<Item*>* Inventory::GetAllInventoryItems()
 {
 	int nonCount = 0;
@@ -253,103 +308,3 @@ int Inventory::GetSN(int num)
 {
 	return FindItem(num)->GetSN();
 }
-
-//int Inventory::GetTotalEquipmentAtk()
-//{
-//	int nonCount = 0;
-//	int sum = 0;
-//	for (int i = 0;i < Items->size() + nonCount;i++)
-//	{
-//		if (bCheckPresence(i))
-//		{
-//			if (FindItem(i)->GetEquiped() == true)
-//			{
-//				IEquipable* equipable = dynamic_cast<IEquipable*>(FindItem(i));
-//				if (equipable)
-//				{
-//					sum += equipable->GetEquipAtkPoint();
-//				}
-//			}
-//		}
-//		else
-//		{
-//			nonCount++;
-//		}
-//	}
-//	return sum;
-//}
-//
-//int Inventory::GetTotalEquipmentDef()
-//{
-//	int nonCount = 0;
-//	int sum = 0;
-//	for (int i = 0;i < Items->size() + nonCount;i++)
-//	{
-//		if (bCheckPresence(i))
-//		{
-//			if (FindItem(i)->GetEquiped() == true)
-//			{
-//				IEquipable* equipable = dynamic_cast<IEquipable*>(FindItem(i));
-//				if (equipable)
-//				{
-//					sum += equipable->GetEquipDefPoint();
-//				}
-//			}
-//		}
-//		else
-//		{
-//			nonCount++;
-//		}
-//	}
-//	return sum;
-//}
-//
-//int Inventory::GetTotalEquipmentMaxHp()
-//{
-//	int nonCount = 0;
-//	int sum = 0;
-//	for (int i = 0;i < Items->size() + nonCount;i++)
-//	{
-//		if (bCheckPresence(i))
-//		{
-//			if (FindItem(i)->GetEquiped() == true)
-//			{
-//				IEquipable* equipable = dynamic_cast<IEquipable*>(FindItem(i));
-//				if (equipable)
-//				{
-//					sum += equipable->GetEquipHpPoint();
-//				}
-//			}
-//		}
-//		else
-//		{
-//			nonCount++;
-//		}
-//	}
-//	return sum;
-//}
-//
-//int Inventory::GetTotalEquipmentMaxMp()
-//{
-//	int nonCount = 0;
-//	int sum = 0;
-//	for (int i = 0;i < Items->size() + nonCount;i++)
-//	{
-//		if (bCheckPresence(i))
-//		{
-//			if (FindItem(i)->GetEquiped() == true)
-//			{
-//				IEquipable* equipable = dynamic_cast<IEquipable*>(FindItem(i));
-//				if (equipable)
-//				{
-//					sum += equipable->GetEquipMpPoint();
-//				}
-//			}
-//		}
-//		else
-//		{
-//			nonCount++;
-//		}
-//	}
-//	return sum;
-//}

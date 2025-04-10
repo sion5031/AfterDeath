@@ -21,6 +21,7 @@ public:
 	void ShowTotalStatus();
 
 	void DisplayInventory() override;
+	void DisplayInventoryDetail() override;
 	void AddInventory(Item* item) override;
 	Item* SelectInventoryItem(int num) override;
 	vector<Item*>* GetAllInventoryItems() override;

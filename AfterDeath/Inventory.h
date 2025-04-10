@@ -28,6 +28,7 @@ public:
 	Item* TryUse(int num);
 	Item* TryEquip(int num);
 	void DisplayInventory();
+	void DisplayInventoryDetail();
 	vector<Item*>* GetAllInventoryItems();
 	void InitInventory();
 	void ArrangeInventory();

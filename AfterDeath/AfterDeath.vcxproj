@@ -148,6 +148,7 @@
     <ClInclude Include="IPlayable.h" />
     <ClInclude Include="Inventory.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="LichHead.h" />
     <ClInclude Include="LongSword.h" />
     <ClInclude Include="Lower.h" />
     <ClInclude Include="Map.h" />
@@ -181,6 +182,7 @@
     <ClCompile Include="IncreaseAttack.cpp" />
     <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="LichHead.cpp" />
     <ClCompile Include="LongSword.cpp" />
     <ClCompile Include="Lower.cpp" />
     <ClCompile Include="Map.cpp" />

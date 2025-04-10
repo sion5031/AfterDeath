@@ -11,7 +11,7 @@ GameManager::GameManager()
 	{
 		Maps->insert({ i, make_shared<Map>(i) });
 	}
-	Gotoxy(23, 17);
+	Gotoxy(23, 16);
 	cout << "플레이어의 이름을 입력하세요 : ";
 	cin >> name;
 	Hero = make_shared<Player>(name);
@@ -36,7 +36,7 @@ GameManager::~GameManager()
 {
 }
 
-void GameManager::PrintStartPage(string fileName, int x, int y)
+void GameManager::PrintOpeningPage(string fileName, int x, int y)
 {
 	ifstream readFile;
 	readFile.open("..\\" + fileName + ".txt");
@@ -71,6 +71,85 @@ void GameManager::PrintStartPage(string fileName, int x, int y)
 	}
 
 	readFile.close();
+}
+
+void GameManager::PrintOpeningMessage(string str)
+{
+	string fileName = str;
+	string s;
+	int line = 0;
+
+	ifstream in("..\\" + fileName + ".txt");	
+
+	if (in.is_open()) {
+		while (!in.eof())
+		{
+			getline(in, s);
+			Gotoxy(SCREEN_START_X * 2, SCREEN_START_Y + line);
+			for (int i = 0;i < s.length();i++)
+			{
+				cout << s[i];
+				Sleep(30);
+			}
+			line += 2;
+			Sleep(100);
+		}
+	}
+	else {
+		std::cout << "파일을 찾을 수 없습니다!" << std::endl;
+	}
+	in.close();
+	Sleep(200);
+
+
+	string lastMessage =  Hero->GetName() + " 의 여정에 축복이 있기를...";
+
+	SetConsoleOutputCP(949);
+	Gotoxy(SCREEN_START_X * 2, SCREEN_START_Y + line + 1);
+	for (int i = 0;i < lastMessage.length();i++)
+	{
+		cout << lastMessage[i];
+		Sleep(40);
+	}
+	
+	Sleep(2000);
+	
+	system("cls");
+}
+
+void GameManager::PrintStory(string str)
+{
+	string fileName = str;
+	string s;
+	int line = 0;
+
+	ifstream in("..\\" + fileName + ".txt");
+
+	SetConsoleOutputCP(CP_UTF8);
+	
+	if (in.is_open()) {
+		while (!in.eof())
+		{
+			getline(in, s);
+			Gotoxy(SCREEN_START_X * 2, SCREEN_START_Y + line);
+			for (int i = 0;i < s.length();i++)
+			{
+				cout << s[i];
+				Sleep(30);
+			}
+			line += 2;
+			Sleep(100);
+		}
+	}
+	else {
+		std::cout << "파일을 찾을 수 없습니다!" << std::endl;
+	}
+	in.close();
+	Sleep(3000);
+	
+	SetConsoleOutputCP(949);
+
+	system("cls");
 }
 
 void GameManager::PrintDeathMessage()
@@ -249,7 +328,7 @@ void GameManager::MakeMonsterMap2(shared_ptr<Map> map)
 
 	Monsters->at(num)->push_back(make_shared<Monster>());
 	Monsters->at(num)->push_back(make_shared<Monster>());
-	Monsters->at(num)->push_back(make_shared<Monster>(1));
+	Monsters->at(num)->push_back(make_shared<Monster>());
 
 	Maps->at(num)->AddCreature(36, Monsters->at(num)->at(0));
 	Maps->at(num)->AddCreature(190, Monsters->at(num)->at(1));
@@ -268,7 +347,7 @@ void GameManager::MakeMonsterMap3(shared_ptr<Map> map)
 	Maps->at(num)->DeleteChecker();
 
 	Monsters->at(num)->push_back(make_shared<Monster>());
-	Monsters->at(num)->push_back(make_shared<Monster>(1));
+	Monsters->at(num)->push_back(make_shared<Monster>());
 	Monsters->at(num)->push_back(make_shared<Monster>(2));
 
 	Maps->at(num)->AddCreature(36, Monsters->at(num)->at(0));
@@ -276,7 +355,7 @@ void GameManager::MakeMonsterMap3(shared_ptr<Map> map)
 	Maps->at(num)->AddCreature(160, Monsters->at(num)->at(2));
 
 	//마지막 맵이라
-	//MapObjects* newMapObject = new MapObjects;
-	//newMapObject->Portal = make_shared<Portal>(0);
-	//Maps->at(num)->AddObject(92, newMapObject);
+	MapObjects* newMapObject = new MapObjects;
+	newMapObject->Portal = make_shared<Portal>(1);
+	Maps->at(num)->AddObject(88, newMapObject);
 }

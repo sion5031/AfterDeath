@@ -76,6 +76,9 @@
     <Filter Include="소스 파일\Skill\PassiveSkill">
       <UniqueIdentifier>{3089b51f-786c-4c9d-8f9a-e7933be9c080}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Item\QuestItem">
+      <UniqueIdentifier>{4e7eaeca-03ad-43a5-9690-6cf20e250fbc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Map.h">
@@ -183,6 +186,9 @@
     <ClInclude Include="DefenseUp.h">
       <Filter>헤더 파일\Skill\PassiveSkill</Filter>
     </ClInclude>
+    <ClInclude Include="LichHead.h">
+      <Filter>헤더 파일\Item\QuestItem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Run.cpp">
@@ -271,6 +277,9 @@
     </ClCompile>
     <ClCompile Include="DefenseUp.cpp">
       <Filter>소스 파일\Skill\PassiveSkill</Filter>
+    </ClCompile>
+    <ClCompile Include="LichHead.cpp">
+      <Filter>소스 파일\Item\QuestItem</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
