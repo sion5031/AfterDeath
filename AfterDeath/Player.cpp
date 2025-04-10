@@ -147,8 +147,8 @@ Player::Player(string name)
 	Type = 0;
 	MaxHp = 100;
 	MaxMp = 50;
-	Attack = 250;
-	Defense = 3;
+	Attack = 15;
+	Defense = 6;
 	Skills = new vector<Skill*>;
 
 	DeathCount = 0;
