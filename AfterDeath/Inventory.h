@@ -37,8 +37,4 @@ public:
 
 	int GetSN(int num);
 
-	//int GetTotalEquipmentAtk();
-	//int GetTotalEquipmentDef();
-	//int GetTotalEquipmentMaxHp();
-	//int GetTotalEquipmentMaxMp();
 };

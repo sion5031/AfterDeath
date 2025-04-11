@@ -1,5 +1,8 @@
 #pragma once
 
+#define REAL_TIME true
+//#define REAL_TIME false
+
 #define MAP_SIZE 15 // 현재는 변경 불가
 #define NOTIFICATION_LINE 6
 

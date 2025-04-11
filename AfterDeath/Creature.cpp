@@ -78,18 +78,21 @@ void Creature::Fight(shared_ptr<Creature> player, shared_ptr<Creature> monster, 
 
 		Gotoxy(SCREEN_START_X * 2, SCREEN_START_Y + MAP_SIZE + 1);
 		GotoxyClsShort(1);
-		cout << "HP: " << player->GetHp() << "/" << player->GetTotalStatus()->TotalMaxHp
-			<< "    Atk: " << player->GetTotalStatus()->TotalAtk;
+		cout.width(17);
+		cout << left << "HP: " + to_string(player->GetHp()) + "/" + to_string(player->GetTotalStatus()->TotalMaxHp);
+		cout << "Atk: " << player->GetTotalStatus()->TotalAtk;
 		Gotoxy(SCREEN_START_X * 2, SCREEN_START_Y + MAP_SIZE + 2);
 		GotoxyClsShort(1);
-		cout << "MP: " << player->GetMp() << "/" << player->GetTotalStatus()->TotalMaxMp
-			<< "    Def: " << player->GetTotalStatus()->TotalDef;
+		cout.width(17);
+		cout << left << "MP: " + to_string(player->GetMp()) + "/" + to_string(player->GetTotalStatus()->TotalMaxMp);
+		cout << "Def: " << player->GetTotalStatus()->TotalDef << "\n";
 		Gotoxy(SCREEN_START_X * 2, SCREEN_START_Y + MAP_SIZE + 3);
 		GotoxyClsShort(1);
-		cout << "====================";
+
 
 		if (countTurn % 2 == 0)
 		{
+			GotoxyPreparePrintMenu(-2);
 			GotoxyPreparePrintMenu(0);
 			cout << "1. 공 격";
 			GotoxyPreparePrintMenu(1);
@@ -151,8 +154,10 @@ void Creature::Fight(shared_ptr<Creature> player, shared_ptr<Creature> monster, 
 								else
 								{
 									CalcMp(-player->Skills->at(skillNum)->GetMpConsume());
-									player->UseSkill(player, skillNum, countTurn);
-									PlayerDurationSkills.push_back([&](int count) -> bool {return player->UseSkill(player, skillNum, count);});
+									if (player->UseSkill(player, skillNum, countTurn))
+									{
+										PlayerDurationSkills.push_back([&](int count) -> bool {return player->UseSkill(player, skillNum, count);});
+									}
 								}
 							}
 							break;
@@ -216,7 +221,10 @@ void Creature::Fight(shared_ptr<Creature> player, shared_ptr<Creature> monster, 
 			else if (num == 2)
 			{
 				num = 0;// 수정!!!
-				monster->UseSkill(player, num, countTurn);
+				if (monster->UseSkill(player, num, countTurn))
+				{
+					MonsterHitMotion(countTurn, player->GetName(), monster->GetName(), "color 4f");
+				}
 			}
 			else
 			{

@@ -34,7 +34,7 @@ private:
 	map<int, weak_ptr<Creature>>* CreaturesLocation;
 	map<int, MapObjects*>* ObjectsLocation;
 	const static int MapSize = MAP_SIZE;
-	bool bRealTime = false;
+	bool bRealTime = REAL_TIME;
 
 	void FillMap();
 	void FillMapLine(int rowNum, int startNum, int endNum);
@@ -48,7 +48,6 @@ public:
 	int MovePlayer();
 	int MoveCondition(char t);
 	void MoveMonster();
-	void UsePortal(int location);
 
 	void AddCreature(int location, shared_ptr<Creature> creature);
 	void AddObject(int location, MapObjects* mapObjects);

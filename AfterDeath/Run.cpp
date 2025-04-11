@@ -30,7 +30,7 @@ int main()
 	GameManager* GM = new GameManager();
 	system("cls");
 
-	if (false)
+	if (true)
 	{
 		//오프닝
 		SetConsoleOutputCP(CP_UTF8);

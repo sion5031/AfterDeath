@@ -349,9 +349,10 @@ bool Player::UseSkill(shared_ptr<Creature> creature, int num, int turn)
 		else
 		{
 			AddNotification(message);
+			return true;
 		}
 	}
-	return true;
+	return false;
 }
 
 void Player::Die()

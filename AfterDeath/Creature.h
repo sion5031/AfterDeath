@@ -5,27 +5,12 @@
 #include <fstream>
 #include <string>
 #include <conio.h>
-//#include <codecvt>
-//#include <locale>
 
 #include "Item.h"
 #include "Skill.h"
 #include "IPlayable.h"
 
 using namespace std;
-
-//class Item;
-//class Skill;
-
-//struct EquipedE
-//{
-//	shared_ptr<Item> myWeapon;
-//	shared_ptr<Item> myUpper;
-//	shared_ptr<Item> myLower;
-//	shared_ptr<Item> myGlove;
-//	shared_ptr<Item> myShoes;
-//	shared_ptr<Item> myShield;
-//};
 
 struct EquipedE
 {

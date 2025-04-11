@@ -248,6 +248,7 @@ int Map::MoveCondition(char t)
 			FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
 			itemChar = _getche();
 			GotoxyCll(1);
+			system("cls");
 
 			itemNum = itemChar - '1';
 
@@ -333,9 +334,6 @@ void Map::MoveMonster()
 	}
 }
 
-void Map::UsePortal(int location)
-{
-}
 
 void Map::AddCreature(int location, shared_ptr<Creature> creature)
 {
@@ -373,26 +371,26 @@ void Map::PrintMap()
 	{
 		for (int j = 0;j < MapSize;j++) {
 			Gotoxy((i + SCREEN_START_X) * 2, j + SCREEN_START_Y + 1);
-			if (bIsObstacle(i, j)) cout << "* ";
+			if (bIsObstacle(i, j)) cout << "■";
 			else if (bIsObject(IntCoordinateToLocation(i, j)))
 			{
 				vector<int> temCoor = { i,j };
 				int temLoc = CoordinateToLocation(temCoor);
-				if(ObjectsLocation->at(temLoc)->Portal != nullptr)cout << "# ";
+				if(ObjectsLocation->at(temLoc)->Portal != nullptr)cout << "♨";
 				else cout << "! ";
 			}
 			else if (bIsObject(IntCoordinateToLocation(i, j)))cout << "! ";
-			else if (bIsEnemy(IntCoordinateToLocation(i, j)))cout << "X ";
-			else if (bIsPlayer(IntCoordinateToLocation(i, j)))cout << "O ";
+			else if (bIsEnemy(IntCoordinateToLocation(i, j)))cout << "Ｘ";
+			else if (bIsPlayer(IntCoordinateToLocation(i, j)))cout << "○";
 			else cout << "  ";
 		}
 		cout << endl;
 	}	
-	GotoxyPrintReturn(" 0 - 플레이어", (MapSize + SCREEN_START_X) * 2, SCREEN_START_Y + 1);
-	GotoxyPrintReturn(" X - 몬스터", (MapSize + SCREEN_START_X) * 2, SCREEN_START_Y + 2);
+	GotoxyPrintReturn(" ○ - 플레이어", (MapSize + SCREEN_START_X) * 2, SCREEN_START_Y + 1);
+	GotoxyPrintReturn(" Ｘ - 몬스터", (MapSize + SCREEN_START_X) * 2, SCREEN_START_Y + 2);
 	GotoxyPrintReturn(" ! - 오브젝트", (MapSize + SCREEN_START_X) * 2, SCREEN_START_Y + 3);
-	GotoxyPrintReturn(" # - 포털", (MapSize + SCREEN_START_X) * 2, SCREEN_START_Y + 4);
-	GotoxyPrintReturn(" * - 장애물", (MapSize + SCREEN_START_X) * 2, SCREEN_START_Y + 5);
+	GotoxyPrintReturn(" ♨ - 포털", (MapSize + SCREEN_START_X) * 2, SCREEN_START_Y + 4);
+	GotoxyPrintReturn(" ■ - 장애물", (MapSize + SCREEN_START_X) * 2, SCREEN_START_Y + 5);
 	GotoxyPrintReturn(" i 버튼 - 인벤토리", (MapSize + SCREEN_START_X) * 2, SCREEN_START_Y + 7);
 	GotoxyPrintReturn(" j 버튼 - 스킬상세", (MapSize + SCREEN_START_X) * 2, SCREEN_START_Y + 8);
 	GotoxyPrintReturn(" Enter - 확인 및 스킵", (MapSize + SCREEN_START_X) * 2, SCREEN_START_Y + 9);
@@ -400,12 +398,14 @@ void Map::PrintMap()
 	shared_ptr<Creature> player = GetCreature(GetPlayerLocation());
 	Gotoxy(SCREEN_START_X * 2, SCREEN_START_Y + MapSize + 1);
 	GotoxyClsShort(1);
-	cout << "HP: " << player->GetHp() << "/" << player->GetTotalStatus()->TotalMaxHp
-		<< "\tAtk: " << player->GetTotalStatus()->TotalAtk;
+	cout.width(17);
+	cout << left << "HP: " + to_string(player->GetHp()) + "/" + to_string(player->GetTotalStatus()->TotalMaxHp);
+	cout << "Atk: " << player->GetTotalStatus()->TotalAtk;
 	Gotoxy(SCREEN_START_X * 2, SCREEN_START_Y + MapSize + 2);
 	GotoxyClsShort(1);
-	cout << "MP: " << player->GetMp() << "/" << player->GetTotalStatus()->TotalMaxMp
-		<< "\t\tDef: " << player->GetTotalStatus()->TotalDef << "\n";
+	cout.width(17);
+	cout << left << "MP: " + to_string(player->GetMp()) + "/" + to_string(player->GetTotalStatus()->TotalMaxMp);
+	cout << "Def: " << player->GetTotalStatus()->TotalDef << "\n";
 
 	Gotoxy(0, 18);
 	//GotoxyClsLong(6);
@@ -540,7 +540,6 @@ int Map::MoveEvent(int playerLocation, vector<int> nextCoordinate)
 					return -100;
 				}
 			}
-
 			int ran = rand() % 6;
 
 			if (dropItem->GetItem(ran) != nullptr)

@@ -20,7 +20,7 @@ Monster::Monster()
 	MaxHp = 20;
 	MaxMp = 15;
 	Attack = 15;
-	Defense = 3;
+	Defense = 6;
 	Items = new vector<Item*>;
 	Skills = new vector<Skill*>;
 	//Equipments = new EquipedE; //Creature 생성자에서 생성
@@ -122,13 +122,15 @@ bool Monster::UseSkill(shared_ptr<Creature> creature, int num, int count)
 			Skills->at(ran)->Effect(creature, count);
 			int after = creature->GetHp();
 			AddNotification(creature->GetName() + " 가 " + to_string(before - after) + " 만큼의 피해를 입었습니다.");
+			return true;
 		}
 		else
 		{
 			AddNotification(Name + " 가 " + " 스킬 사용에 실패했습니다.");
+			return false;
 		}
 	}
-	return true;
+	return false;
 }
 
 void Monster::Die()

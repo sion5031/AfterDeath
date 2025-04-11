@@ -40,8 +40,4 @@ public:
 	void SetDeathCount(int deathCount);
 	int GetDeathCount() override;
 
-	//int GetTotalAtk();
-	//int GetTotalDef();
-	//int GetTotalMaxHp();
-	//int GetTotalMaxMp();
 };

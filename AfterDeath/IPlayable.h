@@ -8,6 +8,7 @@ class IPlayable
 public:
 	virtual ~IPlayable() = default;
 
+	//Creature로 가야할 것들이 있음
 	virtual void DisplayInventory() = 0;
 	virtual void DisplayInventoryDetail() = 0;
 	virtual void AddInventory(Item* item) = 0;
