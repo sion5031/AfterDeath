@@ -174,7 +174,7 @@ int Map::MovePlayer()
 
 		t = _getche();
 		GotoxyCll(1);
-		GotoxyClsLong(1);
+		//GotoxyClsLong(1);
 
 		return MoveCondition(t);
 	}
@@ -186,7 +186,8 @@ int Map::MovePlayer()
 			if (_kbhit())
 			{
 				char t = _getch();
-				GotoxyClsLong(1);
+				GotoxyCll(1);
+				//GotoxyClsLong(1);
 
 				return MoveCondition(t);
 			}
