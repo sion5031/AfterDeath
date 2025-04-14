@@ -360,9 +360,9 @@ void Map::AddObject(int location, MapObjects* mapObjects)
 
 void Map::PrintMap()
 {
-	GotoxyClsLong(1);
+	//GotoxyClsLong(1);
 	Gotoxy(SCREEN_START_X*2, SCREEN_START_Y - 1);
-	GotoxyClsLong(1);
+	//GotoxyClsLong(1);
 	cout << "<" << GetName() << ">";
 	for (int i = 0;i < MapSize;i++)
 	{
