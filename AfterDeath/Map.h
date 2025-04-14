@@ -47,7 +47,7 @@ public:
 
 	int MovePlayer();
 	int MoveCondition(char t);
-	void MoveMonster();
+	int MoveMonster(int location);
 
 	void AddCreature(int location, shared_ptr<Creature> creature);
 	void AddObject(int location, MapObjects* mapObjects);
@@ -64,7 +64,7 @@ public:
 	int CoordinateToLocation(vector<int> coordinate);
 	int IntCoordinateToLocation(int x, int y);
 	int MoveEvent(int playerLocation, vector<int> nextCoordinate);
-	void MoveMonsterEvent(int playerLocation, vector<int> nextCoordinate);
+	int MoveMonsterEvent(int playerLocation, vector<int> nextCoordinate);
 	bool bIsObstacle(int x, int y);
 	bool bIsObject(int location);
 	bool bIsEnemy(int location);

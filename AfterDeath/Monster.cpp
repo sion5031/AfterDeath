@@ -32,12 +32,12 @@ Monster::Monster()
 		Equipments->myWeapon = new LongSword();
 		Equipments->myGlove = new Glove();
 	}
-	if (randomEquip % 3 == 0)
+	if (randomEquip % 3 == 1)
 	{
 		Equipments->myWeapon = new ShortSword();
 		Equipments->myShield = new Shield();
 	}
-	else if (randomEquip % 3 == 0)
+	else if (randomEquip % 3 == 2)
 	{
 		Equipments->myWeapon = new ShortSword();
 		Equipments->myUpper = new Upper();

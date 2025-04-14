@@ -20,6 +20,7 @@ void notificationErase(int x, int y, int line)
 Creature::Creature()
 {
 	Equipments = new EquipedE;
+	BuffedStatus = new Status;
 }
 
 void Creature::InitCreature()
@@ -256,6 +257,8 @@ void Creature::Fight(shared_ptr<Creature> player, shared_ptr<Creature> monster, 
 	}
 
 	//초기화(상태 및 delete)
+	player->BuffedStatus->InitStatus();
+
 	system("cls");
 	//Gotoxy(0, 0);
 	//GotoxyClsLong(17);
@@ -500,6 +503,10 @@ Status* Creature::GetTotalStatus()
 			}
 		}
 	}
+	atkSum += BuffedStatus->TotalAtk;
+	defSum += BuffedStatus->TotalDef;
+	maxHpSum += BuffedStatus->TotalMaxHp;
+	maxMpSum += BuffedStatus->TotalMaxMp;
 	
 	totalStatus->TotalAtk = atkSum;
 	totalStatus->TotalDef = defSum;
@@ -548,6 +555,14 @@ void Creature::SetAtk(int Atk)
 void Creature::SetDef(int Def)
 {
 	this->Defense = Def;
+}
+
+void Creature::SetBuffedStatus(int atk, int def, int hp, int mp)
+{
+	BuffedStatus->TotalAtk = atk;
+	BuffedStatus->TotalDef = def;
+	BuffedStatus->TotalMaxHp = hp;
+	BuffedStatus->TotalMaxMp = mp;
 }
 
 //void Creature::AddNotification(string notification)
@@ -688,6 +703,11 @@ int Creature::GetAttack()
 int Creature::GetDefense()
 {
 	return Defense;
+}
+
+Status* Creature::GetBuffedStatus()
+{
+	return BuffedStatus;
 }
 
 vector<Skill*>* Creature::GetSkills()

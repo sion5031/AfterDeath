@@ -22,5 +22,12 @@ DefenseUp::DefenseUp(int level)
 
 string DefenseUp::Effect(shared_ptr<Creature> player, int turn)
 {
-	return nullptr;
+	string message = "패시브는 사용할 수 없습니다.";
+	return message;
+}
+
+string DefenseUp::GetExplanation()
+{
+	Explanation = "자신의 방어력을 영구히 " + to_string(EffectValue * Level) + " 만큼 상승시킵니다.";
+	return Explanation;
 }

@@ -30,9 +30,10 @@ string IncreaseAttack::Effect(shared_ptr<Creature> player, int turn)
 	{
 		Using = true;
 		Turn = turn;
-		int currentAtk = player->GetAttack();
+		//int currentAtk = player->GetAttack();
 		int raise = EffectValue * (0.5 + 0.5 * Level);
-		player->SetAtk(currentAtk + raise);
+		//player->SetAtk(currentAtk + raise);
+		player->SetBuffedStatus(raise, 0, 0, 0);
 		str = player->GetName() + " 의 공격력이 " + to_string(raise) + " 만큼 상승했습니다.";
 		return str;
 	}
@@ -49,4 +50,10 @@ string IncreaseAttack::Effect(shared_ptr<Creature> player, int turn)
 		}
 	}
 	return str;
+}
+
+string IncreaseAttack::GetExplanation()
+{
+	Explanation = "자신의 공격력을 " + to_string(Duration) + " 턴동안 " + to_string((int)(EffectValue * (0.5 + 0.5 * Level))) + " 만큼 상승시킵니다.";
+	return Explanation;
 }

@@ -157,6 +157,7 @@ void GameManager::PrintDeathMessage()
 	shared_ptr<IPlayable> playableCreature = dynamic_pointer_cast<IPlayable>(Hero);
 	if (playableCreature->GetDeathCount() > 0)
 	{
+		Sleep(2000);
 		system("cls");
 		Gotoxy(38, 16);
 		string dead = "DEAD!";
@@ -217,6 +218,7 @@ bool GameManager::DeathPlayerChecker()
 		// 모든 맵 초기화???? //Player 초기화!!!!
 		MakeMonsterMap1(Maps->at(0)); // 초기화 시 자리있음!
 		MakeMonsterMap2(Maps->at(1));
+		MakeMonsterMap3(Maps->at(2));
 
 		Hero->InitCreature();		//hp, mp, Equipments
 

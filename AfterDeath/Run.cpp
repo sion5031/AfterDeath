@@ -83,7 +83,16 @@ int main()
 			}
 			GM->DeathMonsterChecker();
 
-			GM->GetCurrentMap()->MoveMonster();
+			vector<int> monsterLocations = GM->GetCurrentMap()->GetMonsterLocation();
+			for (auto i : monsterLocations)
+			{
+				mapOrHead = GM->GetCurrentMap()->MoveMonster(i);
+				if (mapOrHead == -100)
+				{
+					end = false;
+					break;
+				}
+			}
 			if (GM->DeathPlayerChecker())
 			{
 				break;

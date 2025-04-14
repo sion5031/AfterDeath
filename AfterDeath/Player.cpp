@@ -308,7 +308,7 @@ void Player::DisplaySkills()
 		}
 		else
 		{
-			cout << "#" << i + 1 << " " << Skills->at(i)->GetName();
+			//cout << "#" << i + 1 << " " << Skills->at(i)->GetName();
 		}
 	}
 }

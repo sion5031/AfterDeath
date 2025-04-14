@@ -18,6 +18,7 @@ FireBall::FireBall(int level)
 	MpConsume = 15;
 	EffectValue = 20;
 	Level = level;
+	Explanation = "대상의 방어력을 50% 무시하는 " + to_string((int)(EffectValue + EffectValue * 0.5 * Level)) + " 의 데미지를 입힙니다.";
 }
 
 string FireBall::Effect(shared_ptr<Creature> player, int turn)
@@ -28,4 +29,10 @@ string FireBall::Effect(shared_ptr<Creature> player, int turn)
 	int after = player->GetHp();
 	string str = player->GetName() + " 가 " + to_string(before - after) + " 만큼의 피해를 입었습니다.";
 	return str;
+}
+
+string FireBall::GetExplanation()
+{
+	Explanation = "대상의 방어력을 50% 무시하는 " + to_string((int)(EffectValue + EffectValue * 0.5 * Level)) + " 의 데미지를 입힙니다.";
+	return Explanation;
 }

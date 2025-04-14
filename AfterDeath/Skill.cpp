@@ -59,8 +59,3 @@ int Skill::GetMpConsume()
 {
 	return MpConsume;
 }
-
-string Skill::GetExplanation()
-{
-	return Explanation;
-}

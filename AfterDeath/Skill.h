@@ -40,6 +40,6 @@ public:
 	int GetLevel();
 	int GetEffectValue();
 	int GetMpConsume();
-	string GetExplanation();
+	virtual string GetExplanation() = 0;
 
 };

@@ -206,32 +206,32 @@ int Map::MoveCondition(char t)
 	vector<int> coordinate = LocationToCoordinate(location);
 	vector<int> temCoordinate;
 
-	if (t == 'a')
+	if (t == 'a' || t == 'A')
 	{
 		temCoordinate.push_back(coordinate[0] - 1); // 예외처리 범위로...
 		temCoordinate.push_back(coordinate[1]);
 		return MoveEvent(location, temCoordinate);
 
 	}
-	else if (t == 'w')
+	else if (t == 'w' || t == 'W')
 	{
 		temCoordinate.push_back(coordinate[0]);
 		temCoordinate.push_back(coordinate[1] - 1);
 		return MoveEvent(location, temCoordinate);
 	}
-	else if (t == 'd')
+	else if (t == 'd' || t == 'D')
 	{
 		temCoordinate.push_back(coordinate[0] + 1);
 		temCoordinate.push_back(coordinate[1]);
 		return MoveEvent(location, temCoordinate);
 	}
-	else if (t == 's')
+	else if (t == 's' || t == 'S')
 	{
 		temCoordinate.push_back(coordinate[0]);
 		temCoordinate.push_back(coordinate[1] + 1);
 		return MoveEvent(location, temCoordinate);
 	}
-	else if (t == 'i')
+	else if (t == 'i' || t == 'I')
 	{
 		Item* getItem;
 		shared_ptr<Creature> player = GetCreature(location);
@@ -265,7 +265,7 @@ int Map::MoveCondition(char t)
 			}
 		}
 	}
-	else if (t == 'j')
+	else if (t == 'j' || t == 'J')
 	{
 		shared_ptr<Creature> player = GetCreature(location);
 		shared_ptr<IPlayable> displayableCreature = dynamic_pointer_cast<IPlayable>(player);
@@ -282,57 +282,53 @@ int Map::MoveCondition(char t)
 	return -1;
 }
 
-void Map::MoveMonster()
+int Map::MoveMonster(int location)
 {
-	vector<int> locations = GetMonsterLocation();
+	vector<int> temCoordinate;
 
-	for (auto i : locations)
+	vector<int> coordinate = LocationToCoordinate(location);
+
+	int ran;
+
+	if (bRealTime == true)
 	{
-		vector<int> temCoordinate;
-
-		vector<int> coordinate = LocationToCoordinate(i);
-
-		int ran;
-
-		if (bRealTime == true)
-		{
-			ran = rand() % 20;
-		}
-		else
-		{
-			ran = rand() % 5;
-		}
-
-		if (ran == 0)
-		{
-			temCoordinate.push_back(coordinate[0] - 1); // 예외처리 범위로...
-			temCoordinate.push_back(coordinate[1]);
-			MoveMonsterEvent(i, temCoordinate);
-
-		}
-		else if (ran == 1)
-		{
-			temCoordinate.push_back(coordinate[0]);
-			temCoordinate.push_back(coordinate[1] - 1);
-			MoveMonsterEvent(i, temCoordinate);
-		}
-		else if (ran == 2)
-		{
-			temCoordinate.push_back(coordinate[0] + 1);
-			temCoordinate.push_back(coordinate[1]);
-			MoveMonsterEvent(i, temCoordinate);
-		}
-		else if (ran == 3)
-		{
-			temCoordinate.push_back(coordinate[0]);
-			temCoordinate.push_back(coordinate[1] + 1);
-			MoveMonsterEvent(i, temCoordinate);
-		}
-		else if (ran == 4)
-		{
-				
-		}
+		ran = rand() % 20;
 	}
+	else
+	{
+		ran = rand() % 5;
+	}
+
+	if (ran == 0)
+	{
+		temCoordinate.push_back(coordinate[0] - 1); // 예외처리 범위로...
+		temCoordinate.push_back(coordinate[1]);
+		return MoveMonsterEvent(location, temCoordinate);
+
+	}
+	else if (ran == 1)
+	{
+		temCoordinate.push_back(coordinate[0]);
+		temCoordinate.push_back(coordinate[1] - 1);
+		return MoveMonsterEvent(location, temCoordinate);
+	}
+	else if (ran == 2)
+	{
+		temCoordinate.push_back(coordinate[0] + 1);
+		temCoordinate.push_back(coordinate[1]);
+		return MoveMonsterEvent(location, temCoordinate);
+	}
+	else if (ran == 3)
+	{
+		temCoordinate.push_back(coordinate[0]);
+		temCoordinate.push_back(coordinate[1] + 1);
+		return MoveMonsterEvent(location, temCoordinate);
+	}
+	else if (ran == 4)
+	{
+		return -1;
+	}
+	return -1;
 }
 
 
@@ -596,7 +592,7 @@ int Map::MoveEvent(int playerLocation, vector<int> nextCoordinate)
 	return -1;
 }
 
-void Map::MoveMonsterEvent(int monsterLocation, vector<int> nextCoordinate) // MoveEvent와 합칠 수?
+int Map::MoveMonsterEvent(int monsterLocation, vector<int> nextCoordinate) // MoveEvent와 합칠 수?
 {
 	int x = nextCoordinate[0];
 	int y = nextCoordinate[1];
@@ -615,6 +611,72 @@ void Map::MoveMonsterEvent(int monsterLocation, vector<int> nextCoordinate) // M
 	{
 		cout << "습격받음!" << endl;
 		monster->Fight(GetCreature(nextLocation), monster, 1);
+
+		shared_ptr<Creature> player = GetCreature(nextLocation);
+
+		if (player->GetHp() <= 0)
+		{
+			// 그냥 흐르게?
+		}
+		if (monster->GetHp() <= 0)
+		{
+			EquipedE* dropItem = new EquipedE;
+			dropItem = monster->GetEquipments();
+
+			MapObjects* dropObject = new MapObjects;
+			dropObject->Treasure = new Treasure();
+
+			// 장비 드랍
+			for (int i = 0;i < 6;i++)
+			{
+				if (dropItem->GetItem(i) != nullptr && dropItem->GetItem(i)->GetSN() == 30)
+				{
+					return -100;
+				}
+			}
+			int ran = rand() % 6;
+
+			if (dropItem->GetItem(ran) != nullptr)
+			{
+				dropObject->Item = dropItem->GetItem(ran);
+			}
+
+
+			//소모품 드랍(랜덤 생성)
+			ran = rand() % 6;
+
+			if (ran % 3 == 1)
+			{
+				ran = rand() % 6;
+				HpPotion* hpPotion = new HpPotion(ran % 3 + 1);
+				dropObject->Treasure->AddItems(hpPotion);
+			}
+			else if (ran % 3 == 2)
+			{
+				ran = rand() % 6;
+				MpPotion* mpPotion = new MpPotion(ran % 3 + 1);
+				dropObject->Treasure->AddItems(mpPotion);
+			}
+			else
+			{
+				ran = rand() % 5;
+				HpPotion* hpPotion = new HpPotion(ran % 3 + 1);
+				dropObject->Treasure->AddItems(hpPotion);
+				ran = rand() % 5;
+				MpPotion* mpPotion = new MpPotion(ran % 3 + 1);
+				dropObject->Treasure->AddItems(mpPotion);
+			}
+
+			// 스킬 드랍
+			ran = rand() % (monster->GetSkills()->size() * 2); // 확률 50%
+
+			if (ran < monster->GetSkills()->size())
+			{
+				dropObject->Treasure->SetNewSkill(monster->GetSkills()->at(ran));
+			}
+
+			ObjectsLocation->insert({ monsterLocation, dropObject });
+		}
 	}
 	else if (bIsEnemy(nextLocation))
 	{
@@ -626,6 +688,7 @@ void Map::MoveMonsterEvent(int monsterLocation, vector<int> nextCoordinate) // M
 		CreaturesLocation->insert({ nextLocation, CreaturesLocation->at(monsterLocation) });
 		CreaturesLocation->erase(monsterLocation);
 	}
+	return -1;
 }
 
 bool Map::bIsObstacle(int x, int y)

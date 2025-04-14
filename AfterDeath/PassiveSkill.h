@@ -11,4 +11,5 @@ public:
 	~PassiveSkill();
 
 	virtual string Effect(shared_ptr<Creature> player, int turn) = 0;
+	virtual string GetExplanation() = 0;
 };

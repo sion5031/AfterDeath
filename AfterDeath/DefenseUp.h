@@ -12,4 +12,5 @@ public:
 	~DefenseUp() {};
 
 	string Effect(shared_ptr<Creature> player, int turn) override;
+	string GetExplanation();
 };
