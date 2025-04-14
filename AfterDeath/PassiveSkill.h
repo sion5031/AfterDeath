@@ -6,9 +6,10 @@ class PassiveSkill : public Skill
 private:
 
 public:
-	PassiveSkill() {}
+	PassiveSkill();
 	//virtual ~PassiveSkill(){ cout << "~PassiveSkill()" << endl; }
-	virtual ~PassiveSkill() {}
+	~PassiveSkill();
 
-	void Effect() override;
+	virtual string Effect(shared_ptr<Creature> player, int turn) = 0;
+	virtual string GetExplanation() = 0;
 };

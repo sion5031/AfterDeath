@@ -11,7 +11,24 @@ class Item;
 
 class Creature
 {
-private:
+	int TotalAtk = 0;
+	int TotalDef = 0;
+	int TotalMaxHp = 0;
+	int TotalMaxMp = 0;
+
+	void InitStatus()
+	{
+		TotalAtk = 0;
+		TotalDef = 0;
+		TotalMaxHp = 0;
+		TotalMaxMp = 0;
+	}
+};
+
+
+class Creature : enable_shared_from_this<Creature>
+{
+protected:
 	string Name;
 	int Type;
 	int MaxHp;
@@ -20,6 +37,7 @@ private:
 	int Mp;
 	int Attack;
 	int Defense;
+	struct Status* BuffedStatus;
 	struct EquipedE* Equipments;
 	vector<Skill*> Skills;
 
@@ -48,6 +66,7 @@ public:
 	void SetMp(int mp);
 	void SetAtk(int attack);
 	void SetDef(int defense);
+	void SetBuffedStatus(int atk, int def, int hp, int mp);
 	//void SetMyInven(shared_ptr<Inventory>);
 
 	string GetCName();
@@ -58,6 +77,8 @@ public:
 	int GetMp();
 	int GetAttack();
 	int GetDefense();
+	struct Status* GetBuffedStatus();
+	vector<Skill*>* GetSkills();
 
 };
 
