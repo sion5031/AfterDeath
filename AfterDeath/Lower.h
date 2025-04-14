@@ -7,8 +7,9 @@ private:
 
 
 public:
-	Lower() {}
+	Lower();
+	Lower(int level);
 	//virtual ~Lower(){ cout << "~Lower()" << endl; }
-	virtual ~Lower() {}
+	~Lower();
 
 };

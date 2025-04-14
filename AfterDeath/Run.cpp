@@ -1,4 +1,4 @@
-#include <windows.h>
+ï»¿#include <windows.h>
 
 #include "GameManager.h"
 #include "Creature.h"
@@ -13,17 +13,17 @@ unique_ptr<Map> CurrentMap;
 
 int main()
 {
-	//ÄÜ¼Ö Ã¢ Å©±â º¯°æ
+	//ì½˜ì†” ì°½ í¬ê¸° ë³€ê²½
 	system("mode con:cols=130 lines=35");
-
-	//Ä¿¼­ ¼û±â±â
+	
+	//ì»¤ì„œ ìˆ¨ê¸°ê¸°
 	CONSOLE_CURSOR_INFO cursorInfo = { 0, };
 	cursorInfo.bVisible = 0;
 	cursorInfo.dwSize = 1;
 	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo);
 
 	srand(time(NULL));
-	//=============À§´Â °ÇµéÁö ¸»±â
+	//=============ìœ„ëŠ” ê±´ë“¤ì§€ ë§ê¸°
 
 
 
@@ -32,9 +32,9 @@ int main()
 
 	if (true)
 	{
-		//¿ÀÇÁ´×
+		//ì˜¤í”„ë‹
 		SetConsoleOutputCP(CP_UTF8);
-		GM->PrintOpeningMessage("¿ÀÇÁ´× ¹®±¸");
+		GM->PrintOpeningMessage("ì˜¤í”„ë‹ ë¬¸êµ¬");
 		SetConsoleOutputCP(CP_UTF8);
 		GM->PrintOpeningPage("Main_After", 13, 4);
 		Sleep(500);
@@ -48,12 +48,12 @@ int main()
 		system("cls");
 
 		SetConsoleOutputCP(CP_UTF8);
-		GM->PrintStory("¿ÀÇÁ´× ½ºÅä¸®");
+		GM->PrintStory("ì˜¤í”„ë‹ ìŠ¤í† ë¦¬");
 		SetConsoleOutputCP(949);
 
 		system("cls");
 	}
-
+	
 	int end = true;
 
 	while (end)
@@ -83,7 +83,16 @@ int main()
 			}
 			GM->DeathMonsterChecker();
 
-			GM->GetCurrentMap()->MoveMonster();
+			vector<int> monsterLocations = GM->GetCurrentMap()->GetMonsterLocation();
+			for (auto i : monsterLocations)
+			{
+				mapOrHead = GM->GetCurrentMap()->MoveMonster(i);
+				if (mapOrHead == -100)
+				{
+					end = false;
+					break;
+				}
+			}
 			if (GM->DeathPlayerChecker())
 			{
 				break;
@@ -92,7 +101,7 @@ int main()
 		}
 	}
 
-	GM->PrintStory("¿£µù ½ºÅä¸®");
+	GM->PrintStory("ì—”ë”© ìŠ¤í† ë¦¬");
 
 
 	return 0;

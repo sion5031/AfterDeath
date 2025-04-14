@@ -265,7 +265,7 @@ int Map::MoveCondition(char t)
 			}
 		}
 	}
-	else if (t == 'j')
+	else if (t == 'j' || t == 'J')
 	{
 		shared_ptr<Creature> player = GetCreature(location);
 		shared_ptr<IPlayable> displayableCreature = dynamic_pointer_cast<IPlayable>(player);

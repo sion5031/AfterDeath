@@ -1,28 +1,43 @@
 #pragma once
 
 #include "Creature.h"
+#include "IPlayable.h"
 #include "Inventory.h"
 
-class Player : public Creature
+class Player : public Creature, public IPlayable
 {
 private:
 	int DeathCount;
+	Inventory* MyInven;
 
-	void UseItem(int num);
-	void EquipItem(int num);
-	void ShowTotalStatus();
 
 public:
 	Player();
+	Player(string name);
 	~Player();
 
-	void DisplayInventory();
-	void AddInventory(Item*);
-	void SelectInventoryItem(int num);
-	void PlusDeathCount(int num);
-	void UseSkill() override;
+	//void UseItem(int num);
+	void EquipItem(int num);
+	void ShowTotalStatus();
+
+	void DisplayInventory() override;
+	void DisplayInventoryDetail() override;
+	void AddInventory(Item* item) override;
+	Item* SelectInventoryItem(int num) override;
+	vector<Item*>* GetAllInventoryItems() override;
+	void InitInventory() override;
+	void ArrangeInventory() override;
+	void CheckZeroInventory() override;
+	void AddSkill(Skill* skill) override;
+	Skill* GetSkill(int num) override;
+	void PlusDeathCount() override;
+
+	void DisplaySkills() override;
+	void DisplaySkillsDetail() override;
+	bool UseSkill(shared_ptr<Creature> creature, int num, int turn) override;
 	void Die() override;
 
 	void SetDeathCount(int deathCount);
-	int GetDeathCount();
+	int GetDeathCount() override;
+
 };

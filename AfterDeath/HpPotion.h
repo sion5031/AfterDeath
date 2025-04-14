@@ -7,8 +7,9 @@ private:
 
 
 public:
-	HpPotion() {}
+	HpPotion(int num);
 	//virtual ~HpPotion(){ cout << "~HpPotion()" << endl; }
-	virtual ~HpPotion() {}
+	~HpPotion();
 
+	string UseItem(shared_ptr<Creature> player) override;
 };

@@ -7,8 +7,9 @@ private:
 
 
 public:
-	Glove() {}
+	Glove();
+	Glove(int level);
 	//virtual ~Glove(){ cout << "~Glove()" << endl; }
-	virtual ~Glove() {}
+	~Glove();
 
 };

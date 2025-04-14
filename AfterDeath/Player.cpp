@@ -296,7 +296,7 @@ void Player::PlusDeathCount()
 }
 
 void Player::DisplaySkills()
-{	
+{
 	GotoxyPreparePrintMenu(-2);
 	cout << "<½ºÅ³>";
 	for (int i = 0;i < Skills->size();i++)

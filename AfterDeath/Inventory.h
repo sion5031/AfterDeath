@@ -3,25 +3,38 @@
 #include <map>
 
 #include "Item.h"
+//#include "Creature.h"
+#include "IEquipable.h"
+#include "IConsumable.h"
 
 using namespace std;
+
+class Creature;
 
 class Inventory
 {
 private:
-	map<int, Item*> Items;
+	map<int, Item*>* Items;
 
-	void ArrangeInventory();
-	void FindItem();
+	Item* FindItem(int num);
+	bool bCompareByValue(const pair<int, Item*>& a, const pair<int, Item*>& b);
 
 public:
 	Inventory();
 	~Inventory();
 
-	void AddItem(Item* item);
+	string AddItem(Item* item);
 	void RemoveItem(int num);
-	void TryUse(int num);
-	void TryEquip(int num);
+	Item* TryUse(int num);
+	Item* TryEquip(int num);
 	void DisplayInventory();
+	void DisplayInventoryDetail();
+	vector<Item*>* GetAllInventoryItems();
+	void InitInventory();
+	void ArrangeInventory();
+	void CheckZeroInventory();
+	bool bCheckPresence(int num);
+
+	int GetSN(int num);
 
 };

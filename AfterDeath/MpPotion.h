@@ -7,8 +7,9 @@ private:
 
 
 public:
-	MpPotion() {}
+	MpPotion(int num);
 	//virtual ~MpPotion(){ cout << "~MpPotion()" << endl; }
-	virtual ~MpPotion() {}
+	~MpPotion();
 
+	string UseItem(shared_ptr<Creature> player) override;
 };

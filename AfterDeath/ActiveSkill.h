@@ -6,9 +6,10 @@ class ActiveSkill : public Skill
 private:
 
 public:
-	ActiveSkill() {}
+	ActiveSkill();
 	//virtual ~ActiveSkill(){ cout << "~ActiveSkill()" << endl; }
-	virtual ~ActiveSkill() {}
+	~ActiveSkill();
 
-	void Effect() override;
+	virtual string Effect(shared_ptr<Creature> player, int turn) = 0;
+	virtual string GetExplanation() = 0;
 };

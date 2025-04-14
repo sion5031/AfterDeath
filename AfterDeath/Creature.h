@@ -1,15 +1,48 @@
 #pragma once
 #include <iostream>
 #include <vector>
+#include <Windows.h>
+#include <fstream>
+#include <string>
+#include <conio.h>
 
+#include "Item.h"
 #include "Skill.h"
+#include "IPlayable.h"
 
 using namespace std;
 
-class Item;
+struct EquipedE
+{
+	Item* myWeapon = nullptr;
+	Item* myUpper = nullptr;
+	Item* myLower = nullptr;
+	Item* myGlove = nullptr;
+	Item* myShoes = nullptr;
+	Item* myShield = nullptr;
 
+	Item* GetItem(int num)
+	{
+		if (myWeapon != nullptr && num == 0) return myWeapon;
+		else if (myUpper != nullptr && num == 1) return myUpper;
+		else if (myLower != nullptr && num == 2) return myLower;
+		else if (myGlove != nullptr && num == 3) return myGlove;
+		else if (myShoes != nullptr && num == 4) return myShoes;
+		else if (myShield != nullptr && num == 5) return myShield;
+		else return nullptr;
+	}
+	void InitEquipedE()
+	{
+		myWeapon = nullptr;
+		myUpper = nullptr;
+		myLower = nullptr;
+		myGlove = nullptr;
+		myShoes = nullptr;
+		myShield = nullptr;
+	}
+};
 
-class Creature
+struct Status
 {
 	int TotalAtk = 0;
 	int TotalDef = 0;
@@ -30,7 +63,8 @@ class Creature : enable_shared_from_this<Creature>
 {
 protected:
 	string Name;
-	int Type;
+	static string PlayerName;
+	int Type; // 0은 Player, 이외는 Monster
 	int MaxHp;
 	int Hp;
 	int MaxMp;
@@ -39,24 +73,36 @@ protected:
 	int Defense;
 	struct Status* BuffedStatus;
 	struct EquipedE* Equipments;
-	vector<Skill*> Skills;
+	vector<Skill*>* Skills;
+	static vector<string>* Notifications;
+
+	const int ScreenSize = 30; //space 기준 2칸이 1size
 
 public:
-	Creature() {}
+	shared_ptr<Creature> GetShared() {
+		return shared_from_this();
+	}
+	Creature();
 	//virtual ~Creature(){ cout << "~Creature()" << endl; }
 	virtual ~Creature(){}
 
+	void InitCreature();
 	//void Move(Map* currentMap, int* location);
-	void Fight(Creature* player, Creature* monster);
-	void NormalAttack(Creature*);
-	void HitBy(int damage);
-	virtual void UseSkill() = 0;
+	void Fight(shared_ptr<Creature> player, shared_ptr<Creature> monster, int turn);
+	void NormalAttack(shared_ptr<Creature> attacker, shared_ptr<Creature> defender, int countTurn);
+	void MonsterHitMotion(int countTurn, string defender, string attacker, string color);
+	void PrintMonsterStatus(int x, int y);
+	virtual bool UseSkill(shared_ptr<Creature> creature, int num, int turn) = 0;
 	virtual void Die() = 0;
 	void CalcHp(int hp);
 	void CalcMp(int mp);
+	int GetSkillType(int num);
 
 
+	void ReadFile(string fileName, int start, int erase);
+	void EraseFile(string fileName, int start, int erase);
 
+	struct Status* GetTotalStatus();
 
 	void SetName(string name);
 	void SetType(int type);
@@ -68,27 +114,19 @@ public:
 	void SetDef(int defense);
 	void SetBuffedStatus(int atk, int def, int hp, int mp);
 	//void SetMyInven(shared_ptr<Inventory>);
+	void AddNotification(string notification);
 
-	string GetCName();
-	int GetCType();
-	int GetMaxHp();
+	string GetName();
+	int GetType();
+	//int GetMaxHp();
 	int GetHp();
-	int GetMaxMp();
+	//int GetMaxMp();
 	int GetMp();
 	int GetAttack();
 	int GetDefense();
 	struct Status* GetBuffedStatus();
 	vector<Skill*>* GetSkills();
 
+	EquipedE* GetEquipments();
 };
 
-
-struct EquipedE
-{
-	shared_ptr<Item> myWeapon;
-	shared_ptr<Item> myUpper;
-	shared_ptr<Item> myLower;
-	shared_ptr<Item> myGlove;
-	shared_ptr<Item> myShoes;
-	shared_ptr<Item> myShield;
-};

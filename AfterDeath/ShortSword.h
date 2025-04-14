@@ -7,8 +7,9 @@ private:
 
 
 public:
-	ShortSword() {}
+	ShortSword();
+	ShortSword(int level);
 	//virtual ~ShortSword(){ cout << "~ShortSword()" << endl; }
-	virtual ~ShortSword() {}
+	~ShortSword();
 
 };

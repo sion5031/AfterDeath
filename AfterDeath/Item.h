@@ -1,22 +1,26 @@
 #pragma once
 #include <iostream>
 
+#include "Creature.h"
+
 using namespace std;
 
 class Item
 {
 private:
-	string name;
+	string Name;
 	int SN;
 
 protected:
 	int AtkPoint;
 	int DefPoint;
+	int HpPoint;
+	int MpPoint;
 	int EffectPoint;
 	bool Equiped;
 
 public:
-	Item(){}
+	Item();
 	//virtual ~Item() = 0; // 반드시 자식이 override 해야함
 	//virtual ~Item(){ cout << "~Item()" << endl; }
 	virtual ~Item(){}
@@ -28,6 +32,8 @@ public:
 	void SetSN(int SN);
 	void SetAtkPoint(int atkPoint);
 	void SetDefPoint(int defPoint);
+	void SetHpPoint(int hpPoint);
+	void SetMpPoint(int mpPoint);
 	void SetEffectPoint(int effectPoint);
 	void SetEquiped(bool equiped);
 
@@ -35,6 +41,8 @@ public:
 	int GetSN();
 	int GetAtkPoint();
 	int GetDefPoint();
+	int GetHpPoint();
+	int GetMpPoint();
 	int GetEffectPoint();
 	bool GetEquiped();
 };
